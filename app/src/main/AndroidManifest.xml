@@ -10,13 +10,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.RezepteApp"
+        android:theme="@style/Theme.Rezepteapp"
         tools:targetApi="31">
         <activity
-            android:name=".ScrollingActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.RezepteApp.NoActionBar">
+            android:theme="@style/Theme.Rezepteapp.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
