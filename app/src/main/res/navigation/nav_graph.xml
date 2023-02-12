@@ -9,7 +9,7 @@
         android:id="@+id/FirstFragment"
         android:name="de.ghse.tgi.rezepteapp.fragments.ListRecipe.ListRecipeFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_view_recipe">
+        tools:layout="@layout/fragment_list_recipe">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"

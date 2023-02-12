@@ -66,7 +66,7 @@ public class InputFragment extends Fragment {
         return list;
     }
     public void clearTextFields(){
-        etName.setText(' ');
-        etDescription.setText(' ');
+        etName.setText("");
+        etDescription.setText("");
     }
 }

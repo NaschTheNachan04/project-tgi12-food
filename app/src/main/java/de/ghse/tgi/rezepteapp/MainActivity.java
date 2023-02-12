@@ -7,6 +7,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import de.ghse.tgi.rezepteapp.databinding.ActivityMainBinding;
 import de.ghse.tgi.rezepteapp.databinding.ActivityMainBinding;
+import de.ghse.tgi.rezepteapp.fragments.ViewRecipe.ViewRecipeControll;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private MyViewPagerAdapter myViewPagerAdapter;
     private ViewPager2 viewPager2;
+    private ViewRecipeControll VRctrl;
     private static StorageRecipe storage = new StorageRecipe();
 
     public StorageRecipe getStorage(){
@@ -30,7 +32,12 @@ public class MainActivity extends AppCompatActivity {
         viewPager2.setAdapter(myViewPagerAdapter);
         viewPager2.setCurrentItem(0);
     }
+
     public void setFrag(int pos){
         viewPager2.setCurrentItem(pos);
+        if(pos == 2){
+            VRctrl.onCreate();
+        }
     }
+    public void addViewRecipeControll(ViewRecipeControll VRctrl){this.VRctrl = VRctrl;}
 }
