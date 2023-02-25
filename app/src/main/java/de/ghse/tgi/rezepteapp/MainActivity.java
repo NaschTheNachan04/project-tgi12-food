@@ -6,8 +6,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.viewpager2.widget.ViewPager2;
 
 import de.ghse.tgi.rezepteapp.databinding.ActivityMainBinding;
-import de.ghse.tgi.rezepteapp.databinding.ActivityMainBinding;
-import de.ghse.tgi.rezepteapp.fragments.ViewRecipe.ViewRecipeControll;
+import de.ghse.tgi.rezepteapp.fragments.ViewRecipe.ViewRecipeControl;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,10 +14,10 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private MyViewPagerAdapter myViewPagerAdapter;
     private ViewPager2 viewPager2;
-    private ViewRecipeControll VRctrl;
+    private ViewRecipeControl VRCtrl;
     private static StorageRecipe storage = new StorageRecipe();
 
-    public StorageRecipe getStorage(){
+    public static StorageRecipe getStorage(){
         return storage;
     }
     @Override
@@ -28,16 +27,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
         viewPager2 = findViewById(R.id.viewPager2);
+        viewPager2.setUserInputEnabled(false);
         myViewPagerAdapter = new MyViewPagerAdapter(this);
         viewPager2.setAdapter(myViewPagerAdapter);
         viewPager2.setCurrentItem(0);
+        viewPager2.setUserInputEnabled(false);
     }
 
     public void setFrag(int pos){
         viewPager2.setCurrentItem(pos);
         if(pos == 2){
-            VRctrl.onCreate();
+            VRCtrl.onCreate();
         }
     }
-    public void addViewRecipeControll(ViewRecipeControll VRctrl){this.VRctrl = VRctrl;}
+    public void addViewRecipeControl(ViewRecipeControl VRCtrl){this.VRCtrl = VRCtrl;}
 }
