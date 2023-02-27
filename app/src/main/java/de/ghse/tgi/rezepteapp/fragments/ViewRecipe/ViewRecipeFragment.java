@@ -7,25 +7,26 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import de.ghse.tgi.rezepteapp.MyViewPagerAdapter;
 import de.ghse.tgi.rezepteapp.R;
-import de.ghse.tgi.rezepteapp.StorageRecipe;
 
 public class ViewRecipeFragment extends Fragment {
     private MyViewPagerAdapter myViewPagerAdapter;
     private TextView name;
     private TextView description;
     private ImageView image;
+    private Button btBack;
     private View view;
-    private ViewRecipeControll ctrl;
+    private ViewRecipeControl ctrl;
 
     public ViewRecipeFragment(MyViewPagerAdapter p) {
         super();
         myViewPagerAdapter = p;
-        ctrl = new ViewRecipeControll(this,p.getMainActivity());
+        ctrl = new ViewRecipeControl(this,p.getMainActivity());
     }
 
     @Override
@@ -39,7 +40,13 @@ public class ViewRecipeFragment extends Fragment {
         name = view.findViewById(R.id.tVViewRecipeName);
         image = view.findViewById(R.id.iVViewRecipeImage);
         description = view.findViewById(R.id.tVViewRecipeDescription);
-        ctrl.onCreate();
+        btBack = view.findViewById(R.id.btBackOnViewRecipe);
+        btBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myViewPagerAdapter.getMainActivity().setFrag(0);
+            }
+        });
         return view;
     }
     public void setRName(String name){

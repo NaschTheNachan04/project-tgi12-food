@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import java.util.ArrayList;
 
+import de.ghse.tgi.rezepteapp.MainActivity;
 import de.ghse.tgi.rezepteapp.MyViewPagerAdapter;
 import de.ghse.tgi.rezepteapp.R;
 
@@ -21,15 +22,15 @@ public class InputFragment extends Fragment {
     private EditText etName;
     private EditText etDescription;
     private View view;
-    private MyViewPagerAdapter pager;
-    private InputControll controllInput;
+    private MyViewPagerAdapter myViewPagerAdapter;
+    private InputControl controlInput;
 
     public InputFragment(){super();}
 
     public InputFragment(MyViewPagerAdapter p) {
         super();
-        pager = p;
-        controllInput = new InputControll(this,p.getMainActivity().getStorage());
+        myViewPagerAdapter = p;
+        controlInput = new InputControl(this, MainActivity.getStorage());
     }
 
 
@@ -49,8 +50,8 @@ public class InputFragment extends Fragment {
         btSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                controllInput.save();
-                pager.getMainActivity().setFrag(0);
+                controlInput.save();
+                myViewPagerAdapter.getMainActivity().setFrag(0);
             }
         });
         return view;
@@ -66,7 +67,8 @@ public class InputFragment extends Fragment {
         return list;
     }
     public void clearTextFields(){
-        etName.setText("");
-        etDescription.setText("");
+        etName.setText(null);
+        etDescription.setText(null);
+
     }
 }

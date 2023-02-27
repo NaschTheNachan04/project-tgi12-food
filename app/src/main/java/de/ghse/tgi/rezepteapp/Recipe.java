@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Recipe {
     private String name;
-    private String desription;
+    private String description;
     private ArrayList<String> ingredient = new ArrayList<>();
     private int Image = R.drawable.mealpic;
 
@@ -16,11 +16,11 @@ public class Recipe {
         this.name = name;
     }
 
-    public String getDesription() {
-        return desription;
+    public String getDescription() {
+        return description;
     }
-    public void setDesription(String desription) {
-        this.desription = desription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public ArrayList getIngredient() {
