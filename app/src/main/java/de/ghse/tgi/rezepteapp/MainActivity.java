@@ -5,15 +5,19 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import androidx.room.Database;
+import androidx.room.Room;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import de.ghse.tgi.rezepteapp.SQL.AppDatabase;
 import de.ghse.tgi.rezepteapp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-
+    private AppDatabase database;
     private ActivityMainBinding binding;
     private MyViewPagerAdapter myViewPagerAdapter;
     private ViewPager2 viewPager2;
@@ -34,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         viewPager2.setAdapter(myViewPagerAdapter);
         viewPager2.setCurrentItem(0);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        database = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "database-name").build();
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -68,6 +74,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-    }
 
+    }
 }
