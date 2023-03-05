@@ -1,4 +1,4 @@
-package de.ghse.tgi.rezepteapp.fragments.Input;
+package de.ghse.tgi.rezepteapp.fragments.Home.Input;
 
 import de.ghse.tgi.rezepteapp.Recipe;
 import de.ghse.tgi.rezepteapp.StorageRecipe;

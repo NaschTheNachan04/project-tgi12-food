@@ -1,4 +1,4 @@
-package de.ghse.tgi.rezepteapp.fragments.Input;
+package de.ghse.tgi.rezepteapp.fragments.Home.Input;
 
 import android.os.Bundle;
 
@@ -13,8 +13,8 @@ import android.widget.EditText;
 import java.util.ArrayList;
 
 import de.ghse.tgi.rezepteapp.MainActivity;
-import de.ghse.tgi.rezepteapp.MyViewPagerAdapter;
 import de.ghse.tgi.rezepteapp.R;
+import de.ghse.tgi.rezepteapp.fragments.Home.HomeFragment;
 
 
 public class InputFragment extends Fragment {
@@ -22,14 +22,14 @@ public class InputFragment extends Fragment {
     private EditText etName;
     private EditText etDescription;
     private View view;
-    private MyViewPagerAdapter myViewPagerAdapter;
+    private HomeFragment homeFragment;
     private InputControl controlInput;
 
     public InputFragment(){super();}
 
-    public InputFragment(MyViewPagerAdapter p) {
+    public InputFragment(HomeFragment h) {
         super();
-        myViewPagerAdapter = p;
+        homeFragment = h;
         controlInput = new InputControl(this, MainActivity.getStorage());
     }
 
@@ -40,9 +40,7 @@ public class InputFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_input, container, false);
         etName = view.findViewById(R.id.etInputName);
         etDescription = view.findViewById(R.id.etInputDescription);
@@ -51,7 +49,7 @@ public class InputFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 controlInput.save();
-                myViewPagerAdapter.getMainActivity().setFrag(0);
+                homeFragment.replaceFragment(0);
             }
         });
         return view;
