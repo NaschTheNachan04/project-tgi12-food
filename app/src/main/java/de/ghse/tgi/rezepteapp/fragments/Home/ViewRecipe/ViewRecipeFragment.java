@@ -1,4 +1,4 @@
-package de.ghse.tgi.rezepteapp.fragments.ViewRecipe;
+package de.ghse.tgi.rezepteapp.fragments.Home.ViewRecipe;
 
 import android.os.Bundle;
 
@@ -11,22 +11,22 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import de.ghse.tgi.rezepteapp.MyViewPagerAdapter;
 import de.ghse.tgi.rezepteapp.R;
+import de.ghse.tgi.rezepteapp.fragments.Home.HomeFragment;
 
 public class ViewRecipeFragment extends Fragment {
-    private MyViewPagerAdapter myViewPagerAdapter;
     private TextView name;
     private TextView description;
     private ImageView image;
     private Button btBack;
     private View view;
     private ViewRecipeControl ctrl;
+    private HomeFragment homeFragment;
 
-    public ViewRecipeFragment(MyViewPagerAdapter p) {
+    public ViewRecipeFragment(HomeFragment h) {
         super();
-        myViewPagerAdapter = p;
-        ctrl = new ViewRecipeControl(this,p.getMainActivity());
+        homeFragment =h;
+        ctrl = new ViewRecipeControl(this);
     }
 
     @Override
@@ -44,9 +44,10 @@ public class ViewRecipeFragment extends Fragment {
         btBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myViewPagerAdapter.getMainActivity().setFrag(0);
+                homeFragment.replaceFragment(0);
             }
         });
+        ctrl.onCreate();
         return view;
     }
     public void setRName(String name){
@@ -54,4 +55,7 @@ public class ViewRecipeFragment extends Fragment {
     }
     public void setDescription(String description) {this.description.setText(description);}
     public void setImage(int img){this.image.setImageResource(img);}
+
+
+
 }

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="de.ghse.tgi.rezepteapp.fragments.ListRecipe.ListRecipeFragment"
+        android:name="de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe.ListRecipeFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_list_recipe">
 
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="de.ghse.tgi.rezepteapp.fragments.Input.InputFragment"
+        android:name="de.ghse.tgi.rezepteapp.fragments.Home.Input.InputFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_input">
 

@@ -1,4 +1,4 @@
-package de.ghse.tgi.rezepteapp.fragments.ListRecipe;
+package de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe;
 
 import android.os.Bundle;
 
@@ -15,26 +15,24 @@ import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import de.ghse.tgi.rezepteapp.MainActivity;
-import de.ghse.tgi.rezepteapp.MyViewPagerAdapter;
 import de.ghse.tgi.rezepteapp.R;
-import de.ghse.tgi.rezepteapp.StorageRecipe;
+import de.ghse.tgi.rezepteapp.fragments.Home.HomeFragment;
 
 
 public class ListRecipeFragment extends Fragment {
     private ListRecipeControl ctrl;
     private FloatingActionButton fab;
-    private StorageRecipe storage;
     private EditText etSearchRecipe;
     private ListView list;
     private View view;
-    private MyViewPagerAdapter pager;
-    private static int clickedItem;
+    private HomeFragment homeFragment;
+    private ListRecipeListViewAdapter adapter;
+    private static int clickedItem = 0;
 
 
-    public ListRecipeFragment(MyViewPagerAdapter p){
+    public ListRecipeFragment(HomeFragment h){
         super();
-        pager = p;
+        homeFragment =h;
     }
 
     @Override
@@ -43,30 +41,27 @@ public class ListRecipeFragment extends Fragment {
 
     }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        storage = MainActivity.getStorage();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view =inflater.inflate(R.layout.fragment_list_recipe, container, false);
 
         list = view.findViewById(R.id.listViewRecipe);
-        ListRecipeListViewAdapter adapter = new ListRecipeListViewAdapter(pager.getMainActivity());
+        adapter = new ListRecipeListViewAdapter(homeFragment.getMainActivity());
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 clickedItem = i;
                 etSearchRecipe.setText("");
-                pager.getMainActivity().setFrag(2);
+                homeFragment.replaceFragment(2);
             }
         });
-        ctrl = new ListRecipeControl(this,pager,adapter);
+        ctrl = new ListRecipeControl(this,adapter);
 
         fab =  view.findViewById(R.id.fabAdd);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pager.getMainActivity().setFrag(1);
+                homeFragment.replaceFragment(1);
             }
         });
 
@@ -94,5 +89,10 @@ public class ListRecipeFragment extends Fragment {
     }
     public static int getClickedItem(){
         return clickedItem;
+    }
+    public void dataSetChanged(){
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 }

@@ -1,4 +1,4 @@
-package de.ghse.tgi.rezepteapp.fragments.ListRecipe;
+package de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -22,7 +22,7 @@ public class ListRecipeListViewAdapter extends BaseAdapter {
 
     public ListRecipeListViewAdapter(Context ctx){
         context = ctx;
-        inflater = LayoutInflater.from(ctx);
+        inflater = LayoutInflater.from(context);
     }
     public void setFilteredRecipe(ArrayList<Integer> pRecipe){
         filteredRecipe = pRecipe;

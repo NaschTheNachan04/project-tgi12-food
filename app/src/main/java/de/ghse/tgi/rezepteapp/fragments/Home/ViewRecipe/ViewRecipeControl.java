@@ -1,22 +1,15 @@
-package de.ghse.tgi.rezepteapp.fragments.ViewRecipe;
-
-import java.util.ArrayList;
+package de.ghse.tgi.rezepteapp.fragments.Home.ViewRecipe;
 
 import de.ghse.tgi.rezepteapp.MainActivity;
-import de.ghse.tgi.rezepteapp.R;
-import de.ghse.tgi.rezepteapp.Recipe;
 import de.ghse.tgi.rezepteapp.StorageRecipe;
-import de.ghse.tgi.rezepteapp.fragments.ListRecipe.ListRecipeFragment;
+import de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe.ListRecipeFragment;
 
 public class ViewRecipeControl {
     private ViewRecipeFragment gui;
     private StorageRecipe storage;
-    private MainActivity main;
-    public ViewRecipeControl(ViewRecipeFragment gui, MainActivity main){
+    public ViewRecipeControl(ViewRecipeFragment gui){
         this.gui = gui;
-        this.main = main;
-        main.addViewRecipeControl(this);
-        this.storage = main.getStorage();
+        this.storage = MainActivity.getStorage();
     }
     public void onCreate(){
         gui.setDescription(storage.getRecipeDescription(ListRecipeFragment.getClickedItem()));
