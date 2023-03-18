@@ -14,18 +14,30 @@ import android.widget.TextView;
 import de.ghse.tgi.rezepteapp.R;
 import de.ghse.tgi.rezepteapp.fragments.Home.HomeFragment;
 
+/**
+ * A {@link Fragment} subclass.
+ * View(MVC) to show a single {@link de.ghse.tgi.rezepteapp.Recipe}.
+ */
 public class ViewRecipeFragment extends Fragment {
     private TextView name;
     private TextView description;
     private ImageView image;
     private Button btBack;
     private View view;
+    private int  itemId;
     private ViewRecipeControl ctrl;
     private HomeFragment homeFragment;
 
-    public ViewRecipeFragment(HomeFragment h) {
+    /**
+     * Class constructor.
+     *
+     * @param homeFragment to notify if shown {@link Fragment} should be changed.
+     * @param clickedItem index of the {@link de.ghse.tgi.rezepteapp.Recipe} that should be shown.
+     */
+    public ViewRecipeFragment(HomeFragment homeFragment,int clickedItem) {
         super();
-        homeFragment =h;
+        this.homeFragment =homeFragment;
+        itemId = clickedItem;
         ctrl = new ViewRecipeControl(this);
     }
 
@@ -44,16 +56,33 @@ public class ViewRecipeFragment extends Fragment {
         btBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeFragment.replaceFragment(0);
+                homeFragment.replaceFragment(0);                        //onButtonPressed return to HomePage
             }
         });
-        ctrl.onCreate();
+        ctrl.onCreate(itemId);                                             //update the Page to show the selected Recipe
         return view;
     }
+
+    /**
+     * Shows the Name given.
+     *
+     * @param name
+     */
     public void setRName(String name){
         this.name.setText(name);
     }
+
+    /**
+     * Shows the description given.
+     * @param description
+     */
     public void setDescription(String description) {this.description.setText(description);}
+
+    /**
+     * Shows the Image given.
+     *
+     * @param img Image
+     */
     public void setImage(int img){this.image.setImageResource(img);}
 
 

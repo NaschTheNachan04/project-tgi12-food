@@ -12,6 +12,11 @@ import com.google.android.material.navigation.NavigationBarView;
 
 import de.ghse.tgi.rezepteapp.databinding.ActivityMainBinding;
 
+/**
+ * A {@link AppCompatActivity} subclass.
+ * Primary Activity.
+ * Manages interactions between {@link androidx.fragment.app.Fragment}s.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
@@ -20,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private static StorageRecipe storage = new StorageRecipe();
 
+    /**
+     * method to get the connection to the database.
+     * @return Returns the Model(MVC) of the App.
+     */
     public static StorageRecipe getStorage(){
         return storage;
     }
@@ -39,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.home:
-                        viewPager2.setCurrentItem(0);
+                        viewPager2.setCurrentItem(0);                               //connect the BottomNavigationMenu with Viewpager2
                         break;
                     case R.id.calendar:
                         viewPager2.setCurrentItem(1);
@@ -57,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 super.onPageSelected(position);
                 switch (position){
                     case 0:
-                        bottomNavigationView.setSelectedItemId(R.id.home);
+                        bottomNavigationView.setSelectedItemId(R.id.home);          //connect the Viewpager2 with BottomNavigationMenu
                         break;
                     case 1:
                         bottomNavigationView.setSelectedItemId(R.id.calendar);

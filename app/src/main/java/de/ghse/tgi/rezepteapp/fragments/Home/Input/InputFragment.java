@@ -16,6 +16,10 @@ import de.ghse.tgi.rezepteapp.MainActivity;
 import de.ghse.tgi.rezepteapp.R;
 import de.ghse.tgi.rezepteapp.fragments.Home.HomeFragment;
 
+/**
+ * A {@link Fragment} subclass.
+ * View(MVC) to create new {@link de.ghse.tgi.rezepteapp.Recipe}.
+ */
 
 public class InputFragment extends Fragment {
     private Button btSave;
@@ -25,12 +29,17 @@ public class InputFragment extends Fragment {
     private HomeFragment homeFragment;
     private InputControl controlInput;
 
-    public InputFragment(){super();}
 
-    public InputFragment(HomeFragment h) {
+    /**
+     * Class constructor.
+     * implements the associated homeFragment for navigation between Fragments.
+     *
+     * @param homeFragment HomeFragment to notify when page should be changed.
+     */
+    public InputFragment(HomeFragment homeFragment) {
         super();
-        homeFragment = h;
-        controlInput = new InputControl(this, MainActivity.getStorage());
+        this.homeFragment = homeFragment;
+        controlInput = new InputControl(this);
     }
 
 
@@ -48,22 +57,43 @@ public class InputFragment extends Fragment {
         btSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                controlInput.save();
-                homeFragment.replaceFragment(0);
+                controlInput.save();                              //save the recipe
+                homeFragment.replaceFragment(0);                //at buttonClick (save) switch Fragment to RecipeList
             }
         });
         return view;
     }
+    /**
+     * Use this method to get the text the user wrote
+     * in the Text field of "recipeName".
+     *
+     * @return The Text, written in the Name EditText
+     */
     public String getRecipeName(){
         return etName.getText().toString();
     }
+    /**
+     * Use this method to get the text the user wrote
+     * in the Text field of "recipeDescription".
+     *
+     * @return The Text, written in the Description EditText
+     */
     public String getRecipeDescription(){
         return etDescription.getText().toString();
     }
+    /**
+     * Use this method to get the list of ingredients the user
+     * wrote.
+     *
+     * @return The list of ingredients the user selected
+     */
     public ArrayList<String> getRecipeIngredients(){
         ArrayList<String> list = new ArrayList<>();
         return list;
     }
+    /**
+     * Use this method to clear the textFields after all data has been saved.
+     */
     public void clearTextFields(){
         etName.setText(null);
         etDescription.setText(null);
