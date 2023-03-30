@@ -18,7 +18,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import de.ghse.tgi.rezepteapp.R;
 import de.ghse.tgi.rezepteapp.fragments.Home.HomeFragment;
 
-
+/**
+ * A {@link Fragment} subclass.
+ * View (MVC) of {@link ListRecipeControl}.
+ * Contains a ListView showing the {@link de.ghse.tgi.rezepteapp.Recipe} saved.
+ */
 public class ListRecipeFragment extends Fragment {
     private ListRecipeControl ctrl;
     private FloatingActionButton fab;
@@ -27,12 +31,18 @@ public class ListRecipeFragment extends Fragment {
     private View view;
     private HomeFragment homeFragment;
     private ListRecipeListViewAdapter adapter;
-    private static int clickedItem = 0;
+    private int clickedItem = 0;
 
 
-    public ListRecipeFragment(HomeFragment h){
+    /**
+     * Class constructor.
+     * implements the associated homeFragment for navigation between Fragments.
+     *
+     * @param homeFragment HomeFragment to notify when page should be changed.
+     */
+    public ListRecipeFragment(HomeFragment homeFragment){
         super();
-        homeFragment =h;
+        this.homeFragment =homeFragment;
     }
 
     @Override
@@ -50,9 +60,8 @@ public class ListRecipeFragment extends Fragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                clickedItem = i;
-                etSearchRecipe.setText("");
-                homeFragment.replaceFragment(2);
+                clickedItem = i;                                                                  //index
+                homeFragment.replaceFragment(2);                                                // on click on ListViewItem, show Recipe at index.
             }
         });
         ctrl = new ListRecipeControl(this,adapter);
@@ -61,7 +70,7 @@ public class ListRecipeFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeFragment.replaceFragment(1);
+                homeFragment.replaceFragment(1);                                                // if fab is clicked, open InputFragment
             }
         });
 
@@ -78,18 +87,33 @@ public class ListRecipeFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                ctrl.filter();
+                ctrl.filter();                                                                    // if searchedText is edited, update ListView.
             }
         });
 
         return view;
     }
+
+    /**
+     *
+     * @return Return the SearchText the {@link de.ghse.tgi.rezepteapp.Recipe}s should be filtered with.
+     */
     public String getSearchText(){
         return etSearchRecipe.getText().toString();
     }
-    public static int getClickedItem(){
+
+    /**
+     * A method to get the latest clicked Item of {@link ListView}.
+     * @return The index of the latest clicked ListviewItem
+     */
+    public  int getClickedItem(){
         return clickedItem;
     }
+
+    /**
+     * Has to be called when dataSet has been changed.
+     * Updates the Listview
+     */
     public void dataSetChanged(){
         if (adapter != null) {
             adapter.notifyDataSetChanged();
