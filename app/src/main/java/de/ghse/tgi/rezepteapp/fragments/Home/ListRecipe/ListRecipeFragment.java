@@ -15,6 +15,8 @@ import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+
 import de.ghse.tgi.rezepteapp.R;
 import de.ghse.tgi.rezepteapp.fragments.Home.HomeFragment;
 
@@ -32,6 +34,8 @@ public class ListRecipeFragment extends Fragment {
     private HomeFragment homeFragment;
     private ListRecipeListViewAdapter adapter;
     private int clickedItem = 0;
+    private boolean isUnfiltered = true;
+    private ArrayList<Integer> filteredRecipe;
 
 
     /**
@@ -60,7 +64,8 @@ public class ListRecipeFragment extends Fragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                clickedItem = i;                                                                  //index
+                if (isUnfiltered) clickedItem = i;                                                                  //index
+                else clickedItem = filteredRecipe.get(i);
                 homeFragment.replaceFragment(2);                                                // on click on ListViewItem, show Recipe at index.
             }
         });
@@ -118,5 +123,11 @@ public class ListRecipeFragment extends Fragment {
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
+    }
+    public void setUnfiltered(boolean pIsUnfiltered) {
+        isUnfiltered = pIsUnfiltered;
+    }
+    public void setFilteredRecipe(ArrayList<Integer> fR){
+        filteredRecipe = fR;
     }
 }

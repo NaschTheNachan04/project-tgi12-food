@@ -1,5 +1,7 @@
 package de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe;
 
+import java.util.ArrayList;
+
 import de.ghse.tgi.rezepteapp.MainActivity;
 import de.ghse.tgi.rezepteapp.StorageRecipe;
 
@@ -30,10 +32,16 @@ public class ListRecipeControl {
     public void filter(){
         String filter = gui.getSearchText();                                    // get the filterString from GUI
         if (filter.isEmpty()) {
+            gui.setUnfiltered(true);
             adapter.setUnfiltered(true);                                        // if TextField is empty, show all the Recipes
+            adapter.notifyDataSetChanged();
         }else {
-            adapter.setFilteredRecipe(storage.getFilteredIndexList(filter));    // else show all the Recipes that contain "filter"
+            ArrayList<Integer> filteredList = storage.getFilteredIndexList(filter);
+            gui.setUnfiltered(false);
+            gui.setFilteredRecipe(filteredList);
+            adapter.setFilteredRecipe(filteredList);    // else show all the Recipes that contain "filter"
             adapter.setUnfiltered(false);                                       // notify ListViewAdapter
+            adapter.notifyDataSetChanged();
         }
     }
 }
