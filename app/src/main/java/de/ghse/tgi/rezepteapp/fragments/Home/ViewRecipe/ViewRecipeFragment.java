@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import de.ghse.tgi.rezepteapp.R;
@@ -22,6 +23,8 @@ public class ViewRecipeFragment extends Fragment {
     private TextView name;
     private TextView description;
     private ImageView image;
+    private ListView listView;
+    private ListIngredientsViewRecipeAdapter adapter;
     private Button btBack;
     private View view;
     private int  itemId;
@@ -52,6 +55,10 @@ public class ViewRecipeFragment extends Fragment {
         name = view.findViewById(R.id.tVViewRecipeName);
         image = view.findViewById(R.id.iVViewRecipeImage);
         description = view.findViewById(R.id.tVViewRecipeDescription);
+        ctrl.onCreate(itemId);                                             //update the Page to show the selected Recipe
+        listView = view.findViewById(R.id.lVListIngredients);
+        adapter = new ListIngredientsViewRecipeAdapter(homeFragment.getMainActivity(),itemId,ctrl);
+        listView.setAdapter(adapter);
         btBack = view.findViewById(R.id.btBackOnViewRecipe);
         btBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,9 +66,11 @@ public class ViewRecipeFragment extends Fragment {
                 homeFragment.replaceFragment(0);                        //onButtonPressed return to HomePage
             }
         });
-        ctrl.onCreate(itemId);                                             //update the Page to show the selected Recipe
+        ctrl.setListViewHeight(listView);
         return view;
     }
+
+    public ListView getListView(){ return listView;}
 
     /**
      * Shows the Name given.

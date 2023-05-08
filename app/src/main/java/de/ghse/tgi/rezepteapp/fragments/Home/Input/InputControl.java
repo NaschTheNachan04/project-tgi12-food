@@ -10,6 +10,7 @@ import de.ghse.tgi.rezepteapp.StorageRecipe;
 public class InputControl {
     private StorageRecipe storage;
     private InputFragment gui;
+    private InputListViewAdapter adapter;
 
     /**
      * Class constructor.
@@ -17,8 +18,9 @@ public class InputControl {
      *
      * @param pGui
      */
-    public InputControl(InputFragment pGui){
+    public InputControl(InputFragment pGui,InputListViewAdapter adapter){
         gui = pGui;
+        this.adapter = adapter;
         this.storage = MainActivity.getStorage();
     }
 
@@ -27,13 +29,14 @@ public class InputControl {
      * Clears the TextFields after Recipe is saved for next use.
      */
     public void save(){
-        if(!gui.getRecipeName().isEmpty()) {
+        if(!adapter.getRecipeName().isEmpty()) {
             Recipe a = new Recipe();                            //create new Recipe
-            a.setName(gui.getRecipeName());                     //set RecipeName
-            a.setDescription(gui.getRecipeDescription());       //set RecipeDescription
-            a.setIngredient(gui.getRecipeIngredients());        //set RecipeIngredient
+            a.setName(adapter.getRecipeName());                     //set RecipeName
+            a.setDescription(adapter.getRecipeDescription());       //set RecipeDescription
+            a.setIngredient(adapter.getRecipeIngredients());        //set RecipeIngredient
             storage.addRecipe(a);                             //save it in storage
         }
-        gui.clearTextFields();                                // clear the textFields to input another Recipe
+        adapter.clearTextFields();                                // clear the textFields to input another Recipe
+        gui.finishTransaction();
     }
 }
