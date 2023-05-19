@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import de.ghse.tgi.rezepteapp.Database.AppDatabase;
 import de.ghse.tgi.rezepteapp.Database.StorageRecipe;
 import de.ghse.tgi.rezepteapp.databinding.ActivityMainBinding;
 
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager2;
     private BottomNavigationView bottomNavigationView;
     private static StorageRecipe storage = new StorageRecipe();
+    public AppDatabase database;
 
     /**
      * method to get the connection to the database.
@@ -33,8 +35,10 @@ public class MainActivity extends AppCompatActivity {
     public static StorageRecipe getStorage(){
         return storage;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+         database.createDatabase();
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

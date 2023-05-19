@@ -13,15 +13,20 @@ public class StorageRecipe {
     private ArrayList<Recipe> list = new ArrayList<>();
     private ArrayList<Integer> emptyList = new ArrayList<>();
 
+    public AppDatabase database;
+
 
 
     public ArrayList<Recipe> getList(){return list;}
     public void addRecipe(Recipe a){
         list.add(a);
+        database.addRezeptToDataBase(a);
         emptyList.add(list.size()+1);
+
     }
     public void deleteRecipe(Recipe a) {
         list.remove(a);
+        database.deleteRezept(a);
         emptyList.remove(emptyList.size()-1);
     }
     public int getCount(){
