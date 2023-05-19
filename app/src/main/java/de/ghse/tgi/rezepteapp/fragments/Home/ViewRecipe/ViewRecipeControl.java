@@ -1,7 +1,7 @@
 package de.ghse.tgi.rezepteapp.fragments.Home.ViewRecipe;
 
 import de.ghse.tgi.rezepteapp.MainActivity;
-import de.ghse.tgi.rezepteapp.StorageRecipe;
+import de.ghse.tgi.rezepteapp.Database.StorageRecipe;
 
 /**
  * Controller(VMC) of {@link ViewRecipeFragment} (View)

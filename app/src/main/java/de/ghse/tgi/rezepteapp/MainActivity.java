@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import de.ghse.tgi.rezepteapp.Database.StorageRecipe;
 import de.ghse.tgi.rezepteapp.databinding.ActivityMainBinding;
 
 /**

@@ -1,11 +1,19 @@
-package de.ghse.tgi.rezepteapp;
+package de.ghse.tgi.rezepteapp.Database;
+
+import android.database.DatabaseErrorHandler;
+import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
+import de.ghse.tgi.rezepteapp.Recipe;
+
+
 public class StorageRecipe {
     private ArrayList<Recipe> list = new ArrayList<>();
     private ArrayList<Integer> emptyList = new ArrayList<>();
+
+
 
     public ArrayList<Recipe> getList(){return list;}
     public void addRecipe(Recipe a){
@@ -37,4 +45,6 @@ public class StorageRecipe {
     public String getRecipeName(int index){return list.get(index).getName();}
     public int getRecipeImage(int index){return list.get(index).getImage();}
     public String getRecipeDescription(int index){return list.get(index).getDescription();}
+
+
 }
