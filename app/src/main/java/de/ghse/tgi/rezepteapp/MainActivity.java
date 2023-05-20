@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager2;
     private BottomNavigationView bottomNavigationView;
     private static StorageRecipe storage = new StorageRecipe();
-    public AppDatabase database;
+
 
     /**
      * method to get the connection to the database.
@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-         database.createDatabase();
         super.onCreate(savedInstanceState);
+        storage.addContext(this);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);

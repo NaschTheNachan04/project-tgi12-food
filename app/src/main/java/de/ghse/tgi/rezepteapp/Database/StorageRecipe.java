@@ -1,5 +1,6 @@
 package de.ghse.tgi.rezepteapp.Database;
 
+import android.content.Context;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -15,6 +16,10 @@ public class StorageRecipe {
 
     public AppDatabase database;
 
+
+    public void addContext(Context c){
+        database= new AppDatabase(c);
+    }
 
 
     public ArrayList<Recipe> getList(){return list;}
