@@ -52,7 +52,9 @@ public class StorageRecipe {
         }
         return filteredList;
     }
-    public String getRecipeName(int index){return list.get(index).getName();}
+    public String getRecipeName(int index){
+        return list.get(index).getName();
+    }
     public int getRecipeImage(int index){return list.get(index).getImage();}
     public String getRecipeDescription(int index){return list.get(index).getDescription();}
 

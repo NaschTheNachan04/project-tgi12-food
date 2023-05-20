@@ -1,5 +1,6 @@
 package de.ghse.tgi.rezepteapp.Database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,7 +11,7 @@ import androidx.annotation.Nullable;
 import de.ghse.tgi.rezepteapp.Recipe;
 
  public class AppDatabase extends SQLiteOpenHelper {
-    final String databaseRecipe   ="recipeData.DB";
+    private static final String databaseRecipe   ="recipeData";
 
 
      public AppDatabase(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version, @Nullable DatabaseErrorHandler errorHandler) {
@@ -25,23 +26,21 @@ import de.ghse.tgi.rezepteapp.Recipe;
      }
 
      public AppDatabase(Context c){
-         super(c,"recipeData",null,1 );
+         super(c,databaseRecipe,null,1 );
 
      }
      @Override
-     public void onCreate(SQLiteDatabase db) {
+     public void onCreate(SQLiteDatabase database) {
          // on below line we are creating
          // an sqlite query and we are
          // setting our column names
          // along with their data types.
-         SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(databaseRecipe,null,null);
 
-         database.execSQL("CREATE TABLE recipeData.recipe (RID INT ,name CHAR,beschreibung CHAR,ZRID int,Bild INT);");
-         database.execSQL("CREATE TABLE recipeData.zutaten (ZID INT,name CHAR,einheit text,vorratsmenge CHAR,ZRID INT);");
-         database.execSQL("CREATE TABLE recipeData.rZutat  (ZRID INT,RID INT,ZID INT,menge DOUBLE);");
-         database.execSQL("CREATE TABLE recipeData.event   (EID INT,datum CHAR,stunden INT,minuten INT);");
-         database.execSQL("CREATE TABLE recipeData.rEvent   (ERID INT,RID INT);");
-
+         database.execSQL("CREATE TABLE zutat   (ZID INTEGER PRIMARY KEY AUTOINCREMENT,name CHAR,einheit text,vorratsmenge CHAR);");
+         database.execSQL("CREATE TABLE recipe  (RID INTEGER PRIMARY KEY AUTOINCREMENT,name CHAR,beschreibung CHAR,Bild INTEGER);");
+         database.execSQL("CREATE TABLE event   (EID INTEGER PRIMARY KEY AUTOINCREMENT,datum CHAR,stunden INTEGER,minuten INTEGER);");
+         database.execSQL("CREATE TABLE rZutat  (ZRID INTEGER PRIMARY KEY AUTOINCREMENT,RID INTEGER,ZID INTEGER,menge DOUBLE,FOREIGN KEY(RID) REFERENCES recipe(RID),FOREIGN KEY(ZID) REFERENCES zutat(ZID));");
+         database.execSQL("CREATE TABLE rEvent  (ERID INTEGER PRIMARY KEY AUTOINCREMENT,RID INTEGER,FOREIGN KEY(RID) REFERENCES recipe(RID));");
      }
      /*public void createDatabase(){
         SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(databaseRecipe,null,null);
@@ -57,8 +56,12 @@ import de.ghse.tgi.rezepteapp.Recipe;
     public void addRezeptToDataBase (Recipe a){
         String name = a.getName();
         String beschreibung = a.getDescription();
-        SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(databaseRecipe,null);
-        database.execSQL("INSERT INTO recipe VALUES(RID,name,beschreibung)");
+        SQLiteDatabase database=this.getWritableDatabase();
+        ContentValues c = new ContentValues();
+        c.put("name",name);
+        c.put("beschreibung",beschreibung);
+        database.insert("recipe",null,c);
+        database.close();
 
     }
 
@@ -69,7 +72,7 @@ import de.ghse.tgi.rezepteapp.Recipe;
 
     public void addEventToDatabase(StorageRecipe store){
       store.getList();
-      SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(databaseRecipe,null);
+      SQLiteDatabase database=this.getReadableDatabase();
       database.execSQL("INSERT INTO recipe VALUES (RID)");
     }
 
@@ -86,4 +89,9 @@ import de.ghse.tgi.rezepteapp.Recipe;
 
 
     }
+
+    public void getRecipe(){
+
+
+     }
 }
