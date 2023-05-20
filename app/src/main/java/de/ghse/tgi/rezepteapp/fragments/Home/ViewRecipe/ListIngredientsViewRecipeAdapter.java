@@ -9,15 +9,21 @@ import android.widget.TextView;
 
 import de.ghse.tgi.rezepteapp.R;
 
+/**
+ * a {@link BaseAdapter} subclass
+ * manages the Ingredients of {@link ViewRecipeFragment}s Listview
+ */
 public class ListIngredientsViewRecipeAdapter extends BaseAdapter {
     private LayoutInflater inflater;
-    private int recipe;
-    private TextView[] textView = new TextView[3];
     private ViewRecipeControl control;
 
-    public ListIngredientsViewRecipeAdapter(Context ctx,int recipeID, ViewRecipeControl ctrl){
+    /**
+     * class constructor
+     * @param ctx Context of the Activity
+     * @param ctrl control (VMC) of {@link ViewRecipeFragment}.
+     */
+    public ListIngredientsViewRecipeAdapter(Context ctx, ViewRecipeControl ctrl){
         inflater = LayoutInflater.from(ctx);
-        recipe = recipeID;
         control = ctrl;
     }
 
@@ -39,15 +45,29 @@ public class ListIngredientsViewRecipeAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
+        ViewHolder holder;
+        //link view and TextViews from xml to java
         if (view==null){
+            holder = new ViewHolder();
             view = inflater.inflate(R.layout.content_list_ingredients,null);
-            textView[0] = view.findViewById(R.id.tVIngredientAmount);
-            textView[1] = view.findViewById(R.id.tVIngredientUnit);
-            textView[2] = view.findViewById(R.id.tVIngredientName);
-        }
-        textView[0].setText(String.valueOf(control.getIngredientAmount(position)));
-        textView[1].setText(control.getIngredientUnit(position));
-        textView[2].setText(control.getIngredientName(position));
+            holder.textView[0] = view.findViewById(R.id.tVIngredientAmount);
+            holder.textView[1] = view.findViewById(R.id.tVIngredientUnit);
+            holder.textView[2] = view.findViewById(R.id.tVIngredientName);
+            view.setTag(holder);
+        }else holder = (ViewHolder) view.getTag();
+
+        //set the params of selected Ingredient
+        holder.textView[0].setText(String.valueOf(control.getIngredientAmount(position)));
+        holder.textView[1].setText(control.getIngredientUnit(position));
+        holder.textView[2].setText(control.getIngredientName(position));
         return view;
+    }
+
+    /**
+     * cache for the TextFields
+     * used to prevent calling {@link View#findViewById(int)} every time {@link android.widget.ListView} is loaded
+     */
+    static class ViewHolder{
+        TextView[] textView = new TextView[3];
     }
 }

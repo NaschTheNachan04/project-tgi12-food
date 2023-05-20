@@ -20,28 +20,38 @@ import de.ghse.tgi.rezepteapp.fragments.Home.HomeFragment;
  * View(MVC) to show a single {@link de.ghse.tgi.rezepteapp.Recipe}.
  */
 public class ViewRecipeFragment extends Fragment {
+
+    private View view;
+    private int  itemId;
+    private ViewRecipeControl ctrl;
+    private HomeFragment homeFragment;
+
+    //footer/header
     private TextView name;
     private TextView description;
     private ImageView image;
     private ListView listView;
     private ListIngredientsViewRecipeAdapter adapter;
     private Button btBack;
-    private View view;
-    private int  itemId;
-    private ViewRecipeControl ctrl;
-    private HomeFragment homeFragment;
+
 
     /**
      * Class constructor.
      *
      * @param homeFragment to notify if shown {@link Fragment} should be changed.
-     * @param clickedItem index of the {@link de.ghse.tgi.rezepteapp.Recipe} that should be shown.
      */
-    public ViewRecipeFragment(HomeFragment homeFragment,int clickedItem) {
+    public ViewRecipeFragment(HomeFragment homeFragment) {
         super();
         this.homeFragment =homeFragment;
-        itemId = clickedItem;
         ctrl = new ViewRecipeControl(this);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        itemId = homeFragment.getCurrentRecipe();
+        ctrl.setRecipe(itemId);                                             //update the Page to show the selected Recipe
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -51,30 +61,17 @@ public class ViewRecipeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_view_recipe, container, false);
-        name = view.findViewById(R.id.tVViewRecipeName);
-        image = view.findViewById(R.id.iVViewRecipeImage);
-        description = view.findViewById(R.id.tVViewRecipeDescription);
-        ctrl.onCreate(itemId);                                             //update the Page to show the selected Recipe
-        listView = view.findViewById(R.id.lVListIngredients);
-        adapter = new ListIngredientsViewRecipeAdapter(homeFragment.getMainActivity(),itemId,ctrl);
-        listView.setAdapter(adapter);
-        btBack = view.findViewById(R.id.btBackOnViewRecipe);
-        btBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                homeFragment.replaceFragment(0);                        //onButtonPressed return to HomePage
-            }
-        });
-        ctrl.setListViewHeight(listView);
-        return view;
+        if(view==null){
+            view = inflater.inflate(R.layout.fragment_listview, container, false);
+            listView = view.findViewById(R.id.listView);
+            setListViewFooterAndHeader();
+            adapter = new ListIngredientsViewRecipeAdapter(homeFragment.getMainActivity(),ctrl);
+            listView.setAdapter(adapter);
+        }return view;
     }
 
-    public ListView getListView(){ return listView;}
-
     /**
-     * Shows the Name given.
-     *
+     * Displays the Name given.
      * @param name
      */
     public void setRName(String name){
@@ -82,18 +79,42 @@ public class ViewRecipeFragment extends Fragment {
     }
 
     /**
-     * Shows the description given.
+     * Displays the description given.
      * @param description
      */
-    public void setDescription(String description) {this.description.setText(description);}
+    public void setDescription(String description) {
+        this.description.setText(description);}
 
     /**
-     * Shows the Image given.
-     *
+     * Displays the Image given.
      * @param img Image
      */
-    public void setImage(int img){this.image.setImageResource(img);}
+    public void setImage(int img){
+        this.image.setImageResource(img);}
+
+    /**
+     * cache for UI-elements
+     * used to prevent calling {@link View#findViewById(int)} every time {@link ViewRecipeFragment} is loaded
+     */
 
 
+    private void setListViewFooterAndHeader(){
+        View header = getLayoutInflater().inflate(R.layout.content_fragment_view_recipe_header,listView,false);
 
+        name = header.findViewById(R.id.tVViewRecipeName);
+        image = header.findViewById(R.id.iVViewRecipeImage);
+        btBack = header.findViewById(R.id.btBackOnViewRecipe);
+        btBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                homeFragment.replaceFragment(HomeFragment.LIST_RECIPE);                        //onButtonPressed return to HomePage
+            }
+        });
+
+        listView.addHeaderView(header);
+
+        View footer = getLayoutInflater().inflate(R.layout.content_fragment_view_recipe_footer,listView,false);
+        description = footer.findViewById(R.id.tVViewRecipeDescription);
+        listView.addFooterView(footer);
+    }
 }

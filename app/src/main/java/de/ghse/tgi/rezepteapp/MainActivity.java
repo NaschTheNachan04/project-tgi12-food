@@ -1,5 +1,6 @@
 package de.ghse.tgi.rezepteapp;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -32,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     public static StorageRecipe getStorage(){
         return storage;
     }
+
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,22 +46,19 @@ public class MainActivity extends AppCompatActivity {
         viewPager2.setAdapter(myViewPagerAdapter);
         viewPager2.setCurrentItem(0);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.home:
-                        viewPager2.setCurrentItem(0);                               //connect the BottomNavigationMenu with Viewpager2
-                        break;
-                    case R.id.calendar:
-                        viewPager2.setCurrentItem(1);
-                        break;
-                    case R.id.settings:
-                        viewPager2.setCurrentItem(2);
-                        break;
-                }
-                return true;
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()){
+                case R.id.home:
+                    viewPager2.setCurrentItem(0);                               //connect the BottomNavigationMenu with Viewpager2
+                    break;
+                case R.id.calendar:
+                    viewPager2.setCurrentItem(1);
+                    break;
+                case R.id.settings:
+                    viewPager2.setCurrentItem(2);
+                    break;
             }
+            return true;
         });
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override

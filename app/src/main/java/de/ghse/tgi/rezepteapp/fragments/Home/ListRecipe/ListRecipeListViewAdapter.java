@@ -97,6 +97,11 @@ public class ListRecipeListViewAdapter extends BaseAdapter {
         }
         return view;
     }
+
+    /**
+     * cache for the UI-elements
+     * used to prevent calling {@link View#findViewById(int)} every time {@link android.widget.ListView} is loaded
+     */
     static class ViewHolder{
          TextView txt;
          ImageView img;

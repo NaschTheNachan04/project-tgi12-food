@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Recipe {
     private String name;
     private String description;
-    private ArrayList<Ingredient> ingredient = new ArrayList<>();
+    private ArrayList<Ingredient> ingredient;
     private int Image = R.drawable.mealpic;
 
 

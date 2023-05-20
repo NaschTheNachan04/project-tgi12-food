@@ -5,6 +5,7 @@ public class Ingredient {
     private String ingredient;
     private double amount;
 
+    public Ingredient(){}
     public String getIngredient() {
         return ingredient;
     }
