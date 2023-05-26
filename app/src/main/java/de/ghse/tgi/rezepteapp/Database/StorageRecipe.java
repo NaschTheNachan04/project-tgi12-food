@@ -1,17 +1,34 @@
-package de.ghse.tgi.rezepteapp;
+package de.ghse.tgi.rezepteapp.Database;
+
+import android.content.Context;
+import android.database.DatabaseErrorHandler;
+import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
+
+import de.ghse.tgi.rezepteapp.Recipe;
+
 
 public class StorageRecipe {
     private ArrayList<Recipe> list = new ArrayList<>();
     private ArrayList<Integer> emptyList = new ArrayList<>();
 
+    public AppDatabase database;
+
+
+    public void addContext(Context c){
+        database= new AppDatabase(c);
+    }
+
+
     public void addRecipe(Recipe a){
         list.add(a);
+        database.addRezeptToDataBase(a);
         emptyList.add(list.size()+1);
     }
     public void deleteRecipe(Recipe a) {
         list.remove(a);
+        database.deleteRezept(a);
         emptyList.remove(emptyList.size()-1);
     }
     public int getCount(){

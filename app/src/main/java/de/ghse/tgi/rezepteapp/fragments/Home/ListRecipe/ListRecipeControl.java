@@ -3,7 +3,7 @@ package de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe;
 import java.util.ArrayList;
 
 import de.ghse.tgi.rezepteapp.MainActivity;
-import de.ghse.tgi.rezepteapp.StorageRecipe;
+import de.ghse.tgi.rezepteapp.Database.StorageRecipe;
 
 /**
  * Controller Class (MVC) of {@link ListRecipeFragment}(View).
