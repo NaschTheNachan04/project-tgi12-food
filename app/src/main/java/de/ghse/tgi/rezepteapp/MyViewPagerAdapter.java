@@ -29,14 +29,12 @@ public class MyViewPagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         switch (position){
-            case 0:
-                return new HomeFragment(this);                          // first Fragent is HomeFragment
             case 1:
                 return new CalendarFragment(this);                      //second Fragment is CalendarFragment
             case 2:
                 return new SettingsFragment(this);                      //third Fragment is SettingsFragment
             default:
-                return new HomeFragment(this);
+                return new HomeFragment(this);                          // first Fragment is HomeFragment
         }
     }
 

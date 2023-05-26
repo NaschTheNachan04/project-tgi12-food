@@ -7,8 +7,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 
@@ -22,12 +25,19 @@ import de.ghse.tgi.rezepteapp.fragments.Home.HomeFragment;
  */
 
 public class InputFragment extends Fragment {
-    private Button btSave;
-    private EditText etName;
-    private EditText etDescription;
+    private InputControl control;
+    private ListView lVIngredients;
     private View view;
+    private InputListViewAdapter adapter;
     private HomeFragment homeFragment;
-    private InputControl controlInput;
+    private EditText etName;
+    // footer
+    private EditText etDescription;
+    private Button btSave;
+    private AutoCompleteTextView aCTVIngredient;
+    private EditText eTUnit;
+    private EditText eTAmount;
+    private Button btSaveIngredient;
 
 
     /**
@@ -39,10 +49,14 @@ public class InputFragment extends Fragment {
     public InputFragment(HomeFragment homeFragment) {
         super();
         this.homeFragment = homeFragment;
-        controlInput = new InputControl(this);
     }
 
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        clearTextFields();
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,18 +64,50 @@ public class InputFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_input, container, false);
-        etName = view.findViewById(R.id.etInputName);
-        etDescription = view.findViewById(R.id.etInputDescription);
-        btSave = view.findViewById(R.id.bSave);
-        btSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                controlInput.save();                              //save the recipe
-                homeFragment.replaceFragment(0);                //at buttonClick (save) switch Fragment to RecipeList
-            }
-        });
+        if (view==null) {
+            view = inflater.inflate(R.layout.fragment_listview, container, false);
+            lVIngredients = view.findViewById(R.id.listView);
+            adapter = new InputListViewAdapter(homeFragment.getMainActivity());
+            lVIngredients.setAdapter(adapter);
+            control = new InputControl(this, adapter);
+            setListViewHeaderAndFooter();
+        }
         return view;
+    }
+
+    /**
+     * called to leave this Fragment and return to {@link de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe.ListRecipeFragment}
+     */
+    public void finishTransaction() {
+        homeFragment.replaceFragment(HomeFragment.LIST_RECIPE);                //at buttonClick (save) switch Fragment to RecipeList
+    }
+
+    /**
+     * called to initialise the TextFields outside the {@link ListView}.
+     */
+    public void setListViewHeaderAndFooter(){
+        ViewGroup header = (ViewGroup) getLayoutInflater().inflate(R.layout.content_fragment_input_top,lVIngredients,false);
+        etName = header.findViewById(R.id.etInputName);
+        lVIngredients.addHeaderView(header);
+
+        ViewGroup footer = (ViewGroup) getLayoutInflater().inflate(R.layout.content_fragment_input_bottom,lVIngredients,false);
+
+        aCTVIngredient = footer.findViewById(R.id.aCTVIngredient);
+        eTUnit = footer.findViewById(R.id.eTInputIngredientUnit);
+        eTAmount = footer.findViewById(R.id.eTInputIngredientAmount);
+        btSaveIngredient = footer.findViewById(R.id.btInputIngredientSave);
+
+        ArrayList<String> ingredientList = MainActivity.getStorage().getIngredients();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(homeFragment.getMainActivity(), android.R.layout.simple_dropdown_item_1line, ingredientList);
+        aCTVIngredient.setAdapter(adapter);
+
+        btSaveIngredient.setOnClickListener(view -> control.saveIngredient());
+
+        etDescription = footer.findViewById(R.id.etInputDescription);
+        btSave = footer.findViewById(R.id.bSave);
+        btSave.setOnClickListener(view -> control.save());                              //save the recipe
+
+        lVIngredients.addFooterView(footer);
     }
     /**
      * Use this method to get the text the user wrote
@@ -82,21 +128,44 @@ public class InputFragment extends Fragment {
         return etDescription.getText().toString();
     }
     /**
-     * Use this method to get the list of ingredients the user
-     * wrote.
+     * Use this method to get the ingredient the user wrote.
      *
-     * @return The list of ingredients the user selected
+     * @return The ingredient the user selected
      */
-    public ArrayList<String> getRecipeIngredients(){
-        ArrayList<String> list = new ArrayList<>();
-        return list;
-    }
+    public String getIngredientName(){return aCTVIngredient.getText().toString();}
     /**
-     * Use this method to clear the textFields after all data has been saved.
+     * Use this method to get the Unit the user wrote.
+     *
+     * @return The unit the user selected
      */
-    public void clearTextFields(){
-        etName.setText(null);
-        etDescription.setText(null);
+    public String getIngredientUnit(){return eTUnit.getText().toString();}
+    /**
+     * Use this method to get the amount the user wrote.
+     *
+     * @return The amount the user selected
+     */
+    public String getIngredientAmount(){return eTAmount.getText().toString();}
 
+    /**
+     * called to clear the textFields used to add an Ingredient
+     * needs to be called to add another Ingredient
+     */
+    public void clearAddIngredientTextFields(){
+        aCTVIngredient.setText("");
+        eTUnit.setText("");
+        eTAmount.setText("");
+    }
+
+    /**
+     * called to reset the Fragment to its original state.
+     * needs to be called to ann another Recipe
+     */
+    private void clearTextFields(){
+        if (view != null) {
+            etName.setText("");
+            etDescription.setText("");
+            adapter.clearTextFields();
+            clearAddIngredientTextFields();
+        }
     }
 }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Recipe {
     private String name;
     private String description;
-    private ArrayList<String> ingredient = new ArrayList<>();
+    private ArrayList<Ingredient> ingredient;
     private int Image = R.drawable.mealpic;
 
 
@@ -23,10 +23,10 @@ public class Recipe {
         this.description = description;
     }
 
-    public ArrayList getIngredient() {
+    public ArrayList<Ingredient> getIngredient() {
         return ingredient;
     }
-    public void setIngredient(ArrayList ingredient) {
+    public void setIngredient(ArrayList<Ingredient> ingredient) {
         this.ingredient = ingredient;
     }
 

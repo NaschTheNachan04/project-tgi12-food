@@ -19,7 +19,6 @@ import de.ghse.tgi.rezepteapp.R;
  * Manages the shown ListItems
  */
 public class ListRecipeListViewAdapter extends BaseAdapter {
-    private Context context;
     private ArrayList<Integer> filteredRecipe;
     private LayoutInflater inflater;
     private boolean isUnfiltered = true;
@@ -31,8 +30,7 @@ public class ListRecipeListViewAdapter extends BaseAdapter {
      * @param ctx Context of associated Activity
      */
     public ListRecipeListViewAdapter(Context ctx){
-        context = ctx;
-        inflater = LayoutInflater.from(context);
+        inflater = LayoutInflater.from(ctx);
     }
 
     /**
@@ -99,6 +97,11 @@ public class ListRecipeListViewAdapter extends BaseAdapter {
         }
         return view;
     }
+
+    /**
+     * cache for the UI-elements
+     * used to prevent calling {@link View#findViewById(int)} every time {@link android.widget.ListView} is loaded
+     */
     static class ViewHolder{
          TextView txt;
          ImageView img;

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
 import de.ghse.tgi.rezepteapp.MainActivity;
 import de.ghse.tgi.rezepteapp.MyViewPagerAdapter;
 import de.ghse.tgi.rezepteapp.R;
@@ -23,8 +24,12 @@ import de.ghse.tgi.rezepteapp.fragments.Home.ViewRecipe.ViewRecipeFragment;
  */
 public class HomeFragment extends Fragment {
     private MyViewPagerAdapter pager;
-    private ListRecipeFragment listRecipeFragment = new ListRecipeFragment(this);
-    private View view;
+    private final ListRecipeFragment listRecipeFragment = new ListRecipeFragment(this);
+    private final InputFragment inputFragment = new InputFragment(this);
+    private final ViewRecipeFragment viewRecipeFragment = new ViewRecipeFragment(this);
+    public static final int LIST_RECIPE = 0;
+    public static final int INPUT = 1;
+    public static final int VIEW_RECIPE = 2;
 
     /**
      * Class constructor.
@@ -38,39 +43,40 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        replaceFragment(0);
+        replaceFragment(LIST_RECIPE);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_home, container, false);
-        return view;
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     /**
-     * method replaces the current Page with another.
+     * method replaces the current Page with another
      *
-     * @param i index of Page. 0: {@link ListRecipeFragment}, 1: {@link InputFragment}, 2: {@link ViewRecipeFragment}.
+     * @param i index of Page.<p>
+     * {@link #LIST_RECIPE}: {@link ListRecipeFragment},<p>
+     * {@link #INPUT}: {@link InputFragment},<p>
+     * {@link #VIEW_RECIPE}: {@link ViewRecipeFragment}.
      */
     public void replaceFragment(int i){
         Fragment frag;
         switch (i){
-            case 0:
+            case LIST_RECIPE:
                 frag = listRecipeFragment;
-                listRecipeFragment.dataSetChanged();
                 break;
-            case 1:
-                frag = new InputFragment(this);
+            case INPUT:
+                frag = inputFragment;
                 break;
-            case 2:
-                frag = new ViewRecipeFragment(this,listRecipeFragment.getClickedItem());
+            case VIEW_RECIPE:
+                frag = viewRecipeFragment;
                 break;
             default:
                 frag = listRecipeFragment;
                 break;
         }
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout,frag);
         fragmentTransaction.commit();
@@ -83,4 +89,5 @@ public class HomeFragment extends Fragment {
     public MainActivity getMainActivity(){
         return pager.getMainActivity();
     }
+    public int getCurrentRecipe(){return listRecipeFragment.getClickedItem();}
 }
