@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import de.ghse.tgi.rezepteapp.Recipe;
 
  public class AppDatabase extends SQLiteOpenHelper {
-    private static final String databaseRecipe   ="recipeData";
+    private static final String databaseRecipe   ="recipeDatka";
 
 
      public AppDatabase(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version, @Nullable DatabaseErrorHandler errorHandler) {
