@@ -65,15 +65,32 @@ import de.ghse.tgi.rezepteapp.Recipe;
 
     }
 
-    public void addZutatToDataBase (){
+    public void addZutatToDataBase (Recipe a){
+        for(int i = a.getIngredient().size();i>0;i--){
+            SQLiteDatabase database = this.getWritableDatabase();
+            //database.
+            //for (int k = i ;k<0;k--){
 
+                //if() {
+                    String zutat = a.getIngredient().get(i).getIngredient();
+                    String einheit = a.getIngredient().get(i).getUnit();
+                    double menge = a.getIngredient().get(i).getAmount();
+                    ContentValues c = new ContentValues();
+                    ContentValues cv = new ContentValues();
+                    c.put("name", zutat);
+                    c.put("einheit", einheit);
+                    cv.put("menge", menge);
+                    database.insert("zutat", null, c);
+                    database.insert("rZutat", null, cv);
+                    database.close();
+                //}
+            //}
 
+        }
     }
 
     public void addEventToDatabase(StorageRecipe store){
-      store.getList();
-      SQLiteDatabase database=this.getReadableDatabase();
-      database.execSQL("INSERT INTO recipe VALUES (RID)");
+
     }
 
     public void deleteRezept(Recipe a){

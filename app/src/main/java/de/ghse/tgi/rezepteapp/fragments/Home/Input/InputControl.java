@@ -1,5 +1,6 @@
 package de.ghse.tgi.rezepteapp.fragments.Home.Input;
 
+import de.ghse.tgi.rezepteapp.Database.AppDatabase;
 import de.ghse.tgi.rezepteapp.Ingredient;
 import de.ghse.tgi.rezepteapp.MainActivity;
 import de.ghse.tgi.rezepteapp.Recipe;
@@ -12,6 +13,7 @@ public class InputControl {
     private StorageRecipe storage;
     private InputFragment gui;
     private InputListViewAdapter adapter;
+    private AppDatabase database;
 
     /**
      * Class constructor.
@@ -35,6 +37,8 @@ public class InputControl {
             a.setName(gui.getRecipeName());                     //set RecipeName
             a.setDescription(gui.getRecipeDescription());       //set RecipeDescription
             a.setIngredient(adapter.getRecipeIngredients());        //set RecipeIngredient
+            database.addRezeptToDataBase(a);
+            database.addZutatToDataBase(a);
             storage.addRecipe(a);                                //save it in storage
         }
         gui.finishTransaction();

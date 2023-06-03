@@ -2,16 +2,16 @@ package de.ghse.tgi.rezepteapp;
 
 public class Ingredient {
     private String unit;
-    private String ingredient;
+    private String name;
     private double amount;
 
     public Ingredient(){}
     public String getIngredient() {
-        return ingredient;
+        return name;
     }
 
     public void setIngredient(String ingredient) {
-        this.ingredient = ingredient;
+        this.name = ingredient;
     }
 
     public double getAmount() {
