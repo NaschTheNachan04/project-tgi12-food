@@ -69,7 +69,7 @@ import de.ghse.tgi.rezepteapp.Recipe;
         for(int i = a.getIngredient().size();i>0;i--){
             SQLiteDatabase database = this.getWritableDatabase();
             //database.
-            //for (int k = i ;k<0;k--){
+            //for (int k = i ;k<0;k--){    TODO probleme mit hinzufügen der Zutat in der Datenbank "Nachan"
 
                 //if() {
                     String zutat = a.getIngredient().get(i).getIngredient();
@@ -110,5 +110,10 @@ import de.ghse.tgi.rezepteapp.Recipe;
     public void getRecipe(){
 
 
-     }
+    }
+
+    public void getIngredient(){
+
+
+    }
 }
