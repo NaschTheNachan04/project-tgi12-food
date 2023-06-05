@@ -66,7 +66,7 @@ import de.ghse.tgi.rezepteapp.Recipe;
     }
 
     public void addZutatToDataBase (Recipe a){
-        for(int i = a.getIngredient().size();i>0;i--){
+        for(int i = 0;i<a.getIngredient().size();i++){
             SQLiteDatabase database = this.getWritableDatabase();
             //database.
             //for (int k = i ;k<0;k--){    TODO probleme mit hinzufügen der Zutat in der Datenbank "Nachan"
