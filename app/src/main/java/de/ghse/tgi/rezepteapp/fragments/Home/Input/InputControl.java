@@ -13,7 +13,7 @@ public class InputControl {
     private StorageRecipe storage;
     private InputFragment gui;
     private InputListViewAdapter adapter;
-    private AppDatabase database;
+
 
     /**
      * Class constructor.
@@ -37,8 +37,6 @@ public class InputControl {
             a.setName(gui.getRecipeName());                     //set RecipeName
             a.setDescription(gui.getRecipeDescription());       //set RecipeDescription
             a.setIngredient(adapter.getRecipeIngredients());        //set RecipeIngredient
-            database.addRezeptToDataBase(a);
-            database.addZutatToDataBase(a);
             storage.addRecipe(a);                                //save it in storage
         }
         gui.finishTransaction();
