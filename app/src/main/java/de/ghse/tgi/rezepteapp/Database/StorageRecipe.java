@@ -22,9 +22,10 @@ public class StorageRecipe {
 
 
     public void addRecipe(Recipe a){
-        list.add(a);
+        //list.add(a);
         database.addRezeptToDataBase(a);
-        emptyList.add(list.size()+1);
+        database.addZutatToDataBase(a);
+        //emptyList.add(list.size()+1);
     }
     public void deleteRecipe(Recipe a) {
         list.remove(a);
@@ -85,6 +86,7 @@ public class StorageRecipe {
         }
         return name;
     }
+
 
 
 

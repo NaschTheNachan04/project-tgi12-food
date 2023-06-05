@@ -89,6 +89,10 @@ import de.ghse.tgi.rezepteapp.Recipe;
         }
     }
 
+    public void addZutatVorratsMenge(){
+
+    }
+
     public void addEventToDatabase(StorageRecipe store){
 
     }
@@ -114,6 +118,10 @@ import de.ghse.tgi.rezepteapp.Recipe;
 
     public void getIngredient(){
 
+
+    }
+
+    public void getEvent(){
 
     }
 }
