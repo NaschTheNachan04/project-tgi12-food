@@ -13,6 +13,10 @@ public class StorageRecipe {
     private ArrayList<Recipe> list = new ArrayList<>();
     private ArrayList<Integer> emptyList = new ArrayList<>();
 
+
+
+
+
     public AppDatabase database;
 
 
@@ -86,9 +90,6 @@ public class StorageRecipe {
         }
         return name;
     }
-
-
-
 
 
 }

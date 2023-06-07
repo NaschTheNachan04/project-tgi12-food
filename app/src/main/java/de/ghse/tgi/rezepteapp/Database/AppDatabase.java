@@ -2,11 +2,14 @@ package de.ghse.tgi.rezepteapp.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
 
 import de.ghse.tgi.rezepteapp.Recipe;
 
@@ -111,13 +114,36 @@ import de.ghse.tgi.rezepteapp.Recipe;
 
     }
 
-    public void getRecipe(){
-
-
+     public ArrayList<DatabaseReaderRecipe> getRecipes(){
+      SQLiteDatabase db = this.getReadableDatabase();
+      Cursor cursorRecipe = db.rawQuery("SELECT * FROM " +  "recipe", null);
+      ArrayList<DatabaseReaderRecipe> DatabaseReaderRecipeArrayList = new ArrayList<>();
+         if (cursorRecipe.moveToFirst()) {
+             do {
+                 DatabaseReaderRecipeArrayList.add(new DatabaseReaderRecipe(
+                         cursorRecipe.getString(1),
+                         cursorRecipe.getString(2),
+                         cursorRecipe.getInt(3),
+                         cursorRecipe.getInt(4)));
+             } while (cursorRecipe.moveToNext());
+         }
+      return DatabaseReaderRecipeArrayList;
     }
 
-    public void getIngredient(){
-
+    public ArrayList<DatabaseReaderIngredient> getIngredients(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursorIngredient = db.rawQuery("SELECT * FROM " +  "zutat", null);
+        ArrayList<DatabaseReaderIngredient> DatabaseReaderIngredientArrayList = new ArrayList<>();
+        if (cursorIngredient.moveToFirst()) {
+            do {
+                DatabaseReaderIngredientArrayList.add(new DatabaseReaderIngredient(
+                        cursorIngredient.getString(1),
+                        cursorIngredient.getString(2),
+                        cursorIngredient.getDouble(3),
+                        cursorIngredient.getInt(4)));
+            } while (cursorIngredient.moveToNext());
+        }
+        return DatabaseReaderIngredientArrayList;
 
     }
 
