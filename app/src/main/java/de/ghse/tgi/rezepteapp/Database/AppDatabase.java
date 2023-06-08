@@ -119,6 +119,7 @@ import de.ghse.tgi.rezepteapp.Recipe;
       Cursor cursorRecipe = db.rawQuery("SELECT * FROM " +  "recipe", null);
       ArrayList<DatabaseReaderRecipe> DatabaseReaderRecipeArrayList = new ArrayList<>();
          if (cursorRecipe.moveToFirst()) {
+
              do {
                  DatabaseReaderRecipeArrayList.add(new DatabaseReaderRecipe(
                          cursorRecipe.getString(1),
