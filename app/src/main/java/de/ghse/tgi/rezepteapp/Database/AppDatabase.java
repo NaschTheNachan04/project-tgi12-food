@@ -118,14 +118,14 @@ import de.ghse.tgi.rezepteapp.Recipe;
       SQLiteDatabase db = this.getReadableDatabase();
       Cursor cursorRecipe = db.rawQuery("SELECT * FROM " +  "recipe", null);
       ArrayList<DatabaseReaderRecipe> DatabaseReaderRecipeArrayList = new ArrayList<>();
+         cursorRecipe.moveToFirst();
          if (cursorRecipe.moveToFirst()) {
 
              do {
                  DatabaseReaderRecipeArrayList.add(new DatabaseReaderRecipe(
                          cursorRecipe.getString(1),
                          cursorRecipe.getString(2),
-                         cursorRecipe.getInt(3),
-                         cursorRecipe.getInt(4)));
+                         cursorRecipe.getInt(3)));
              } while (cursorRecipe.moveToNext());
          }
       return DatabaseReaderRecipeArrayList;
@@ -135,13 +135,13 @@ import de.ghse.tgi.rezepteapp.Recipe;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursorIngredient = db.rawQuery("SELECT * FROM " +  "zutat", null);
         ArrayList<DatabaseReaderIngredient> DatabaseReaderIngredientArrayList = new ArrayList<>();
+        cursorIngredient.moveToFirst();
         if (cursorIngredient.moveToFirst()) {
             do {
                 DatabaseReaderIngredientArrayList.add(new DatabaseReaderIngredient(
                         cursorIngredient.getString(1),
                         cursorIngredient.getString(2),
-                        cursorIngredient.getDouble(3),
-                        cursorIngredient.getInt(4)));
+                        cursorIngredient.getDouble(3)));
             } while (cursorIngredient.moveToNext());
         }
         return DatabaseReaderIngredientArrayList;

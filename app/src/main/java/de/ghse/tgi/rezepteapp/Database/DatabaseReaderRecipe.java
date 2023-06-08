@@ -1,7 +1,6 @@
 package de.ghse.tgi.rezepteapp.Database;
 
 public class DatabaseReaderRecipe {
-
     private String nameRecipe;
     private String descritipionRecipe;
     private int    imageRecipe;
@@ -41,13 +40,11 @@ public class DatabaseReaderRecipe {
     }
 
 
-    public DatabaseReaderRecipe(String nameRecipe, String descritipionRecipe,int imageRecipe,
-                          int rID)
+    public DatabaseReaderRecipe(String nameRecipe, String descritipionRecipe, int imageRecipe)
     {
         this.nameRecipe=nameRecipe;
         this.descritipionRecipe=descritipionRecipe;
         this.imageRecipe=imageRecipe;
-        this.rID=rID;
 
     }
 }

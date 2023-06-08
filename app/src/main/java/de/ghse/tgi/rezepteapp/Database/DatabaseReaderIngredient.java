@@ -2,12 +2,11 @@ package de.ghse.tgi.rezepteapp.Database;
 
 
 public class DatabaseReaderIngredient {
-
     private String nameIngredient;
     private String unit;
     private double amount;
     private int    zID;
-
+    public String getNameIngredient() {return nameIngredient;}
     public void setNameIngredient(String nameIngredient) {
         this.nameIngredient = nameIngredient;
     }
@@ -36,11 +35,10 @@ public class DatabaseReaderIngredient {
         this.zID = zID;
     }
 
-    public DatabaseReaderIngredient(String nameIngredient, String unit, double amount, int zID)
+    public DatabaseReaderIngredient(String nameIngredient, String unit, double amount)
     {
         this.nameIngredient=nameIngredient;
         this.unit=unit;
         this.amount=amount;
-        this.zID=zID;
     }
 }

@@ -15,6 +15,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import de.ghse.tgi.rezepteapp.Database.DatabaseReaderIngredient;
 import de.ghse.tgi.rezepteapp.MainActivity;
 import de.ghse.tgi.rezepteapp.R;
 import de.ghse.tgi.rezepteapp.fragments.Home.HomeFragment;
@@ -97,8 +98,8 @@ public class InputFragment extends Fragment {
         eTAmount = footer.findViewById(R.id.eTInputIngredientAmount);
         btSaveIngredient = footer.findViewById(R.id.btInputIngredientSave);
 
-        ArrayList<String> ingredientList = MainActivity.getStorage().getIngredients();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(homeFragment.getMainActivity(), android.R.layout.simple_dropdown_item_1line, ingredientList);
+        ArrayList<DatabaseReaderIngredient> ingredientList = MainActivity.getStorage().getIngredients();
+        ArrayAdapter<DatabaseReaderIngredient> adapter = new ArrayAdapter<>(homeFragment.getMainActivity(), android.R.layout.simple_dropdown_item_1line, ingredientList);
         aCTVIngredient.setAdapter(adapter);
 
         btSaveIngredient.setOnClickListener(view -> control.saveIngredient());
