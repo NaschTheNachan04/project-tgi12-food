@@ -1,7 +1,6 @@
 package de.ghse.tgi.rezepteapp.Database;
 
 public class DatabaseReaderRecipe {
-
     private String nameRecipe;
     private String descritipionRecipe;
     private int    imageRecipe;
