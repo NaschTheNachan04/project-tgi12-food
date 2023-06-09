@@ -100,18 +100,22 @@ import de.ghse.tgi.rezepteapp.Recipe;
 
     }
 
-    public void deleteRezept(Recipe a){
-
-
+    public void deleteRezept(String recipeName){
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.delete("recipe","name=?", new String[]{recipeName});
+        db.close();
     }
 
-    public void deleteZutaten(){
-
+    public void deleteZutaten(String zutatName){
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.delete("zutat","name=?", new String[]{zutatName});
+        db.close();
     }
 
-    public void deleteEvent(){
-
-
+    public void deleteEvent(String eventName){
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.delete("event","name=?", new String[]{eventName});
+        db.close();
     }
 
      public ArrayList<DatabaseReaderRecipe> getRecipes(){

@@ -30,7 +30,7 @@ public class StorageRecipe {
     }
     public void deleteRecipe(Recipe a) {
         list.remove(a);
-        database.deleteRezept(a);
+        database.deleteRezept(a.getName());
         emptyList.remove(emptyList.size()-1);
     }
     public int getCount(){
