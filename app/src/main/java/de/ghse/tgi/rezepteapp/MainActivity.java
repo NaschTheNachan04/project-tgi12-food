@@ -1,15 +1,18 @@
 package de.ghse.tgi.rezepteapp;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
-import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
+
+import java.util.Locale;
 
 import de.ghse.tgi.rezepteapp.Database.StorageRecipe;
 import de.ghse.tgi.rezepteapp.databinding.ActivityMainBinding;
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         storage = new StorageRecipe(this);
+        updateLanguage();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
@@ -81,4 +85,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * method that updates the Language of the App.
+     */
+    private void updateLanguage(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String languageCode = preferences.getString("language",getString(R.string.english));        //get selected Language
+        Locale locale = new Locale(languageCode);
+        Locale.setDefault(locale);
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        configuration.locale = locale;
+        resources.updateConfiguration(configuration,resources.getDisplayMetrics());
+    }
 }

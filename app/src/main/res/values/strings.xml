@@ -1,11 +1,12 @@
 <resources>
     <string name="app_name">Rezepteapp</string>
 
-    <string name="action_settings">settings</string>
     <string name="save">save</string>
     <string name="inputName">input name</string>
     <string name="inputDescription">input description</string>
-    <string name="title_activity_view_recipe">viewRecipe</string>
+    <string name="inputIngredient">input ingredient</string>
+    <string name="inputUnit">input unit</string>
+    <string name="inputAmount">input amount</string>
     <string name="back">back</string>
     <string name="search">search recipe</string>
     <string name="home">home</string>
@@ -15,27 +16,7 @@
     <string name="description">description</string>
     <string name="name">name</string>
     <string name="image">image</string>
-    <string name="inputIngredient">input ingredient</string>
-    <string name="inputUnit">input unit</string>
-    <string name="inputAmount">input amount</string>
     <string name="addName">please add a Name</string>
-
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="english" translatable="false">English</string>
+    <string name="chose_language" translatable="false">choose a language</string>
 </resources>
