@@ -1,5 +1,7 @@
 package de.ghse.tgi.rezepteapp.fragments.Home.ViewRecipe;
 
+import java.io.IOException;
+
 import de.ghse.tgi.rezepteapp.MainActivity;
 import de.ghse.tgi.rezepteapp.Database.StorageRecipe;
 
@@ -7,75 +9,52 @@ import de.ghse.tgi.rezepteapp.Database.StorageRecipe;
  * Controller(VMC) of {@link ViewRecipeFragment} (View)
  */
 public class ViewRecipeControl {
-    private ViewRecipeFragment gui;
-    private StorageRecipe storage;
+    private final ViewRecipeFragment gui;
+    private final StorageRecipe storage;
+    private ListIngredientsViewRecipeAdapter adapter;
+
     private int recipeID;
-    private double[] ingredientAmount;
-    private String[] ingredientUnit;
-    private String[] ingredientName;
 
     /**
      * Class constructor.
-     * @param gui
+     * @param gui associated GUI
      */
-    public ViewRecipeControl(ViewRecipeFragment gui){
+    public ViewRecipeControl(ViewRecipeFragment gui, ListIngredientsViewRecipeAdapter adapter){
         this.gui = gui;
         this.storage = MainActivity.getStorage();
+        this.adapter = adapter;
     }
 
     /**
      * called to tell {@link ViewRecipeControl} which recipe it shall show.
      * @param itemId index of the {@link de.ghse.tgi.rezepteapp.Recipe} that should be shown.
      */
-    public void setRecipe(int itemId){
+    public void setRecipe(int itemId) {
         recipeID = itemId;
-        ingredientAmount = MainActivity.getStorage().getIngredientsAmount(itemId);
-        ingredientUnit = MainActivity.getStorage().getIngredientsUnit(itemId);
-        ingredientName = MainActivity.getStorage().getIngredientsName(itemId);
         updateGUI();
+        updateListView();
     }
     /**
      * method that updates View to display the given{@link de.ghse.tgi.rezepteapp.Recipe}
      */
-    private void updateGUI(){
+    private void updateGUI()  {
         gui.setDescription(storage.getRecipeDescription(recipeID));           //set the description of selected Recipe
         gui.setRName(storage.getRecipeName(recipeID));                        //set the Name of selected Recipe
-        gui.setImage(storage.getRecipeImage(recipeID));                       //set the Picture of selected Recipe
+        try {
+            gui.setImage(storage.getRecipeImage(recipeID));                       //set the Picture of selected Recipe
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
-     * called to get the amount of ingredients of current Recipe
-     * needs {@link #setRecipe(int)} to be called first.
-     * @return amount af Ingredients
+     * method that updates the ListView inside of View, to display the given
+     * Ingredients of given {@link de.ghse.tgi.rezepteapp.Recipe}
      */
-    public int getIngredientCount(){
-        if (ingredientName == null){ return 0;}
-        return ingredientName.length;}
-
-    /**
-     * called to get the name of the ingredient at position "pos".
-     * needs {@link #setRecipe(int)} to be called first
-     *
-     * @param pos position at which the Ingredient is saved
-     * @return name of Ingredient at position "pos"
-     */
-    public String getIngredientName(int pos){return ingredientName[pos];}
-
-    /**
-     * called to get the unit of the ingredient at position "pos".
-     * needs {@link #setRecipe(int)} to be called first
-     *
-     * @param pos position at which the Ingredient is saved
-     * @return unit of Ingredient at position "pos"
-     */
-    public String getIngredientUnit(int pos){return ingredientUnit[pos];}
-
-    /**
-     * called to get the amount of the ingredient at position "pos".
-     * needs {@link #setRecipe(int)} to be called first
-     *
-     * @param pos position at which the Ingredient is saved
-     * @return amount of Ingredient at position "pos"
-     */
-    public double getIngredientAmount(int pos){return ingredientAmount[pos];}
+    private void updateListView(){
+        adapter.setIngredientAmount(storage.getIngredientsAmount(recipeID));
+        adapter.setIngredientUnit(storage.getIngredientsUnit(recipeID));
+        adapter.setIngredientName(storage.getIngredientsName(recipeID));
+        adapter.notifyDataSetChanged();
+    }
 }

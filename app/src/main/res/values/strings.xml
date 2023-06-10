@@ -14,9 +14,11 @@
     <string name="ingredients">ingredients</string>
     <string name="description">description</string>
     <string name="name">name</string>
+    <string name="image">image</string>
     <string name="inputIngredient">input ingredient</string>
     <string name="inputUnit">input unit</string>
     <string name="inputAmount">input amount</string>
+    <string name="addName">please add a Name</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

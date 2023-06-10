@@ -1,7 +1,9 @@
 package de.ghse.tgi.rezepteapp.fragments.Home.ViewRecipe;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -22,17 +24,14 @@ import de.ghse.tgi.rezepteapp.fragments.Home.HomeFragment;
 public class ViewRecipeFragment extends Fragment {
 
     private View view;
-    private int  itemId;
     private ViewRecipeControl ctrl;
-    private HomeFragment homeFragment;
+    private final HomeFragment homeFragment;
 
     //footer/header
     private TextView name;
     private TextView description;
     private ImageView image;
     private ListView listView;
-    private ListIngredientsViewRecipeAdapter adapter;
-    private Button btBack;
 
 
     /**
@@ -43,15 +42,13 @@ public class ViewRecipeFragment extends Fragment {
     public ViewRecipeFragment(HomeFragment homeFragment) {
         super();
         this.homeFragment =homeFragment;
-        ctrl = new ViewRecipeControl(this);
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        itemId = homeFragment.getCurrentRecipe();
+        int itemId = homeFragment.getCurrentRecipe();
         ctrl.setRecipe(itemId);                                             //update the Page to show the selected Recipe
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -60,19 +57,20 @@ public class ViewRecipeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if(view==null){
             view = inflater.inflate(R.layout.fragment_listview, container, false);
             listView = view.findViewById(R.id.listView);
-            setListViewFooterAndHeader();
-            adapter = new ListIngredientsViewRecipeAdapter(homeFragment.getMainActivity(),ctrl);
+            ListIngredientsViewRecipeAdapter adapter = new ListIngredientsViewRecipeAdapter(homeFragment.getMainActivity());
             listView.setAdapter(adapter);
+            ctrl = new ViewRecipeControl(this,adapter);
+            setListViewFooterAndHeader();
         }return view;
     }
 
     /**
      * Displays the Name given.
-     * @param name
+     * @param name name of the Recipe
      */
     public void setRName(String name){
         this.name.setText(name);
@@ -80,35 +78,29 @@ public class ViewRecipeFragment extends Fragment {
 
     /**
      * Displays the description given.
-     * @param description
+     * @param description of the Recipe
      */
     public void setDescription(String description) {
         this.description.setText(description);}
 
     /**
      * Displays the Image given.
-     * @param img Image
+     * @param image Image of the Recipe
      */
-    public void setImage(int img){
-        this.image.setImageResource(img);}
+    public void setImage(Bitmap image){
+        this.image.setImageBitmap(image);}
 
     /**
-     * cache for UI-elements
-     * used to prevent calling {@link View#findViewById(int)} every time {@link ViewRecipeFragment} is loaded
+     * initializes the View above and below the Ingredients
      */
-
-
     private void setListViewFooterAndHeader(){
         View header = getLayoutInflater().inflate(R.layout.content_fragment_view_recipe_header,listView,false);
 
         name = header.findViewById(R.id.tVViewRecipeName);
         image = header.findViewById(R.id.iVViewRecipeImage);
-        btBack = header.findViewById(R.id.btBackOnViewRecipe);
-        btBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                homeFragment.replaceFragment(HomeFragment.LIST_RECIPE);                        //onButtonPressed return to HomePage
-            }
+        Button btBack = header.findViewById(R.id.btBackOnViewRecipe);
+        btBack.setOnClickListener(view -> {
+            homeFragment.replaceFragment(HomeFragment.LIST_RECIPE);                        //onButtonPressed return to HomePage
         });
 
         listView.addHeaderView(header);

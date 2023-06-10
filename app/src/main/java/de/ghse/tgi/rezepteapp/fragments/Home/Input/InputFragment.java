@@ -1,9 +1,13 @@
 package de.ghse.tgi.rezepteapp.fragments.Home.Input;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -30,15 +35,17 @@ public class InputFragment extends Fragment {
     private View view;
     private InputListViewAdapter adapter;
     private HomeFragment homeFragment;
+    //header
     private EditText etName;
+    private ImageView ivAddImage;
+    private Uri imageUri;
     // footer
     private EditText etDescription;
-    private Button btSave;
-    private AutoCompleteTextView aCTVIngredient;
-    private EditText eTUnit;
-    private EditText eTAmount;
-    private Button btSaveIngredient;
+    private AutoCompleteTextView actvIngredient;
+    private EditText etUnit;
+    private EditText etAmount;
 
+    private final static int REQUEST_CODE = 42;
 
     /**
      * Class constructor.
@@ -49,17 +56,6 @@ public class InputFragment extends Fragment {
     public InputFragment(HomeFragment homeFragment) {
         super();
         this.homeFragment = homeFragment;
-    }
-
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        clearTextFields();
-    }
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -79,32 +75,34 @@ public class InputFragment extends Fragment {
      * called to leave this Fragment and return to {@link de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe.ListRecipeFragment}
      */
     public void finishTransaction() {
+        clearTextFields();
         homeFragment.replaceFragment(HomeFragment.LIST_RECIPE);                //at buttonClick (save) switch Fragment to RecipeList
     }
 
     /**
      * called to initialise the TextFields outside the {@link ListView}.
      */
-    public void setListViewHeaderAndFooter(){
+    private void setListViewHeaderAndFooter(){
         ViewGroup header = (ViewGroup) getLayoutInflater().inflate(R.layout.content_fragment_input_top,lVIngredients,false);
         etName = header.findViewById(R.id.etInputName);
+        setImageView(header);
         lVIngredients.addHeaderView(header);
 
         ViewGroup footer = (ViewGroup) getLayoutInflater().inflate(R.layout.content_fragment_input_bottom,lVIngredients,false);
 
-        aCTVIngredient = footer.findViewById(R.id.aCTVIngredient);
-        eTUnit = footer.findViewById(R.id.eTInputIngredientUnit);
-        eTAmount = footer.findViewById(R.id.eTInputIngredientAmount);
-        btSaveIngredient = footer.findViewById(R.id.btInputIngredientSave);
+        actvIngredient = footer.findViewById(R.id.aCTVIngredient);
+        etUnit = footer.findViewById(R.id.eTInputIngredientUnit);
+        etAmount = footer.findViewById(R.id.eTInputIngredientAmount);
+        Button btSaveIngredient = footer.findViewById(R.id.btInputIngredientSave);
 
         ArrayList<String> ingredientList = MainActivity.getStorage().getIngredients();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(homeFragment.getMainActivity(), android.R.layout.simple_dropdown_item_1line, ingredientList);
-        aCTVIngredient.setAdapter(adapter);
+        actvIngredient.setAdapter(adapter);
 
         btSaveIngredient.setOnClickListener(view -> control.saveIngredient());
 
         etDescription = footer.findViewById(R.id.etInputDescription);
-        btSave = footer.findViewById(R.id.bSave);
+        Button btSave = footer.findViewById(R.id.bSave);
         btSave.setOnClickListener(view -> control.save());                              //save the recipe
 
         lVIngredients.addFooterView(footer);
@@ -132,40 +130,85 @@ public class InputFragment extends Fragment {
      *
      * @return The ingredient the user selected
      */
-    public String getIngredientName(){return aCTVIngredient.getText().toString();}
+    public String getIngredientName(){return actvIngredient.getText().toString();}
     /**
      * Use this method to get the Unit the user wrote.
      *
      * @return The unit the user selected
      */
-    public String getIngredientUnit(){return eTUnit.getText().toString();}
+    public String getIngredientUnit(){return etUnit.getText().toString();}
     /**
      * Use this method to get the amount the user wrote.
      *
      * @return The amount the user selected
      */
-    public String getIngredientAmount(){return eTAmount.getText().toString();}
+    public String getIngredientAmount(){return etAmount.getText().toString();}
 
+    /**
+     * Use this method to get the URI of the selected Image
+     *
+     * @return The URI of the image the user selected
+     */
+    public Uri getImageUri(){return imageUri;}
     /**
      * called to clear the textFields used to add an Ingredient
      * needs to be called to add another Ingredient
      */
     public void clearAddIngredientTextFields(){
-        aCTVIngredient.setText("");
-        eTUnit.setText("");
-        eTAmount.setText("");
+        actvIngredient.setText("");
+        etUnit.setText("");
+        etAmount.setText("");
     }
 
     /**
      * called to reset the Fragment to its original state.
      * needs to be called to ann another Recipe
      */
-    private void clearTextFields(){
+    public void clearTextFields(){
         if (view != null) {
             etName.setText("");
             etDescription.setText("");
             adapter.clearTextFields();
+            imageUri = null;
+            ivAddImage.setImageDrawable(null);
             clearAddIngredientTextFields();
         }
     }
+
+    /**
+     * called to initialize the {@link ImageView}
+     * @param header view, the {@link ImageView} is in.
+     */
+    private void setImageView(ViewGroup header){
+        ivAddImage = header.findViewById(R.id.IVAddImage);
+        ivAddImage.setOnClickListener(view ->{
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent,REQUEST_CODE);
+        });
+    }
+
+    /**
+     * Receive the image from a previous call to
+     * {@link #startActivityForResult(Intent, int)}.  This follows the
+     * related Activity API as described there in
+     * {@link Fragment#onActivityResult(int, int, Intent)}.
+     *
+     * @param requestCode The integer request code originally supplied to
+     *                    startActivityForResult(), allowing you to identify who this
+     *                    result came from.
+     * @param resultCode  The integer result code returned by the child activity
+     *                    through its setResult().
+     * @param data        An Intent, which can return selected image data to the caller
+     *                    (various data can be attached to Intent "extras").
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK & requestCode == REQUEST_CODE & data != null){
+            imageUri = data.getData();
+            ivAddImage.setImageURI(imageUri);
+        }
+    }
+
+
 }

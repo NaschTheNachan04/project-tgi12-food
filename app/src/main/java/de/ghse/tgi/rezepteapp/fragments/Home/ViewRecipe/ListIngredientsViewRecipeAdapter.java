@@ -14,34 +14,30 @@ import de.ghse.tgi.rezepteapp.R;
  * manages the Ingredients of {@link ViewRecipeFragment}s Listview
  */
 public class ListIngredientsViewRecipeAdapter extends BaseAdapter {
-    private LayoutInflater inflater;
-    private ViewRecipeControl control;
+    private final LayoutInflater inflater;
+
+    private double[] ingredientAmount;
+    private String[] ingredientUnit;
+    private String[] ingredientName;
+    private int count=0;
 
     /**
      * class constructor
      * @param ctx Context of the Activity
-     * @param ctrl control (VMC) of {@link ViewRecipeFragment}.
      */
-    public ListIngredientsViewRecipeAdapter(Context ctx, ViewRecipeControl ctrl){
+    public ListIngredientsViewRecipeAdapter(Context ctx ){
         inflater = LayoutInflater.from(ctx);
-        control = ctrl;
     }
 
 
     @Override
-    public int getCount() {
-        return control.getIngredientCount();
-    }
+    public int getCount() {return count;}
 
     @Override
-    public Object getItem(int i) {
-        return i;
-    }
+    public Object getItem(int i) {return null;}
 
     @Override
-    public long getItemId(int i) {
-        return 0;
-    }
+    public long getItemId(int i) {return 0;}
 
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
@@ -57,10 +53,33 @@ public class ListIngredientsViewRecipeAdapter extends BaseAdapter {
         }else holder = (ViewHolder) view.getTag();
 
         //set the params of selected Ingredient
-        holder.textView[0].setText(String.valueOf(control.getIngredientAmount(position)));
-        holder.textView[1].setText(control.getIngredientUnit(position));
-        holder.textView[2].setText(control.getIngredientName(position));
+        holder.textView[0].setText(String.valueOf(ingredientAmount[position]));
+        holder.textView[1].setText(ingredientUnit[position]);
+        holder.textView[2].setText(ingredientName[position]);
         return view;
+    }
+
+    /**
+     * method to set how much of each Ingredient is needed
+     * @param ingredientAmount Array of the Amounts needed for each Ingredient
+     */
+    public void setIngredientAmount(double[] ingredientAmount) {this.ingredientAmount = ingredientAmount;}
+
+    /**
+     * method to set in what unit each Ingredient is measured
+     * @param ingredientUnit Array of the Units used by each Ingredient
+     */
+    public void setIngredientUnit(String[] ingredientUnit) {
+        this.ingredientUnit = ingredientUnit;
+    }
+
+    /**
+     * method to set the names of each Ingredient
+     * @param ingredientName Array of the Ingredient's names
+     */
+    public void setIngredientName(String[] ingredientName) {
+        this.ingredientName = ingredientName;
+        if (ingredientName != null) count= ingredientName.length;
     }
 
     /**

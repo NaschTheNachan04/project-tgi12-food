@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import de.ghse.tgi.rezepteapp.MainActivity;
@@ -87,15 +88,24 @@ public class ListRecipeListViewAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        if (isUnfiltered){
-            holder.txt.setText(MainActivity.getStorage().getRecipeName(position));                      //set the Name of RecipeListViewItem as Recipe with ID position.
-            holder.img.setImageResource(MainActivity.getStorage().getRecipeImage(position));            //set the Image of RecipeListViewItem as Recipe with ID position.
-        }
-        else {
-            holder.txt.setText(MainActivity.getStorage().getRecipeName(filteredRecipe.get(position)));                     //set the Name of RecipeListViewItem as FilteredRecipe with ID FilteredPosition.
-            holder.img.setImageResource(MainActivity.getStorage().getRecipeImage(filteredRecipe.get(position)));           //set the Name of RecipeListViewItem as FilteredRecipe with ID FilteredPosition.
-        }
+        if (isUnfiltered)   setView(position,holder);
+        else                setView(filteredRecipe.get(position),holder);
         return view;
+    }
+
+    /**
+     * method to fill each ListViewElement with its corresponding data
+     * @param recipeID ID of the Recipe
+     * @param holder {@link ViewHolder} the UI elements are cached in
+     */
+    private void setView(int recipeID,ViewHolder holder){
+        holder.txt.setText(MainActivity.getStorage().getRecipeName(recipeID));                      //set the Name of RecipeListViewItem as Recipe with ID position.
+        try {
+            holder.img.setImageBitmap(MainActivity.getStorage().getRecipeImage(recipeID));            //set the Image of RecipeListViewItem as Recipe with ID position.
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**

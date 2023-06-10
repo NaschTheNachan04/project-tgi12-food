@@ -2,22 +2,13 @@ package de.ghse.tgi.rezepteapp.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import androidx.annotation.Nullable;
 
 import de.ghse.tgi.rezepteapp.Recipe;
 
  public class AppDatabase extends SQLiteOpenHelper {
     private static final String databaseRecipe   ="recipeData";
-
-
-     public AppDatabase(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version, @Nullable DatabaseErrorHandler errorHandler) {
-         super(context, name, factory, version, errorHandler);
-     }
-
 
 
      @Override
@@ -71,7 +62,7 @@ import de.ghse.tgi.rezepteapp.Recipe;
     }
 
     public void addEventToDatabase(StorageRecipe store){
-      store.getList();
+      //store.getList();
       SQLiteDatabase database=this.getReadableDatabase();
       database.execSQL("INSERT INTO recipe VALUES (RID)");
     }

@@ -13,7 +13,7 @@ import de.ghse.tgi.rezepteapp.Ingredient;
 import de.ghse.tgi.rezepteapp.R;
 
 public class InputListViewAdapter extends BaseAdapter {
-    private LayoutInflater inflater;
+    private final LayoutInflater inflater;
     private ArrayList<Ingredient> ingredient = new ArrayList<>();
 
 
@@ -62,7 +62,7 @@ public class InputListViewAdapter extends BaseAdapter {
      * Use this method to clear the textFields after all data has been saved.
      */
     public void clearTextFields() {
-        ingredient.clear();
+        ingredient = new ArrayList<>(); //prepare for a new set of Ingredients
         notifyDataSetChanged();
     }
 
