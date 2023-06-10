@@ -1,4 +1,4 @@
-package de.ghse.tgi.rezepteapp.fragments.Home.ViewRecipe;
+package de.ghse.tgi.rezepteapp.fragments.fragmentclasses.ViewRecipe.ViewRecipe;
 
 import java.io.IOException;
 
@@ -11,7 +11,7 @@ import de.ghse.tgi.rezepteapp.Database.StorageRecipe;
 public class ViewRecipeControl {
     private final ViewRecipeFragment gui;
     private final StorageRecipe storage;
-    private ListIngredientsViewRecipeAdapter adapter;
+    private final ListIngredientsViewRecipeAdapter adapter;
 
     private int recipeID;
 

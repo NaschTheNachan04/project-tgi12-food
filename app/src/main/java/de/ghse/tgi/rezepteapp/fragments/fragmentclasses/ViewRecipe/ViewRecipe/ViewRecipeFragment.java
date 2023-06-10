@@ -1,4 +1,4 @@
-package de.ghse.tgi.rezepteapp.fragments.Home.ViewRecipe;
+package de.ghse.tgi.rezepteapp.fragments.fragmentclasses.ViewRecipe.ViewRecipe;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -15,45 +15,28 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import de.ghse.tgi.rezepteapp.R;
-import de.ghse.tgi.rezepteapp.fragments.Home.HomeFragment;
 
 /**
- * A {@link Fragment} subclass.
+ * A {@link Fragment} subclass to show a specific Recipe
  * View(MVC) to show a single {@link de.ghse.tgi.rezepteapp.Recipe}.
  */
-public class ViewRecipeFragment extends Fragment {
+public abstract class ViewRecipeFragment extends Fragment {
 
     private View view;
-    private ViewRecipeControl ctrl;
-    private final HomeFragment homeFragment;
+    protected ViewRecipeControl ctrl;
 
     //footer/header
     private TextView name;
     private TextView description;
     private ImageView image;
     private ListView listView;
+    protected int itemId;
 
-
-    /**
-     * Class constructor.
-     *
-     * @param homeFragment to notify if shown {@link Fragment} should be changed.
-     */
-    public ViewRecipeFragment(HomeFragment homeFragment) {
-        super();
-        this.homeFragment =homeFragment;
-    }
 
     @Override
     public void onResume(){
         super.onResume();
-        int itemId = homeFragment.getCurrentRecipe();
-        ctrl.setRecipe(itemId);                                             //update the Page to show the selected Recipe
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        getItemID();
     }
 
     @Override
@@ -61,7 +44,7 @@ public class ViewRecipeFragment extends Fragment {
         if(view==null){
             view = inflater.inflate(R.layout.fragment_listview, container, false);
             listView = view.findViewById(R.id.listView);
-            ListIngredientsViewRecipeAdapter adapter = new ListIngredientsViewRecipeAdapter(homeFragment.getMainActivity());
+            ListIngredientsViewRecipeAdapter adapter = new ListIngredientsViewRecipeAdapter(getActivity());
             listView.setAdapter(adapter);
             ctrl = new ViewRecipeControl(this,adapter);
             setListViewFooterAndHeader();
@@ -100,13 +83,23 @@ public class ViewRecipeFragment extends Fragment {
         image = header.findViewById(R.id.iVViewRecipeImage);
         Button btBack = header.findViewById(R.id.btBackOnViewRecipe);
         btBack.setOnClickListener(view -> {
-            homeFragment.replaceFragment(HomeFragment.LIST_RECIPE);                        //onButtonPressed return to HomePage
+            returnToPreviousFragment();
         });
-
         listView.addHeaderView(header);
 
         View footer = getLayoutInflater().inflate(R.layout.content_fragment_view_recipe_footer,listView,false);
         description = footer.findViewById(R.id.tVViewRecipeDescription);
         listView.addFooterView(footer);
     }
+
+    /**
+     * method is called to leave this View
+     */
+    protected abstract void returnToPreviousFragment();
+
+    /**
+     * method is called to get the Recipe it should show. <p>
+     * It is mandatory to call {@link  #ctrl#setRecipe(int)} during this process.
+     */
+    protected abstract void getItemID();
 }

@@ -1,4 +1,4 @@
-package de.ghse.tgi.rezepteapp.fragments.Home.ViewRecipe;
+package de.ghse.tgi.rezepteapp.fragments.fragmentclasses.ViewRecipe.ViewRecipe;
 
 import android.content.Context;
 import android.view.LayoutInflater;

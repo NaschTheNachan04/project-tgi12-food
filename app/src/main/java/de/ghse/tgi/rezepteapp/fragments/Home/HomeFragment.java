@@ -16,7 +16,8 @@ import de.ghse.tgi.rezepteapp.MyViewPagerAdapter;
 import de.ghse.tgi.rezepteapp.R;
 import de.ghse.tgi.rezepteapp.fragments.Home.Input.InputFragment;
 import de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe.ListRecipeFragment;
-import de.ghse.tgi.rezepteapp.fragments.Home.ViewRecipe.ViewRecipeFragment;
+import de.ghse.tgi.rezepteapp.fragments.Home.ViewRecipe.ViewRecipeFromHomeFragment;
+import de.ghse.tgi.rezepteapp.fragments.fragmentclasses.ViewRecipe.ViewRecipe.ViewRecipeFragment;
 
 /**
  * A {@link Fragment} subclass.
@@ -26,7 +27,7 @@ public class HomeFragment extends Fragment {
     private MyViewPagerAdapter pager;
     private final ListRecipeFragment listRecipeFragment = new ListRecipeFragment(this);
     private final InputFragment inputFragment = new InputFragment(this);
-    private final ViewRecipeFragment viewRecipeFragment = new ViewRecipeFragment(this);
+    private final ViewRecipeFromHomeFragment viewRecipeFragment = new ViewRecipeFromHomeFragment(this);
     public static final int LIST_RECIPE = 0;
     public static final int INPUT = 1;
     public static final int VIEW_RECIPE = 2;
