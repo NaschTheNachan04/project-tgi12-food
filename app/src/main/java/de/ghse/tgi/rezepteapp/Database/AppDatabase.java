@@ -3,25 +3,16 @@ package de.ghse.tgi.rezepteapp.Database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
-
 import java.util.ArrayList;
 
+import de.ghse.tgi.rezepteapp.Ingredient;
 import de.ghse.tgi.rezepteapp.Recipe;
 
  public class AppDatabase extends SQLiteOpenHelper {
     private static final String databaseRecipe   ="recipeData";
-
-
-     public AppDatabase(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version, @Nullable DatabaseErrorHandler errorHandler) {
-         super(context, name, factory, version, errorHandler);
-     }
-
-
 
      @Override
      public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
@@ -68,29 +59,6 @@ import de.ghse.tgi.rezepteapp.Recipe;
 
     }
 
-    public void addZutatToDataBase (Recipe a){
-        for(int i = 0;i<a.getIngredient().size();i++){
-            SQLiteDatabase database = this.getWritableDatabase();
-            //database.
-            //for (int k = i ;k<0;k--){    TODO probleme mit hinzufügen der Zutat in der Datenbank "Nachan"
-
-                //if() {
-                    String zutat = a.getIngredient().get(i).getIngredient();
-                    String einheit = a.getIngredient().get(i).getUnit();
-                    double menge = a.getIngredient().get(i).getAmount();
-                    ContentValues c = new ContentValues();
-                    ContentValues cv = new ContentValues();
-                    c.put("name", zutat);
-                    c.put("einheit", einheit);
-                    cv.put("menge", menge);
-                    database.insert("zutat", null, c);
-                    database.insert("rZutat", null, cv);
-                    database.close();
-                //}
-            //}
-
-        }
-    }
 
     public void addZutatVorratsMenge(){
 
@@ -152,7 +120,40 @@ import de.ghse.tgi.rezepteapp.Recipe;
 
     }
 
-    public void getEvent(){
-
+    public ArrayList<DatabaseReaderEvent> getEvent(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursorEvent = db.rawQuery("SELECT * FROM " +  "event", null);
+        ArrayList<DatabaseReaderEvent> DatabaseReaderEventArrayList = new ArrayList<>();
+        cursorEvent.moveToFirst();
+        if (cursorEvent.moveToFirst()) {
+            do {
+                DatabaseReaderEventArrayList.add(new DatabaseReaderEvent(
+                        cursorEvent.getString(1),
+                        cursorEvent.getInt(2),
+                        cursorEvent.getInt(3)));
+            } while (cursorEvent.moveToNext());
+        }
+        return DatabaseReaderEventArrayList;
     }
+     public void addZutatToDataBase (Recipe a){
+         SQLiteDatabase database = this.getWritableDatabase();
+         AppDatabase appDatabase = null;
+         ArrayList<Ingredient> ingredients=a.getIngredient();
+         ContentValues c = new ContentValues();
+         for(int i=0;i<ingredients.size();i++){
+             boolean exist=true;
+             ArrayList<DatabaseReaderIngredient> databaseIngredients = appDatabase.getIngredients();
+             for (int j=databaseIngredients.size();j!=0;j--){
+                 if (databaseIngredients.get(j).getNameIngredient()==ingredients.get(i).getIngredient()) {
+                     exist=false;
+                 }
+             }
+             if (exist==true){
+                 c.put("name",ingredients.get(i).getIngredient());
+                 c.put("einheit",ingredients.get(i).getUnit());
+                 database.insert("zutat",null,c);
+             }
+         }
+         database.close();
+     }
 }
