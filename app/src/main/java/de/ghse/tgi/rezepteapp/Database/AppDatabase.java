@@ -14,6 +14,7 @@ import de.ghse.tgi.rezepteapp.Recipe;
  public class AppDatabase extends SQLiteOpenHelper {
     private static final String databaseRecipe   ="recipeData";
 
+
      @Override
      public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
@@ -36,16 +37,7 @@ import de.ghse.tgi.rezepteapp.Recipe;
          database.execSQL("CREATE TABLE rZutat  (ZRID INTEGER PRIMARY KEY AUTOINCREMENT,RID INTEGER,ZID INTEGER,menge DOUBLE,FOREIGN KEY(RID) REFERENCES recipe(RID),FOREIGN KEY(ZID) REFERENCES zutat(ZID));");
          database.execSQL("CREATE TABLE rEvent  (ERID INTEGER PRIMARY KEY AUTOINCREMENT,RID INTEGER,FOREIGN KEY(RID) REFERENCES recipe(RID));");
      }
-     /*public void createDatabase(){
-        SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(databaseRecipe,null,null);
 
-        database.execSQL("CREATE TABLE recipeData.recipe (RID INT ,name CHAR,beschreibung CHAR,ZRID int,Bild INT);");
-        database.execSQL("CREATE TABLE recipeData.zutaten (ZID INT,name CHAR,einheit text,vorratsmenge CHAR,ZRID INT);");
-        database.execSQL("CREATE TABLE recipeData.rZutat  (ZRID INT,RID INT,ZID INT,menge DOUBLE);");
-        database.execSQL("CREATE TABLE recipeData.event   (EID INT,datum CHAR,stunden INT,minuten INT);");
-        database.execSQL("CREATE TABLE recipeData.rEvent   (ERID INT,RID INT);");
-        database.close();
-    }*/
 
     public void addRezeptToDataBase (Recipe a){
         String name = a.getName();
@@ -100,22 +92,25 @@ import de.ghse.tgi.rezepteapp.Recipe;
                          cursorRecipe.getInt(3)));
              } while (cursorRecipe.moveToNext());
          }
+         cursorRecipe.close();
       return DatabaseReaderRecipeArrayList;
     }
 
-    public ArrayList<DatabaseReaderIngredient> getIngredients(){
+    public ArrayList<Ingredient> getIngredients(){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursorIngredient = db.rawQuery("SELECT * FROM " +  "zutat", null);
-        ArrayList<DatabaseReaderIngredient> DatabaseReaderIngredientArrayList = new ArrayList<>();
+        ArrayList<Ingredient> DatabaseReaderIngredientArrayList = new ArrayList<>();
         cursorIngredient.moveToFirst();
         if (cursorIngredient.moveToFirst()) {
             do {
-                DatabaseReaderIngredientArrayList.add(new DatabaseReaderIngredient(
-                        cursorIngredient.getString(1),
-                        cursorIngredient.getString(2),
-                        cursorIngredient.getDouble(3)));
+                Ingredient ingredient = new Ingredient();
+                ingredient.setIngredient(cursorIngredient.getString(1));
+                ingredient.setUnit(cursorIngredient.getString(2));
+                ingredient.setAmount(cursorIngredient.getDouble(3));
+                DatabaseReaderIngredientArrayList.add(ingredient);
             } while (cursorIngredient.moveToNext());
         }
+        cursorIngredient.close();
         return DatabaseReaderIngredientArrayList;
 
     }
@@ -133,22 +128,23 @@ import de.ghse.tgi.rezepteapp.Recipe;
                         cursorEvent.getInt(3)));
             } while (cursorEvent.moveToNext());
         }
+        cursorEvent.close();
         return DatabaseReaderEventArrayList;
     }
+    /*
      public void addZutatToDataBase (Recipe a){
          SQLiteDatabase database = this.getWritableDatabase();
-         AppDatabase appDatabase = null;
          ArrayList<Ingredient> ingredients=a.getIngredient();
          ContentValues c = new ContentValues();
          for(int i=0;i<ingredients.size();i++){
              boolean exist=true;
-             ArrayList<DatabaseReaderIngredient> databaseIngredients = appDatabase.getIngredients();
+             ArrayList<DatabaseReaderIngredient> databaseIngredients = getIngredients();
              for (int j=databaseIngredients.size();j!=0;j--){
                  if (databaseIngredients.get(j).getNameIngredient()==ingredients.get(i).getIngredient()) {
                      exist=false;
                  }
              }
-             if (exist==true){
+             if (exist){
                  c.put("name",ingredients.get(i).getIngredient());
                  c.put("einheit",ingredients.get(i).getUnit());
                  database.insert("zutat",null,c);
@@ -156,4 +152,5 @@ import de.ghse.tgi.rezepteapp.Recipe;
          }
          database.close();
      }
+     */
 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Rezepteapp</string>
+
+    <string name="save">speichern</string>
+    <string name="inputName">gib einen Namen ein</string>
+    <string name="inputDescription">gib eine Beschreibung ein</string>
+    <string name="inputIngredient">Zutat</string>
+    <string name="inputUnit">Einheit</string>
+    <string name="inputAmount">Anzahl</string>
+    <string name="back">Zurück</string>
+    <string name="search">Suche nach Rezepten</string>
+    <string name="home">Start</string>
+    <string name="calender">Kalender</string>
+    <string name="settings">Einstellungen</string>
+    <string name="ingredients">Zutaten</string>
+    <string name="description">Beschreibung</string>
+    <string name="name">Name</string>
+    <string name="image">Bild</string>
+    <string name="addName">Bitte benenne dein Rezept</string>
+</resources>

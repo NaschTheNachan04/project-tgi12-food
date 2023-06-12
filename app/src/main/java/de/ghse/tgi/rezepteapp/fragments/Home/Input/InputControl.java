@@ -1,6 +1,8 @@
 package de.ghse.tgi.rezepteapp.fragments.Home.Input;
 
-import de.ghse.tgi.rezepteapp.Database.AppDatabase;
+import android.widget.Toast;
+
+import de.ghse.tgi.rezepteapp.R.string;
 import de.ghse.tgi.rezepteapp.Ingredient;
 import de.ghse.tgi.rezepteapp.MainActivity;
 import de.ghse.tgi.rezepteapp.Recipe;
@@ -10,16 +12,16 @@ import de.ghse.tgi.rezepteapp.Database.StorageRecipe;
  * Controller (MVC) of {@link InputFragment} View
  */
 public class InputControl {
-    private StorageRecipe storage;
-    private InputFragment gui;
-    private InputListViewAdapter adapter;
-
+    private final StorageRecipe storage;
+    private final InputFragment gui;
+    private final InputListViewAdapter adapter;
 
     /**
      * Class constructor.
      * Implements the associated View ({@link InputFragment})
      *
-     * @param pGui
+     * @param pGui associated View (MVC)
+     * @param adapter {@link InputListViewAdapter} of the {@link android.widget.ListView} of associated View(MVC)
      */
     public InputControl(InputFragment pGui,InputListViewAdapter adapter){
         gui = pGui;
@@ -31,15 +33,16 @@ public class InputControl {
      * Use this method to save the created {@link Recipe}.
      * Clears the TextFields after Recipe is saved for next use.
      */
-    public void save(){
-        if(!gui.getRecipeName().isEmpty()) {
+    public void save() {
+        if (!(gui.getRecipeName().isEmpty())) {
             Recipe a = new Recipe();                            //create new Recipe
             a.setName(gui.getRecipeName());                     //set RecipeName
             a.setDescription(gui.getRecipeDescription());       //set RecipeDescription
-            a.setIngredient(adapter.getRecipeIngredients());        //set RecipeIngredient
-            storage.addRecipe(a);                                //save it in storage
-        }
-        gui.finishTransaction();
+            a.setIngredient(adapter.getRecipeIngredients());    //set RecipeIngredient
+            a.setImageUri(gui.getImageUri());                   //set RecipeImage
+            storage.addRecipe(a);                                //save the Recipe in storage
+            gui.finishTransaction();
+        }else Toast.makeText(gui.getContext(),string.addName, Toast.LENGTH_LONG).show();        //if not already done, tell the user to fill in a name
     }
 
     /**

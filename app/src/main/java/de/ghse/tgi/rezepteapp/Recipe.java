@@ -1,12 +1,15 @@
 package de.ghse.tgi.rezepteapp;
 
+import android.net.Uri;
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class Recipe {
     private String name;
     private String description;
     private ArrayList<Ingredient> ingredient;
-    private int Image = R.drawable.mealpic;
+    private Uri image;
 
 
     public String getName() {
@@ -30,5 +33,6 @@ public class Recipe {
         this.ingredient = ingredient;
     }
 
-    public int getImage() {return Image;}
+    public void setImageUri(Uri uri){image = uri;}
+    public Uri getImageUri() {return image;}
 }
