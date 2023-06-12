@@ -12,9 +12,9 @@ import de.ghse.tgi.rezepteapp.Database.StorageRecipe;
  * Controller (MVC) of {@link InputFragment} View
  */
 public class InputControl {
-    private StorageRecipe storage;
-    private InputFragment gui;
-    private InputListViewAdapter adapter;
+    private final StorageRecipe storage;
+    private final InputFragment gui;
+    private final InputListViewAdapter adapter;
 
     /**
      * Class constructor.
@@ -44,6 +44,7 @@ public class InputControl {
             gui.finishTransaction();
         }else Toast.makeText(gui.getContext(),string.addName, Toast.LENGTH_LONG).show();        //if not already done, tell the user to fill in a name
     }
+
     /**
      * Use this method to add an ingredient.
      * Uses the params returned by {@link InputFragment}'s getIngredient...

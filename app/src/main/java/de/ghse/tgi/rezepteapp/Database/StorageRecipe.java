@@ -15,9 +15,9 @@ import de.ghse.tgi.rezepteapp.Recipe;
 
 
 public class StorageRecipe {
-    private ArrayList<Recipe> list = new ArrayList<>();
+    private final ArrayList<Recipe> list = new ArrayList<>();
 
-    public AppDatabase database;
+    private final AppDatabase database;
     private final Context context;
 
 
@@ -33,11 +33,9 @@ public class StorageRecipe {
     }
     public void deleteRecipe(Recipe a) {
         list.remove(a);
-        database.deleteRezept(a);
+        database.deleteRezept(a.getName());
     }
-    public int getCount(){
-        return list.size();
-    }
+    public int getCount(){return list.size();}
 
     public ArrayList<Integer> getFilteredIndexList(String filter){
         filter = filter.toLowerCase();
