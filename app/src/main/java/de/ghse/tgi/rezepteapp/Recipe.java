@@ -10,6 +10,25 @@ public class Recipe {
     private String description;
     private ArrayList<Ingredient> ingredient;
     private Uri image;
+    public Uri getImage() {
+        return image;
+    }
+
+    public void setImage(Uri image) {
+        this.image = image;
+    }
+
+
+
+    public int getRid() {
+        return rid;
+    }
+
+    public void setRid(int rid) {
+        this.rid = rid;
+    }
+
+    private int rid;
 
 
     public String getName() {
@@ -35,4 +54,6 @@ public class Recipe {
 
     public void setImageUri(Uri uri){image = uri;}
     public Uri getImageUri() {return image;}
+
+
 }

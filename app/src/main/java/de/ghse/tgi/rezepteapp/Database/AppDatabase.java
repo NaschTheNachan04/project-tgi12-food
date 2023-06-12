@@ -32,7 +32,7 @@ import de.ghse.tgi.rezepteapp.Recipe;
          // along with their data types.
 
          database.execSQL("CREATE TABLE zutat   (ZID INTEGER PRIMARY KEY AUTOINCREMENT,name CHAR,einheit text,vorratsmenge CHAR);");
-         database.execSQL("CREATE TABLE recipe  (RID INTEGER PRIMARY KEY AUTOINCREMENT,name CHAR,beschreibung CHAR,Bild INTEGER);");
+         database.execSQL("CREATE TABLE recipe  (RID INTEGER PRIMARY KEY AUTOINCREMENT,name CHAR,beschreibung CHAR,Bild BLOB);");
          database.execSQL("CREATE TABLE event   (EID INTEGER PRIMARY KEY AUTOINCREMENT,datum CHAR,stunden INTEGER,minuten INTEGER);");
          database.execSQL("CREATE TABLE rZutat  (ZRID INTEGER PRIMARY KEY AUTOINCREMENT,RID INTEGER,ZID INTEGER,menge DOUBLE,FOREIGN KEY(RID) REFERENCES recipe(RID),FOREIGN KEY(ZID) REFERENCES zutat(ZID));");
          database.execSQL("CREATE TABLE rEvent  (ERID INTEGER PRIMARY KEY AUTOINCREMENT,RID INTEGER,FOREIGN KEY(RID) REFERENCES recipe(RID));");
@@ -78,59 +78,105 @@ import de.ghse.tgi.rezepteapp.Recipe;
         db.close();
     }
 
-     public ArrayList<DatabaseReaderRecipe> getRecipes(){
+     public String getRecipeName(int i){
+      String getName = null;
       SQLiteDatabase db = this.getReadableDatabase();
-      Cursor cursorRecipe = db.rawQuery("SELECT * FROM " +  "recipe", null);
-      ArrayList<DatabaseReaderRecipe> DatabaseReaderRecipeArrayList = new ArrayList<>();
+      Cursor cursorRecipe = db.rawQuery("SELECT recipe.name FROM " +  "recipe", null);
          cursorRecipe.moveToFirst();
-         if (cursorRecipe.moveToFirst()) {
-
-             do {
-                 DatabaseReaderRecipeArrayList.add(new DatabaseReaderRecipe(
-                         cursorRecipe.getString(1),
-                         cursorRecipe.getString(2),
-                         cursorRecipe.getInt(3)));
-             } while (cursorRecipe.moveToNext());
-         }
+         cursorRecipe.moveToPosition(i);
+         getName = cursorRecipe.getString(1);
          cursorRecipe.close();
-      return DatabaseReaderRecipeArrayList;
+      return getName;
     }
 
-    public ArrayList<Ingredient> getIngredients(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursorIngredient = db.rawQuery("SELECT * FROM " +  "zutat", null);
-        ArrayList<Ingredient> DatabaseReaderIngredientArrayList = new ArrayList<>();
-        cursorIngredient.moveToFirst();
-        if (cursorIngredient.moveToFirst()) {
-            do {
-                Ingredient ingredient = new Ingredient();
-                ingredient.setIngredient(cursorIngredient.getString(1));
-                ingredient.setUnit(cursorIngredient.getString(2));
-                ingredient.setAmount(cursorIngredient.getDouble(3));
-                DatabaseReaderIngredientArrayList.add(ingredient);
-            } while (cursorIngredient.moveToNext());
-        }
-        cursorIngredient.close();
-        return DatabaseReaderIngredientArrayList;
+     public String getRecipeDescription(int i){
+         String getDescription = null;
+         SQLiteDatabase db = this.getReadableDatabase();
+         Cursor cursorRecipe = db.rawQuery("SELECT recipe.beschreibung FROM " +  "recipe", null);
+         cursorRecipe.moveToFirst();
+         cursorRecipe.moveToPosition(i);
+         getDescription = cursorRecipe.getString(1);
+         cursorRecipe.close();
+         return getDescription;
+     }
 
-    }
+     public byte[] getRecipeBild(int i){
+         byte[] getBild = null;
+         SQLiteDatabase db = this.getReadableDatabase();
+         Cursor cursorRecipe = db.rawQuery("SELECT recipe.beschreibung FROM " +  "recipe", null);
+         cursorRecipe.moveToFirst();
+         cursorRecipe.moveToPosition(i);
+         getBild = cursorRecipe.getBlob(1);
+         cursorRecipe.close();
+         return getBild;
+     }
 
-    public ArrayList<DatabaseReaderEvent> getEvent(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursorEvent = db.rawQuery("SELECT * FROM " +  "event", null);
-        ArrayList<DatabaseReaderEvent> DatabaseReaderEventArrayList = new ArrayList<>();
-        cursorEvent.moveToFirst();
-        if (cursorEvent.moveToFirst()) {
-            do {
-                DatabaseReaderEventArrayList.add(new DatabaseReaderEvent(
-                        cursorEvent.getString(1),
-                        cursorEvent.getInt(2),
-                        cursorEvent.getInt(3)));
-            } while (cursorEvent.moveToNext());
-        }
-        cursorEvent.close();
-        return DatabaseReaderEventArrayList;
-    }
+     public String getZutatName(int i){
+         String getName = null;
+         SQLiteDatabase db = this.getReadableDatabase();
+         Cursor cursorRecipe = db.rawQuery("SELECT recipe.name FROM " +  "recipe", null);
+         cursorRecipe.moveToFirst();
+         cursorRecipe.moveToPosition(i);
+         getName = cursorRecipe.getString(1);
+         cursorRecipe.close();
+         return getName;
+     }
+
+     public String getZutatEinheit(int i){
+         String getEinheit = null;
+         SQLiteDatabase db = this.getReadableDatabase();
+         Cursor cursorRecipe = db.rawQuery("SELECT recipe.beschreibung FROM " +  "recipe", null);
+         cursorRecipe.moveToFirst();
+         cursorRecipe.moveToPosition(i);
+         getEinheit = cursorRecipe.getString(1);
+         cursorRecipe.close();
+         return getEinheit;
+     }
+
+     public int getZutatMenge(int i){
+         int getMenge=0;
+         SQLiteDatabase db = this.getReadableDatabase();
+         Cursor cursorRecipe = db.rawQuery("SELECT recipe.beschreibung FROM " +  "recipe", null);
+         cursorRecipe.moveToFirst();
+         cursorRecipe.moveToPosition(i);
+         getMenge = cursorRecipe.getInt(1);
+         cursorRecipe.close();
+         return getMenge;
+     }
+
+     public String getEventDatum(int i){
+         String getDatum = null;
+         SQLiteDatabase db = this.getReadableDatabase();
+         Cursor cursorRecipe = db.rawQuery("SELECT recipe.name FROM " +  "recipe", null);
+         cursorRecipe.moveToFirst();
+         cursorRecipe.moveToPosition(i);
+         getDatum = cursorRecipe.getString(1);
+         cursorRecipe.close();
+         return getDatum;
+     }
+
+     public int getEventStunden(int i){
+         int getStunden = 0;
+         SQLiteDatabase db = this.getReadableDatabase();
+         Cursor cursorRecipe = db.rawQuery("SELECT recipe.beschreibung FROM " +  "recipe", null);
+         cursorRecipe.moveToFirst();
+         cursorRecipe.moveToPosition(i);
+         getStunden = cursorRecipe.getInt(1);
+         cursorRecipe.close();
+         return getStunden;
+     }
+
+     public int getEventMinuten(int i){
+         int getMinuten=0;
+         SQLiteDatabase db = this.getReadableDatabase();
+         Cursor cursorRecipe = db.rawQuery("SELECT recipe.beschreibung FROM " +  "recipe", null);
+         cursorRecipe.moveToFirst();
+         cursorRecipe.moveToPosition(i);
+         getMinuten = cursorRecipe.getInt(1);
+         cursorRecipe.close();
+         return getMinuten;
+     }
+ }
     /*
      public void addZutatToDataBase (Recipe a){
          SQLiteDatabase database = this.getWritableDatabase();
@@ -153,4 +199,3 @@ import de.ghse.tgi.rezepteapp.Recipe;
          database.close();
      }
      */
-}
