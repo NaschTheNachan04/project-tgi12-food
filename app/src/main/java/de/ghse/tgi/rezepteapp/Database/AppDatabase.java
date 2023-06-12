@@ -133,7 +133,7 @@ import de.ghse.tgi.rezepteapp.Recipe;
          return getEinheit;
      }
 
-     public int getZutatMenge(int i){
+     public int getZutatVorratsmenge(int i){
          int getMenge=0;
          SQLiteDatabase db = this.getReadableDatabase();
          Cursor cursorRecipe = db.rawQuery("SELECT recipe.beschreibung FROM " +  "recipe", null);
