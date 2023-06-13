@@ -34,7 +34,7 @@ import de.ghse.tgi.rezepteapp.Recipe;
          database.execSQL("CREATE TABLE zutat   (ZID INTEGER PRIMARY KEY AUTOINCREMENT,name CHAR,einheit text,vorratsmenge CHAR);");
          database.execSQL("CREATE TABLE recipe  (RID INTEGER PRIMARY KEY AUTOINCREMENT,name CHAR,beschreibung CHAR,Bild BLOB);");
          database.execSQL("CREATE TABLE event   (EID INTEGER PRIMARY KEY AUTOINCREMENT,datum CHAR,stunden INTEGER,minuten INTEGER);");
-         database.execSQL("CREATE TABLE rZutat  (ZRID INTEGER PRIMARY KEY AUTOINCREMENT,RID INTEGER,ZID INTEGER,menge DOUBLE,FOREIGN KEY(RID) REFERENCES recipe(RID),FOREIGN KEY(ZID) REFERENCES zutat(ZID));");
+         database.execSQL("CREATE TABLE rZutat  (ZRID INTEGER PRIMARY KEY AUTOINCREMENT,RID INTEGER,ZID INTEGER,menge DOUBLE,einheit text,FOREIGN KEY(RID) REFERENCES recipe(RID),FOREIGN KEY(ZID) REFERENCES zutat(ZID));");
          database.execSQL("CREATE TABLE rEvent  (ERID INTEGER PRIMARY KEY AUTOINCREMENT,RID INTEGER,FOREIGN KEY(RID) REFERENCES recipe(RID));");
      }
 
@@ -78,52 +78,50 @@ import de.ghse.tgi.rezepteapp.Recipe;
         db.close();
     }
 
-     public String getRecipeName(int i){
+     public String getRecipeName(int i){ //Stimmt
       String getName = null;
       SQLiteDatabase db = this.getReadableDatabase();
-      Cursor cursorRecipe = db.rawQuery("SELECT recipe.name FROM " +  "recipe", null);
+      Cursor cursorRecipe = db.rawQuery("SELECT recipe.name FROM recipe  WHERE rID="+i,null);
          cursorRecipe.moveToFirst();
-         cursorRecipe.moveToPosition(i);
          getName = cursorRecipe.getString(1);
          cursorRecipe.close();
       return getName;
     }
 
      public String getRecipeDescription(int i){
-         String getDescription = null;
+         String getDescription;
          SQLiteDatabase db = this.getReadableDatabase();
-         Cursor cursorRecipe = db.rawQuery("SELECT recipe.beschreibung FROM " +  "recipe", null);
+         Cursor cursorRecipe = db.rawQuery("SELECT recipe.beschreibung FROM  recipe WHERE rID="+i, null);
          cursorRecipe.moveToFirst();
-         cursorRecipe.moveToPosition(i);
          getDescription = cursorRecipe.getString(1);
          cursorRecipe.close();
          return getDescription;
      }
 
      public byte[] getRecipeBild(int i){
-         byte[] getBild = null;
+         byte[] getBild;
          SQLiteDatabase db = this.getReadableDatabase();
-         Cursor cursorRecipe = db.rawQuery("SELECT recipe.bild FROM " +  "recipe", null);
+         Cursor cursorRecipe = db.rawQuery("SELECT recipe.bild FROM recipe WHERE rID="+i, null);
          cursorRecipe.moveToFirst();
-         cursorRecipe.moveToPosition(i);
          getBild = cursorRecipe.getBlob(1);
          cursorRecipe.close();
          return getBild;
      }
 
-     public String getZutatName(int i){
-         String getName = null;
+     public String[] getZutatName(int i){
+         ArrayList<String> getName = new ArrayList<>();
          SQLiteDatabase db = this.getReadableDatabase();
-         Cursor cursorRecipe = db.rawQuery("SELECT zutat.name FROM " +  "zutat", null);
+         Cursor cursorRecipe = db.rawQuery("SELECT z.name FROM zutat z,rZutat r WHERE r.RID ="+i+" AND r.ZID=z.ZID", null);
          cursorRecipe.moveToFirst();
-         cursorRecipe.moveToPosition(i);
-         getName = cursorRecipe.getString(1);
+         do{
+           getName.add(cursorRecipe.getString(1));
+         } while (cursorRecipe.moveToNext());
          cursorRecipe.close();
-         return getName;
+         return (String[]) getName.toArray();
      }
 
      public String getZutatEinheit(int i){
-         String getEinheit = null;
+         String getEinheit;
          SQLiteDatabase db = this.getReadableDatabase();
          Cursor cursorRecipe = db.rawQuery("SELECT zutat.einheit FROM " +  "zutat", null);
          cursorRecipe.moveToFirst();
@@ -158,7 +156,7 @@ import de.ghse.tgi.rezepteapp.Recipe;
      public int getEventStunden(int i){
          int getStunden = 0;
          SQLiteDatabase db = this.getReadableDatabase();
-         Cursor cursorRecipe = db.rawQuery("SELECT event.stunden FROM " +  "recipe", null);
+         Cursor cursorRecipe = db.rawQuery("SELECT event.stunden FROM " +  "event", null);
          cursorRecipe.moveToFirst();
          cursorRecipe.moveToPosition(i);
          getStunden = cursorRecipe.getInt(1);
@@ -169,7 +167,7 @@ import de.ghse.tgi.rezepteapp.Recipe;
      public int getEventMinuten(int i){
          int getMinuten=0;
          SQLiteDatabase db = this.getReadableDatabase();
-         Cursor cursorRecipe = db.rawQuery("SELECT event.minuten FROM " +  "recipe", null);
+         Cursor cursorRecipe = db.rawQuery("SELECT event.minuten FROM " +  "event", null);
          cursorRecipe.moveToFirst();
          cursorRecipe.moveToPosition(i);
          getMinuten = cursorRecipe.getInt(1);
