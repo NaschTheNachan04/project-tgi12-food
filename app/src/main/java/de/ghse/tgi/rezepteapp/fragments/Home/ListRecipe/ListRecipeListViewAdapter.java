@@ -88,7 +88,7 @@ public class ListRecipeListViewAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        if (isUnfiltered)   setView(position,holder);
+        if (isUnfiltered)   setView(position+1,holder);
         else                setView(filteredRecipe.get(position),holder);
         return view;
     }
