@@ -123,6 +123,7 @@ public class StorageRecipe extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues  c = new ContentValues();
         Cursor cursor = db.rawQuery("SELECT COUNT (z.ZID) FROM zutat z ",null);
+        cursor.close();
         cursor.moveToFirst();
         int ids=cursor.getInt(0);
         cursor = db.rawQuery("SELECT z.name FROM zutat z WHERE z.name ORDER BY z.ZID ",null);
