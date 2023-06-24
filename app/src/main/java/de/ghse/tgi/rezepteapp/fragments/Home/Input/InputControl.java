@@ -57,7 +57,7 @@ public class InputControl {
             Ingredient i = new Ingredient();
             i.setUnit(unit);
             i.setAmount(Double.parseDouble(amount));
-            i.setIngredient(name);
+            i.setName(name);
             adapter.addIngredient(i);
             adapter.notifyDataSetChanged();
         }

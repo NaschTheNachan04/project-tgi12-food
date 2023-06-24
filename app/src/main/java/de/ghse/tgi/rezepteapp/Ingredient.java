@@ -6,11 +6,11 @@ public class Ingredient {
     private double amount;
 
     public Ingredient(){}
-    public String getIngredient() {
+    public String getName() {
         return name;
     }
 
-    public void setIngredient(String ingredient) {
+    public void setName(String ingredient) {
         this.name = ingredient;
     }
 

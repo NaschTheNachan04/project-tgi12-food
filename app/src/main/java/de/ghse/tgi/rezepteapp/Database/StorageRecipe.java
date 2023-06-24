@@ -56,10 +56,18 @@ public class StorageRecipe extends SQLiteOpenHelper {
         c.put("name",name);
         c.put("beschreibung",beschreibung);
         database.insert("recipe",null,c);
-        for(int i = 0;i<ingredient.size();i++){
-            addIngredient(ingredient.get(i));
-        }
         database.close();
+
+        database =this.getReadableDatabase();
+        Cursor cursor= database.rawQuery("SELECT r.RID FROM recipe.r WHERE r.name ="+name+"AND r.beschreibung="+beschreibung,null);
+        cursor.moveToFirst();
+        int rid = cursor.getInt(0);
+        cursor.close();
+        for(int i = 0;i<ingredient.size();i++){
+            addIngredient(ingredient.get(i),rid);
+
+        }
+
     }
     /*public void deleteRecipe(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -117,35 +125,38 @@ public class StorageRecipe extends SQLiteOpenHelper {
         cursorRecipe.close();
         return description;
     }
-    public void addIngredient (Ingredient ingredient){//TODO ES fehlen rZutat!!
-        boolean zutatexist=false;
-        SQLiteDatabase database = this.getWritableDatabase();
-        SQLiteDatabase db = this.getReadableDatabase();
-        ContentValues  c = new ContentValues();
-        Cursor cursor = db.rawQuery("SELECT COUNT (z.ZID) FROM zutat z ",null);
-        cursor.close();
+    private void addIngredient (Ingredient ingredient,int rid){
+        SQLiteDatabase wdb = this.getWritableDatabase();
+        SQLiteDatabase rdb = this.getReadableDatabase();
+
+        Cursor cursor = rdb.rawQuery("SELECT COUNT(z.name) FROM zutat z WHERE z.name LIKE '"+ingredient.getName()+"'",null);
         cursor.moveToFirst();
-        int ids=cursor.getInt(0);
-        cursor = db.rawQuery("SELECT z.name FROM zutat z WHERE z.name ORDER BY z.ZID ",null);
-        for(int i =ids;i>0;i--){
-            if(ingredient.getIngredient()==cursor.getString(0)){
-                i=0;
-                zutatexist=true;
-            } else {
-                cursor.moveToNext();
-            }
-        }
-        cursor.close();
-        if (!zutatexist){
-            String name = ingredient.getIngredient();
+        if(cursor.getInt(0)==0){
+            ContentValues  c = new ContentValues();
+            String name = ingredient.getName();
             String unit= ingredient.getUnit();
-            double amount=ingredient.getAmount();
             c.put("name",name);
             c.put("vorratsEinheit",unit);
-            c.put("vorratsmenge",amount);
-            database.insert("zutat",null,c);
-            database.close();
+            c.put("vorratsmenge",0);
+            wdb.insert("zutat",null,c);
+            wdb.close();
         }
+        cursor.close();
+        //Add Ingredient in rZutat
+        cursor =rdb.rawQuery("SELECT z.ZID FROM zutat z WHERE z.name LIKE'"+ingredient.getName()+"'",null);
+        cursor.moveToFirst();
+        int zid=cursor.getInt(0);
+        cursor.close();
+        double menge=ingredient.getAmount();
+        String einheit=ingredient.getUnit();
+        ContentValues  c = new ContentValues();
+        c.put("menge",menge);
+        c.put("einheit",einheit);
+        c.put("ZID",zid);
+        c.put("RID",rid);
+        wdb.insert("rZutat",null,c);
+        wdb.close();
+        rdb.close();
 
     }
     public ArrayList<String> getIngredients(){

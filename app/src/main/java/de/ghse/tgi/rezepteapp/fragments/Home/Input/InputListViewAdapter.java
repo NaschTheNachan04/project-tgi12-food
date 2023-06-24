@@ -50,7 +50,7 @@ public class InputListViewAdapter extends BaseAdapter {
 
         holder.amount.setText(String.valueOf(ingredient.get(position).getAmount()));
         holder.unit.setText(ingredient.get(position).getUnit());
-        holder.name.setText(ingredient.get(position).getIngredient());
+        holder.name.setText(ingredient.get(position).getName());
         return view;
     }
 
