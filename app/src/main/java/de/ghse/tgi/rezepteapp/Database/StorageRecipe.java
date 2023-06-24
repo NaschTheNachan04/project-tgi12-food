@@ -9,6 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import de.ghse.tgi.rezepteapp.Ingredient;
 import de.ghse.tgi.rezepteapp.Recipe;
 
 
@@ -46,6 +48,7 @@ public class StorageRecipe extends SQLiteOpenHelper {
 
     public void addRecipe(Recipe a){
         list.add(a);
+        ArrayList<Ingredient> ingredient=a.getIngredient();
         String name = a.getName();
         String beschreibung = a.getDescription();
         SQLiteDatabase database=this.getWritableDatabase();
@@ -53,6 +56,9 @@ public class StorageRecipe extends SQLiteOpenHelper {
         c.put("name",name);
         c.put("beschreibung",beschreibung);
         database.insert("recipe",null,c);
+        for(int i = 0;i<ingredient.size();i++){
+            addIngredient(ingredient.get(i));
+        }
         database.close();
     }
     /*public void deleteRecipe(int id) {
@@ -111,7 +117,36 @@ public class StorageRecipe extends SQLiteOpenHelper {
         cursorRecipe.close();
         return description;
     }
+    public void addIngredient (Ingredient ingredient){//TODO ES fehlen rZutat!!
+        boolean zutatexist=false;
+        SQLiteDatabase database = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues  c = new ContentValues();
+        Cursor cursor = db.rawQuery("SELECT COUNT (z.ZID) FROM zutat z ",null);
+        cursor.moveToFirst();
+        int ids=cursor.getInt(0);
+        cursor = db.rawQuery("SELECT z.name FROM zutat z WHERE z.name ORDER BY z.ZID ",null);
+        for(int i =ids;i>0;i--){
+            if(ingredient.getIngredient()==cursor.getString(0)){
+                i=0;
+                zutatexist=true;
+            } else {
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        if (!zutatexist){
+            String name = ingredient.getIngredient();
+            String unit= ingredient.getUnit();
+            double amount=ingredient.getAmount();
+            c.put("name",name);
+            c.put("vorratsEinheit",unit);
+            c.put("vorratsmenge",amount);
+            database.insert("zutat",null,c);
+            database.close();
+        }
 
+    }
     public ArrayList<String> getIngredients(){
         ArrayList<String> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -183,15 +218,15 @@ public class StorageRecipe extends SQLiteOpenHelper {
         cursorRecipe.close();
         return menge;
     }
-    public void deleteZutaten(String zutatName){
+    public void deleteZutaten(String id){
         SQLiteDatabase db = this.getReadableDatabase();
-        db.delete("zutat","name=?", new String[]{zutatName});
+        db.delete("zutat","zid=?"+id,null);
         db.close();
     }
 
-    public void deleteEvent(String eventName){
+    public void deleteEvent(String id){
         SQLiteDatabase db = this.getReadableDatabase();
-        db.delete("event","name=?", new String[]{eventName});
+        db.delete("event","eid=?"+id,null);
         db.close();
     }
 
