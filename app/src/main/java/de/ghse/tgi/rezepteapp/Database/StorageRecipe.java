@@ -70,7 +70,7 @@ public class StorageRecipe extends SQLiteOpenHelper {
         database.close();
 
         database =this.getReadableDatabase();
-        Cursor cursor= database.rawQuery("SELECT r.RID FROM recipe r WHERE r.name ="+name+"AND r.beschreibung="+beschreibung,null);
+        Cursor cursor= database.rawQuery("SELECT r.RID FROM recipe r WHERE r.name ="+name+" AND r.beschreibung="+"'"+beschreibung+"'",null);
         cursor.moveToFirst();
         int rid = cursor.getInt(0);
         cursor.close();
@@ -185,7 +185,7 @@ public class StorageRecipe extends SQLiteOpenHelper {
     }
     private int getIngredientCount(int id) {
       SQLiteDatabase db = this.getReadableDatabase();
-      Cursor cursor= db.rawQuery("SELECT COUNT(rz.ID) FROM rZutat rz  WHERE rz.RID ="+id,null);
+      Cursor cursor= db.rawQuery("SELECT COUNT(rz.ZRID) FROM rZutat rz  WHERE rz.RID ="+id,null);
       int count=0;
       if(cursor.moveToFirst()){
           count = cursor.getInt(0);
@@ -222,7 +222,7 @@ public class StorageRecipe extends SQLiteOpenHelper {
     public String[] getIngredientsName(int id){
         String[] list = new String[getIngredientCount(id)];
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT z.name FROM zutat z,rZuat rz WHERE rz.ZID = z.ZID AND rz.RID ="+id+" ORDER BY rz.ZID",null);
+        Cursor cursor = db.rawQuery("SELECT z.name FROM zutat z,rZutat rz WHERE rz.ZID = z.ZID AND rz.RID ="+id+" ORDER BY rz.ZID",null);
         if(cursor.moveToFirst()){
             for(int i=0;i<list.length;i++){
                 list[i]=cursor.getString(0);
