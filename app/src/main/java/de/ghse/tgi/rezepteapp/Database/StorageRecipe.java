@@ -7,11 +7,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import de.ghse.tgi.rezepteapp.Ingredient;
 import de.ghse.tgi.rezepteapp.Recipe;
+
 
 
 public class StorageRecipe extends SQLiteOpenHelper {
@@ -51,23 +57,26 @@ public class StorageRecipe extends SQLiteOpenHelper {
         ArrayList<Ingredient> ingredient=a.getIngredient();
         String name = a.getName();
         String beschreibung = a.getDescription();
+        byte[] bild = new byte[0];
+        try {
+            bild = getImageFromUri(a.getImage());
+        } catch (IOException ignored){}
         SQLiteDatabase database=this.getWritableDatabase();
         ContentValues c = new ContentValues();
         c.put("name",name);
         c.put("beschreibung",beschreibung);
+        c.put("bild",bild);
         database.insert("recipe",null,c);
         database.close();
 
         database =this.getReadableDatabase();
-        Cursor cursor= database.rawQuery("SELECT r.RID FROM recipe.r WHERE r.name ="+name+"AND r.beschreibung="+beschreibung,null);
+        Cursor cursor= database.rawQuery("SELECT r.RID FROM recipe r WHERE r.name ="+name+"AND r.beschreibung="+beschreibung,null);
         cursor.moveToFirst();
         int rid = cursor.getInt(0);
         cursor.close();
         for(int i = 0;i<ingredient.size();i++){
             addIngredient(ingredient.get(i),rid);
-
         }
-
     }
 
     public int getCount(){
@@ -102,13 +111,12 @@ public class StorageRecipe extends SQLiteOpenHelper {
         return name;
     }
 
-    public Bitmap getRecipeImage(int index) throws IOException {
+    public Bitmap getRecipeImage(int index)  {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursorRecipe = db.rawQuery("SELECT recipe.bild FROM recipe WHERE rID="+index, null);
         cursorRecipe.moveToFirst();
-        byte [] image = cursorRecipe.getBlob(1);
+        byte [] image = cursorRecipe.getBlob(0);
         cursorRecipe.close();
-
         return BitmapFactory.decodeByteArray(image,0,image.length);                        //convert the byteArray to a Bitmap
     }
 
@@ -157,6 +165,16 @@ public class StorageRecipe extends SQLiteOpenHelper {
     public ArrayList<String> getIngredients(){
         ArrayList<String> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
+        //check if ingredient exist
+        Cursor selectCount =db.rawQuery("SELECT COUNT(z.ZID) FROM Zutat z ",null);
+        selectCount.moveToFirst();
+        int count =selectCount.getInt(0);
+        selectCount.close();
+        if(count==0){
+            list.add("");
+            return list;
+        }
+
         Cursor cursorRecipe = db.rawQuery("SELECT z.name FROM zutat z ", null);
         cursorRecipe.moveToFirst();
         do{
@@ -270,6 +288,21 @@ public class StorageRecipe extends SQLiteOpenHelper {
         getMinuten = cursorRecipe.getInt(1);
         cursorRecipe.close();
         return getMinuten;
+    }
+
+
+    private byte[] getImageFromUri(Uri uri) throws IOException {
+        InputStream st =context.getContentResolver().openInputStream(uri );
+        ByteArrayOutputStream outputStream= new ByteArrayOutputStream();
+        byte[] buffer= new byte[1024];
+        int length;
+        while ((length=st.read(buffer) )!=-1){
+            outputStream.write(buffer,0,length);
+        }
+        byte[] image=outputStream.toByteArray();
+        outputStream.close();
+        st.close();
+        return  image;
     }
 }
     /*

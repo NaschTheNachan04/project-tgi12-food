@@ -40,11 +40,7 @@ public class ViewRecipeControl {
     private void updateGUI()  {
         gui.setDescription(storage.getRecipeDescription(recipeID));           //set the description of selected Recipe
         gui.setRName(storage.getRecipeName(recipeID));                        //set the Name of selected Recipe
-        try {
-            gui.setImage(storage.getRecipeImage(recipeID));                       //set the Picture of selected Recipe
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        gui.setImage(storage.getRecipeImage(recipeID));                       //set the Picture of selected Recipe
     }
 
     /**

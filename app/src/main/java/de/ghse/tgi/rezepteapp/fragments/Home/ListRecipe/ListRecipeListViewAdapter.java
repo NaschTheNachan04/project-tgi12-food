@@ -100,12 +100,7 @@ public class ListRecipeListViewAdapter extends BaseAdapter {
      */
     private void setView(int recipeID,ViewHolder holder){
         holder.txt.setText(MainActivity.getStorage().getRecipeName(recipeID));                      //set the Name of RecipeListViewItem as Recipe with ID position.
-        try {
-            holder.img.setImageBitmap(MainActivity.getStorage().getRecipeImage(recipeID));            //set the Image of RecipeListViewItem as Recipe with ID position.
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        holder.img.setImageBitmap(MainActivity.getStorage().getRecipeImage(recipeID));            //set the Image of RecipeListViewItem as Recipe with ID position.
     }
 
     /**
