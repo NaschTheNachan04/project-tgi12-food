@@ -69,12 +69,7 @@ public class StorageRecipe extends SQLiteOpenHelper {
         }
 
     }
-    /*public void deleteRecipe(int id) {
-        SQLiteDatabase db = this.getWritableDatabase();
 
-        db.delete("recipe","RID="+id,null);
-        db.close();
-    }*/
     public int getCount(){
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT COUNT(r.RID) FROM recipe r",null);
