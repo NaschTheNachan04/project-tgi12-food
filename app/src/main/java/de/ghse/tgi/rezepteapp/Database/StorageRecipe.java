@@ -10,7 +10,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -32,6 +31,9 @@ public class StorageRecipe extends SQLiteOpenHelper {
         context = c;
     }
 
+    /**
+     * method that to creates Databank if not exist
+     */
     @Override
     public void onCreate(SQLiteDatabase database) {
         // on below line we are creating
@@ -41,7 +43,7 @@ public class StorageRecipe extends SQLiteOpenHelper {
 
         database.execSQL("CREATE TABLE IF NOT EXISTS zutat   (ZID INTEGER PRIMARY KEY AUTOINCREMENT,name CHAR,vorratsEinheit text,vorratsmenge CHAR);");
         database.execSQL("CREATE TABLE IF NOT EXISTS recipe  (RID INTEGER PRIMARY KEY AUTOINCREMENT,name CHAR,beschreibung CHAR,Bild BLOB);");
-        database.execSQL("CREATE TABLE IF NOT EXISTS event   (EID INTEGER PRIMARY KEY AUTOINCREMENT,datum CHAR,stunden INTEGER,minuten INTEGER);");
+        database.execSQL("CREATE TABLE IF NOT EXISTS event   (EID INTEGER PRIMARY KEY AUTOINCREMENT,datum INTEGER,stunden INTEGER,minuten INTEGER);");
         database.execSQL("CREATE TABLE IF NOT EXISTS rZutat  (ZRID INTEGER PRIMARY KEY AUTOINCREMENT,RID INTEGER,ZID INTEGER,menge DOUBLE,einheit text,FOREIGN KEY(RID) REFERENCES recipe(RID),FOREIGN KEY(ZID) REFERENCES zutat(ZID));");
         database.execSQL("CREATE TABLE IF NOT EXISTS rEvent  (ERID INTEGER PRIMARY KEY AUTOINCREMENT,RID INTEGER,FOREIGN KEY(RID) REFERENCES recipe(RID));");
     }
@@ -51,7 +53,9 @@ public class StorageRecipe extends SQLiteOpenHelper {
 
     }
 
-
+    /**
+     * method that add recipe to database
+     */
     public void addRecipe(Recipe a){
         list.add(a);
         ArrayList<Ingredient> ingredient=a.getIngredient();
@@ -78,7 +82,9 @@ public class StorageRecipe extends SQLiteOpenHelper {
             addIngredient(ingredient.get(i),rid);
         }
     }
-
+    /**
+     * method to get count of database
+     */
     public int getCount(){
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT COUNT(r.RID) FROM recipe r",null);
@@ -102,6 +108,9 @@ public class StorageRecipe extends SQLiteOpenHelper {
         cursor.close();
         return list;
     }
+    /**
+     * method to get name of database
+     */
     public String getRecipeName(int index){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursorRecipe = db.rawQuery("SELECT recipe.name FROM recipe  WHERE rID="+index,null);
@@ -110,7 +119,9 @@ public class StorageRecipe extends SQLiteOpenHelper {
         cursorRecipe.close();
         return name;
     }
-
+    /**
+     * method to get Image of database
+     */
     public Bitmap getRecipeImage(int index)  {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursorRecipe = db.rawQuery("SELECT recipe.bild FROM recipe WHERE rID="+index, null);
@@ -119,7 +130,9 @@ public class StorageRecipe extends SQLiteOpenHelper {
         cursorRecipe.close();
         return BitmapFactory.decodeByteArray(image,0,image.length);                        //convert the byteArray to a Bitmap
     }
-
+    /**
+     * method to get description of database
+     */
     public String getRecipeDescription(int index){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursorRecipe = db.rawQuery("SELECT recipe.beschreibung FROM  recipe WHERE rID="+index, null);
@@ -128,6 +141,9 @@ public class StorageRecipe extends SQLiteOpenHelper {
         cursorRecipe.close();
         return description;
     }
+    /**
+     * method to add ingredient to database.
+     */
     private void addIngredient (Ingredient ingredient,int rid){
         SQLiteDatabase wdb = this.getWritableDatabase();
         SQLiteDatabase rdb = this.getReadableDatabase();
@@ -162,6 +178,9 @@ public class StorageRecipe extends SQLiteOpenHelper {
         rdb.close();
 
     }
+    /**
+     * method to get ingredient of  database.
+     */
     public ArrayList<String> getIngredients(){
         ArrayList<String> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -183,6 +202,9 @@ public class StorageRecipe extends SQLiteOpenHelper {
         cursorRecipe.close();
         return  list;
     }
+    /**
+     * method to get count out of database .
+     */
     private int getIngredientCount(int id) {
       SQLiteDatabase db = this.getReadableDatabase();
       Cursor cursor= db.rawQuery("SELECT COUNT(rz.ZRID) FROM rZutat rz  WHERE rz.RID ="+id,null);
@@ -193,6 +215,9 @@ public class StorageRecipe extends SQLiteOpenHelper {
       cursor.close();
       return count;
     }
+    /**
+     * method to get the amount of database.
+     */
     public double[] getIngredientsAmount(int id){
         double[] list = new double[getIngredientCount(id)];
         SQLiteDatabase db = this.getReadableDatabase();
@@ -206,6 +231,9 @@ public class StorageRecipe extends SQLiteOpenHelper {
         cursor.close();
         return list;
     }
+    /**
+     * method to get the unit of database.
+     */
     public String[] getIngredientsUnit(int id){
         String[] list = new String[getIngredientCount(id)];
         SQLiteDatabase db = this.getReadableDatabase();
@@ -219,6 +247,9 @@ public class StorageRecipe extends SQLiteOpenHelper {
         cursor.close();
         return list;
     }
+    /**
+     * method to get the name(Ingredient) of database.
+     */
     public String[] getIngredientsName(int id){
         String[] list = new String[getIngredientCount(id)];
         SQLiteDatabase db = this.getReadableDatabase();
@@ -232,7 +263,9 @@ public class StorageRecipe extends SQLiteOpenHelper {
         cursor.close();
         return list;
     }
-
+    /**
+     * method to now how much Ingredient is left (No use)
+     */
     public double getZutatVorratsmenge(int id){
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -243,12 +276,17 @@ public class StorageRecipe extends SQLiteOpenHelper {
         cursorRecipe.close();
         return menge;
     }
+    /**
+     * method to delete ingredient (No use)
+     */
     public void deleteZutaten(String id){
         SQLiteDatabase db = this.getReadableDatabase();
         db.delete("zutat","zid=?"+id,null);
         db.close();
     }
-
+    /**
+     * method to delete event (No use)
+     */
     public void deleteEvent(String id){
         SQLiteDatabase db = this.getReadableDatabase();
         db.delete("event","eid=?"+id,null);
@@ -256,18 +294,22 @@ public class StorageRecipe extends SQLiteOpenHelper {
     }
 
 
-
-    public String getEventDatum(int i){
-        String getDatum = null;
+    /**
+     * method to get date for calender
+     */
+    public int getEventDatum(int i){
+        int getDatum;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursorRecipe = db.rawQuery("SELECT event.name FROM " +  "event", null);
         cursorRecipe.moveToFirst();
         cursorRecipe.moveToPosition(i);
-        getDatum = cursorRecipe.getString(1);
+        getDatum = cursorRecipe.getInt(1);
         cursorRecipe.close();
         return getDatum;
     }
-
+    /**
+     * method to get hours for calender
+     */
     public int getEventStunden(int i){
         int getStunden = 0;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -278,7 +320,9 @@ public class StorageRecipe extends SQLiteOpenHelper {
         cursorRecipe.close();
         return getStunden;
     }
-
+    /**
+     * method to get minute for calender
+     */
     public int getEventMinuten(int i){
         int getMinuten=0;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -290,7 +334,9 @@ public class StorageRecipe extends SQLiteOpenHelper {
         return getMinuten;
     }
 
-
+    /**
+     * method to get image easier out of database
+     */
     private byte[] getImageFromUri(Uri uri) throws IOException {
         InputStream st =context.getContentResolver().openInputStream(uri );
         ByteArrayOutputStream outputStream= new ByteArrayOutputStream();
