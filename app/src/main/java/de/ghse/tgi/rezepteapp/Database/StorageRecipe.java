@@ -12,6 +12,7 @@ import android.net.Uri;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Date;
 import java.util.ArrayList;
 
 import de.ghse.tgi.rezepteapp.Event;
@@ -46,7 +47,7 @@ public class StorageRecipe extends SQLiteOpenHelper {
         database.execSQL("CREATE TABLE IF NOT EXISTS recipe  (RID INTEGER PRIMARY KEY AUTOINCREMENT,name CHAR,beschreibung CHAR,Bild BLOB);");
         database.execSQL("CREATE TABLE IF NOT EXISTS event   (EID INTEGER PRIMARY KEY AUTOINCREMENT,datum DATE,stunden INTEGER,minuten INTEGER);");
         database.execSQL("CREATE TABLE IF NOT EXISTS rZutat  (ZRID INTEGER PRIMARY KEY AUTOINCREMENT,RID INTEGER,ZID INTEGER,menge DOUBLE,einheit text,FOREIGN KEY(RID) REFERENCES recipe(RID),FOREIGN KEY(ZID) REFERENCES zutat(ZID));");
-        database.execSQL("CREATE TABLE IF NOT EXISTS rEvent  (ERID INTEGER PRIMARY KEY AUTOINCREMENT,RID INTEGER,FOREIGN KEY(RID) REFERENCES recipe(RID));");
+        database.execSQL("CREATE TABLE IF NOT EXISTS rEvent  (ERID INTEGER PRIMARY KEY AUTOINCREMENT,EID INTEGER ,RID INTEGER,FOREIGN KEY(RID) REFERENCES recipe(RID), FOREIGN KEY(EID) REFEReNCES event(EID));");
     }
 
     @Override
@@ -295,45 +296,6 @@ public class StorageRecipe extends SQLiteOpenHelper {
     }
 
 
-    /**
-     * method to get date for calender
-     */
-    public int getEventDatum(int i){
-        int getDatum;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursorRecipe = db.rawQuery("SELECT event.name FROM " +  "event", null);
-        cursorRecipe.moveToFirst();
-        cursorRecipe.moveToPosition(i);
-        getDatum = cursorRecipe.getInt(1);
-        cursorRecipe.close();
-        return getDatum;
-    }
-    /**
-     * method to get hours for calender
-     */
-    public int getEventStunden(int i){
-        int getStunden = 0;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursorRecipe = db.rawQuery("SELECT event.stunden FROM " +  "event", null);
-        cursorRecipe.moveToFirst();
-        cursorRecipe.moveToPosition(i);
-        getStunden = cursorRecipe.getInt(1);
-        cursorRecipe.close();
-        return getStunden;
-    }
-    /**
-     * method to get minute for calender
-     */
-    public int getEventMinuten(int i){
-        int getMinuten=0;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursorRecipe = db.rawQuery("SELECT event.minuten FROM " +  "event", null);
-        cursorRecipe.moveToFirst();
-        cursorRecipe.moveToPosition(i);
-        getMinuten = cursorRecipe.getInt(1);
-        cursorRecipe.close();
-        return getMinuten;
-    }
 
     /**
      * method to get image easier out of database
@@ -351,22 +313,68 @@ public class StorageRecipe extends SQLiteOpenHelper {
         st.close();
         return  image;
     }
-
+    /**
+     * method how much recipe exist on a day
+     */
     public int getRecipeOnDayCount(int day, int month, int year) {
-
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(re.RID) FROM EVENT e, rEvent re WHERE e.EID=re.EID AND DAY(e.datum)="+day+" AND MONTH(e.datum)="+month+" AND YEAR(e.datum)="+year,null);
+        cursor.moveToFirst();
+        int count=cursor.getInt(0);
+        cursor.close();
+        return  count;
     }
-
+    /**
+     * method to get the time from Event
+     */
     public ArrayList<Integer[]> getEventTime(int day, int month, int year) {
-
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT e.stunden,e.minuten FROM EVENT e,rEvent re WHERE e.EID=re.EID  AND DAY(e.datum)="+day+" AND MONTH(e.datum)="+month+" AND YEAR(e.datum)="+year,null);
+        ArrayList<Integer[]> list = new ArrayList<>();
+        if(cursor.moveToFirst()){
+            list.add(new Integer[]{cursor.getInt(0),cursor.getInt(1)});
+            while(cursor.moveToNext()){
+                list.add(new Integer[]{cursor.getInt(0),cursor.getInt(1)});
+            }
+        }
+        cursor.close();
+        db.close();
+        return list;
     }
-
+    /**
+     * method to get Recipe in a event
+     */
     public ArrayList<Integer> getRecipeId(int day, int month, int year) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT re.RID FROM EVENT e,rEvent re WHERE e.EID=re.EID  AND DAY(e.datum)="+day+" AND MONTH(e.datum)="+month+" AND YEAR(e.datum)="+year,null);
+        ArrayList<Integer> list= new ArrayList<>();
+        if(cursor.moveToFirst()){
+            list.add(cursor.getInt(0));
+            while(cursor.moveToNext()){
+                list.add(cursor.getInt(0));
+            }
+        }
+        cursor.close();
+        db.close();
+        return list;
+    }
+    /**
+     * method to add event to database
+     */
+    public void addEvent(Event e){
+        SQLiteDatabase wdb = this.getWritableDatabase();
+        ContentValues  c = new ContentValues();
+        int hour=e.getHour();
+        int min=e.getMinute();
+        Date date= new Date(e.getYear(),e.getMonth(),e.getDay());
 
+        c.put("datum",date.toString());
+        c.put("stunden",hour);
+        c.put("minuten",min);
+        wdb.close();
     }
 
-    public void addEvent(Event event){
 
-    }
 }
     /*
      public void addZutatToDataBase (Recipe a){

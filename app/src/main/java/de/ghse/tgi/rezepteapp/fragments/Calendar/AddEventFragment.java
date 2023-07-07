@@ -24,7 +24,7 @@ import de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe.ListRecipeListViewAdapte
 
 public class AddEventFragment extends Fragment {
     private CalendarFragment GUI;
-    private ListRecipeListViewAdapter adapter = new ListRecipeListViewAdapter(getContext());
+    private ListRecipeListViewAdapter adapter;
     private ArrayList<Integer> recipeList = new ArrayList<>();
     private int hour, minute, day, month, year;
     private EditText timeET, titleET;
@@ -37,6 +37,7 @@ public class AddEventFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        adapter = new ListRecipeListViewAdapter(getContext());
     }
 
     @Override
