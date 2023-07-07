@@ -24,7 +24,6 @@ import de.ghse.tgi.rezepteapp.fragments.fragmentclasses.ViewRecipe.ViewRecipe.Vi
  * Manages Fragments: {@link InputFragment},{@link ViewRecipeFragment} and {@link ListRecipeFragment}
  */
 public class HomeFragment extends Fragment {
-    private MyViewPagerAdapter pager;
     private final ListRecipeFragment listRecipeFragment = new ListRecipeFragment(this);
     private final InputFragment inputFragment = new InputFragment(this);
     private final ViewRecipeFromHomeFragment viewRecipeFragment = new ViewRecipeFromHomeFragment(this);
@@ -32,14 +31,6 @@ public class HomeFragment extends Fragment {
     public static final int INPUT = 1;
     public static final int VIEW_RECIPE = 2;
 
-    /**
-     * Class constructor.
-     *
-     * @param p adapter to notify when page should be changed.
-     */
-    public HomeFragment(MyViewPagerAdapter p) {
-        pager = p;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,12 +74,5 @@ public class HomeFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
-    /**
-     * method to recieve the {@link android.content.Context} of the Fragment.
-     * @return Returns active Activity (context) of the Fragment
-     */
-    public MainActivity getMainActivity(){
-        return pager.getMainActivity();
-    }
     public int getCurrentRecipe(){return listRecipeFragment.getClickedItem();}
 }
