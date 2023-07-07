@@ -16,7 +16,7 @@
     <string name="description">description</string>
     <string name="name">name</string>
     <string name="image">image</string>
-    <string name="addName">please add a Name</string>
+    <string name="addName">please add a Name and picture</string>
     <string name="english" translatable="false">English</string>
     <string name="chose_language" translatable="false">choose a language</string>
     <string name="forward" translatable="false"><![CDATA[->]]></string>

@@ -24,8 +24,6 @@ import de.ghse.tgi.rezepteapp.databinding.ActivityMainBinding;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private ActivityMainBinding binding;
-    private MyViewPagerAdapter myViewPagerAdapter;
     private ViewPager2 viewPager2;
     private BottomNavigationView bottomNavigationView;
     private static StorageRecipe storage;
@@ -44,11 +42,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         storage = new StorageRecipe(this);
         updateLanguage();
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
         viewPager2 = findViewById(R.id.viewPager2);
-        myViewPagerAdapter = new MyViewPagerAdapter(this);
+        MyViewPagerAdapter myViewPagerAdapter = new MyViewPagerAdapter(this);
         viewPager2.setAdapter(myViewPagerAdapter);
         viewPager2.setCurrentItem(0);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);

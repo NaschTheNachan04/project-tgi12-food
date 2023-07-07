@@ -42,4 +42,5 @@
     <string name="december">Dezember</string>
     <string name="save_event">Event speichern</string>
     <string name="add_recipe">Rezept hinzufügen</string>
+    <string name="addName">Bitte benenne dein Rezept und füge ein Bild hinzu</string>
 </resources>
