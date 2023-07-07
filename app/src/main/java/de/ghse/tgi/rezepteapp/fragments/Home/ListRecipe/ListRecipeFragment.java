@@ -61,7 +61,7 @@ public class ListRecipeFragment extends Fragment {
             view =inflater.inflate(R.layout.fragment_list_recipe, container, false);
 
             holder.list = view.findViewById(R.id.listViewRecipe);
-            holder.adapter = new ListRecipeListViewAdapter(homeFragment.getMainActivity());
+            holder.adapter = new ListRecipeListViewAdapter(getContext());
             holder.list.setAdapter(holder.adapter);
             holder.list.setOnItemClickListener((adapterView, view, i, l) -> {
                 if (isUnfiltered) clickedItem = i;                                                                  //index

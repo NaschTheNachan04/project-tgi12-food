@@ -1,7 +1,6 @@
 package de.ghse.tgi.rezepteapp;
 
 import android.net.Uri;
-import android.util.Log;
 
 import java.util.ArrayList;
 

@@ -33,8 +33,7 @@ public class InputFragment extends Fragment {
     private InputControl control;
     private ListView lVIngredients;
     private View view;
-    private InputListViewAdapter adapter;
-    private HomeFragment homeFragment;
+    private final HomeFragment homeFragment;
     //header
     private EditText etName;
     private ImageView ivAddImage;
@@ -63,7 +62,7 @@ public class InputFragment extends Fragment {
         if (view==null) {
             view = inflater.inflate(R.layout.fragment_listview, container, false);
             lVIngredients = view.findViewById(R.id.listView);
-            adapter = new InputListViewAdapter(homeFragment.getMainActivity());
+            InputListViewAdapter adapter = new InputListViewAdapter(getContext());
             lVIngredients.setAdapter(adapter);
             control = new InputControl(this, adapter);
             setListViewHeaderAndFooter();
@@ -96,7 +95,7 @@ public class InputFragment extends Fragment {
         Button btSaveIngredient = footer.findViewById(R.id.btInputIngredientSave);
 
         ArrayList<String> ingredientList = MainActivity.getStorage().getIngredients();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(homeFragment.getMainActivity(), android.R.layout.simple_dropdown_item_1line, ingredientList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, ingredientList);
         actvIngredient.setAdapter(adapter);
 
         btSaveIngredient.setOnClickListener(view -> control.saveIngredient());
@@ -168,7 +167,6 @@ public class InputFragment extends Fragment {
         if (view != null) {
             etName.setText("");
             etDescription.setText("");
-            adapter.clearTextFields();
             imageUri = null;
             ivAddImage.setImageDrawable(null);
             clearAddIngredientTextFields();

@@ -10,7 +10,6 @@ import de.ghse.tgi.rezepteapp.Database.StorageRecipe;
  */
 public class ViewRecipeControl {
     private final ViewRecipeFragment gui;
-    private final StorageRecipe storage;
     private final ListIngredientsViewRecipeAdapter adapter;
 
     private int recipeID;
@@ -21,7 +20,6 @@ public class ViewRecipeControl {
      */
     public ViewRecipeControl(ViewRecipeFragment gui, ListIngredientsViewRecipeAdapter adapter){
         this.gui = gui;
-        this.storage = MainActivity.getStorage();
         this.adapter = adapter;
     }
 
@@ -38,6 +36,7 @@ public class ViewRecipeControl {
      * method that updates View to display the given{@link de.ghse.tgi.rezepteapp.Recipe}
      */
     private void updateGUI()  {
+        StorageRecipe storage = MainActivity.getStorage();
         gui.setDescription(storage.getRecipeDescription(recipeID));           //set the description of selected Recipe
         gui.setRName(storage.getRecipeName(recipeID));                        //set the Name of selected Recipe
         try {
@@ -52,6 +51,7 @@ public class ViewRecipeControl {
      * Ingredients of given {@link de.ghse.tgi.rezepteapp.Recipe}
      */
     private void updateListView(){
+        StorageRecipe storage = MainActivity.getStorage();
         adapter.setIngredientAmount(storage.getIngredientsAmount(recipeID));
         adapter.setIngredientUnit(storage.getIngredientsUnit(recipeID));
         adapter.setIngredientName(storage.getIngredientsName(recipeID));

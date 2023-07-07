@@ -14,7 +14,6 @@ import de.ghse.tgi.rezepteapp.fragments.Settings.SettingsFragment;
  *
  */
 public class MyViewPagerAdapter extends FragmentStateAdapter {
-    private MainActivity main;
 
     /**
      * Class constructor.
@@ -22,7 +21,6 @@ public class MyViewPagerAdapter extends FragmentStateAdapter {
      */
     public MyViewPagerAdapter(@NonNull MainActivity mainActivity) {
         super(mainActivity);
-        main = mainActivity;
     }
 
     @NonNull
@@ -32,9 +30,9 @@ public class MyViewPagerAdapter extends FragmentStateAdapter {
             case 1:
                 return new CalendarFragment(this);                      //second Fragment is CalendarFragment
             case 2:
-                return new SettingsFragment(this);                      //third Fragment is SettingsFragment
+                return new SettingsFragment();                      //third Fragment is SettingsFragment
             default:
-                return new HomeFragment(this);                          // first Fragment is HomeFragment
+                return new HomeFragment();                          // first Fragment is HomeFragment
         }
     }
 
@@ -42,7 +40,6 @@ public class MyViewPagerAdapter extends FragmentStateAdapter {
      *
      * @return Returns associated {@link android.app.Activity} ({@link android.content.Context})
      */
-    public MainActivity getMainActivity(){return main;}
     @Override
     public int getItemCount() {
         return 3;

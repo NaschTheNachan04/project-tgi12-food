@@ -34,7 +34,7 @@ public class InputControl {
      * Clears the TextFields after Recipe is saved for next use.
      */
     public void save() {
-        if (!(gui.getRecipeName().isEmpty())) {
+        if (!((gui.getRecipeName().isEmpty())&& (gui.getImageUri() == null))) {
             Recipe a = new Recipe();                            //create new Recipe
             a.setName(gui.getRecipeName());                     //set RecipeName
             a.setDescription(gui.getRecipeDescription());       //set RecipeDescription
@@ -42,7 +42,7 @@ public class InputControl {
             a.setImageUri(gui.getImageUri());                   //set RecipeImage
             storage.addRecipe(a);                                //save the Recipe in storage
             gui.finishTransaction();
-        }else Toast.makeText(gui.getContext(),string.addName, Toast.LENGTH_LONG).show();        //if not already done, tell the user to fill in a name
+        }else Toast.makeText(gui.getContext(), string.addName, Toast.LENGTH_LONG).show();        //if not already done, tell the user to fill in a name
     }
 
     /**
@@ -61,6 +61,7 @@ public class InputControl {
             adapter.addIngredient(i);
             adapter.notifyDataSetChanged();
         }
-        gui.clearAddIngredientTextFields();                                        // clears the TextFields used, to be able to input another Ingredient
+        gui.clearAddIngredientTextFields();
+        adapter.clearTextFields();              // clears the TextFields used, to be able to input another Ingredient
     }
 }

@@ -17,5 +17,5 @@
     <string name="description">Beschreibung</string>
     <string name="name">Name</string>
     <string name="image">Bild</string>
-    <string name="addName">Bitte benenne dein Rezept</string>
+    <string name="addName">Bitte benenne dein Rezept und füge ein Bild hinzu</string>
 </resources>

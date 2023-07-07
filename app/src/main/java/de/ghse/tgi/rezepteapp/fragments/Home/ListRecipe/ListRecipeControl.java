@@ -9,9 +9,8 @@ import de.ghse.tgi.rezepteapp.Database.StorageRecipe;
  * Controller Class (MVC) of {@link ListRecipeFragment}(View).
  */
 public class ListRecipeControl {
-    private ListRecipeFragment gui;
-    private ListRecipeListViewAdapter adapter;
-    private StorageRecipe storage;
+    private final ListRecipeFragment gui;
+    private final ListRecipeListViewAdapter adapter;
 
     /**
      * class constructor.
@@ -22,7 +21,6 @@ public class ListRecipeControl {
     public ListRecipeControl(ListRecipeFragment gui, ListRecipeListViewAdapter adapter){
         this.gui = gui;
         this.adapter = adapter;
-        storage = MainActivity.getStorage();
     }
 
     /**
@@ -36,7 +34,7 @@ public class ListRecipeControl {
             adapter.setUnfiltered(true);                                        // if TextField is empty, show all the Recipes
             adapter.notifyDataSetChanged();
         }else {
-            ArrayList<Integer> filteredList = storage.getFilteredIndexList(filter);
+            ArrayList<Integer> filteredList = MainActivity.getStorage().getFilteredIndexList(filter);
             gui.setUnfiltered(false);
             gui.setFilteredRecipe(filteredList);
             adapter.setFilteredRecipe(filteredList);    // else show all the Recipes that contain "filter"
