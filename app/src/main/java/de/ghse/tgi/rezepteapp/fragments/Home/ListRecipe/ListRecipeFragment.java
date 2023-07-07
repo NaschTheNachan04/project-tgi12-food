@@ -25,12 +25,12 @@ import de.ghse.tgi.rezepteapp.fragments.Home.HomeFragment;
  * Contains a ListView showing the {@link de.ghse.tgi.rezepteapp.Recipe} saved.
  */
 public class ListRecipeFragment extends Fragment {
-    private ListRecipeControl ctrl;
-    private View view;
+    protected ListRecipeControl ctrl;
+    protected View view;
     private HomeFragment homeFragment;
-    private int clickedItem = 0;
-    private boolean isUnfiltered = true;
-    private ArrayList<Integer> filteredRecipe;
+    protected int clickedItem = 0;
+    protected boolean isUnfiltered = true;
+    protected ArrayList<Integer> filteredRecipe;
 
 
     /**
@@ -143,7 +143,7 @@ public class ListRecipeFragment extends Fragment {
      * cache for all the UI-elements
      * used to prevent calling {@link View#findViewById(int)} every time {@link ListRecipeFragment} is loaded
      */
-    static class ViewHolder{
+    private static class ViewHolder{
          FloatingActionButton fab;
          EditText etSearchRecipe;
          ListView list;

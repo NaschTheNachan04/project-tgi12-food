@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import de.ghse.tgi.rezepteapp.Event;
 import de.ghse.tgi.rezepteapp.Ingredient;
 import de.ghse.tgi.rezepteapp.Recipe;
 
@@ -41,7 +42,7 @@ public class StorageRecipe extends SQLiteOpenHelper {
 
         database.execSQL("CREATE TABLE IF NOT EXISTS zutat   (ZID INTEGER PRIMARY KEY AUTOINCREMENT,name CHAR,vorratsEinheit text,vorratsmenge CHAR);");
         database.execSQL("CREATE TABLE IF NOT EXISTS recipe  (RID INTEGER PRIMARY KEY AUTOINCREMENT,name CHAR,beschreibung CHAR,Bild BLOB);");
-        database.execSQL("CREATE TABLE IF NOT EXISTS event   (EID INTEGER PRIMARY KEY AUTOINCREMENT,datum CHAR,stunden INTEGER,minuten INTEGER);");
+        database.execSQL("CREATE TABLE IF NOT EXISTS event   (EID INTEGER PRIMARY KEY AUTOINCREMENT,datum DATE,stunden INTEGER,minuten INTEGER);");
         database.execSQL("CREATE TABLE IF NOT EXISTS rZutat  (ZRID INTEGER PRIMARY KEY AUTOINCREMENT,RID INTEGER,ZID INTEGER,menge DOUBLE,einheit text,FOREIGN KEY(RID) REFERENCES recipe(RID),FOREIGN KEY(ZID) REFERENCES zutat(ZID));");
         database.execSQL("CREATE TABLE IF NOT EXISTS rEvent  (ERID INTEGER PRIMARY KEY AUTOINCREMENT,RID INTEGER,FOREIGN KEY(RID) REFERENCES recipe(RID));");
     }
@@ -256,18 +257,6 @@ public class StorageRecipe extends SQLiteOpenHelper {
     }
 
 
-
-    public String getEventDatum(int i){
-        String getDatum = null;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursorRecipe = db.rawQuery("SELECT event.name FROM " +  "event", null);
-        cursorRecipe.moveToFirst();
-        cursorRecipe.moveToPosition(i);
-        getDatum = cursorRecipe.getString(1);
-        cursorRecipe.close();
-        return getDatum;
-    }
-
     public int getEventStunden(int i){
         int getStunden = 0;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -303,6 +292,22 @@ public class StorageRecipe extends SQLiteOpenHelper {
         outputStream.close();
         st.close();
         return  image;
+    }
+
+    public int getRecipeOnDayCount(int day, int month, int year) {
+
+    }
+
+    public ArrayList<Integer[]> getEventTime(int day, int month, int year) {
+
+    }
+
+    public ArrayList<Integer> getRecipeId(int day, int month, int year) {
+
+    }
+
+    public void addEvent(Event event){
+
     }
 }
     /*
