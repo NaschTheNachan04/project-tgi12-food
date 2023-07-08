@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.ArrayList;
@@ -23,11 +24,12 @@ import de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe.ListRecipeListViewAdapte
 
 
 public class AddEventFragment extends Fragment {
-    private CalendarFragment GUI;
+    private final CalendarFragment GUI;
     private ListRecipeListViewAdapter adapter;
-    private ArrayList<Integer> recipeList = new ArrayList<>();
-    private int hour, minute, day, month, year;
-    private EditText timeET, titleET;
+    private final ArrayList<Integer> recipeList = new ArrayList<>();
+    private int hour=0, minute=0, day, month, year;
+    private EditText titleET;
+    private TextView timeTV;
 
 
     public AddEventFragment(CalendarFragment GUI) {
@@ -49,40 +51,32 @@ public class AddEventFragment extends Fragment {
         ListView listView = view.findViewById(R.id.LV);
         listView.setAdapter(adapter);
         //Time
-        timeET = view.findViewById(R.id.timeET);
-        timeET.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar calendar = Calendar.getInstance();
-                hour = calendar.get(Calendar.HOUR_OF_DAY);
-                minute = calendar.get(Calendar.MINUTE);
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),new onTimeListener(),hour,minute,true);
-                timePickerDialog.show();
-            }
+        timeTV = view.findViewById(R.id.timeTV);
+        timeTV.setOnClickListener(view1 -> {
+            Calendar calendar = Calendar.getInstance();
+            hour = calendar.get(Calendar.HOUR_OF_DAY);
+            minute = calendar.get(Calendar.MINUTE);
+            TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),new onTimeListener(),hour,minute,true);
+            timePickerDialog.show();
         });
         //Buttons
         Button addRecipeB = view.findViewById(R.id.addRecipeB);
-        addRecipeB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GUI.replaceFragment(CalendarFragment.SELECT_RECIPE);
-            }
-        });
+        addRecipeB.setOnClickListener(view12 -> GUI.replaceFragment(CalendarFragment.SELECT_RECIPE));
 
         Button saveEventB = view.findViewById(R.id.saveEventB);
-        saveEventB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        saveEventB.setOnClickListener(view13 -> {
+            if(titleET.getText()!=null) {
                 Event event = new Event();
                 event.setDay(day);
                 event.setMonth(month);
                 event.setYear(year);
-                event.setTitle(titleET.getText().toString());
+                event.setTitle(titleET.getText().toString() + "");
                 event.setHour(hour);
                 event.setMinute(minute);
                 event.setRecipe(recipeList);
                 MainActivity.getStorage().addEvent(event);
-                GUI.replaceFragment(CalendarFragment.CALENDAR);
+                clearTextFields();
+                GUI.replaceFragment(CalendarFragment.SHOW_FRAGMENT_DAY);
             }
         });
         return view;
@@ -97,6 +91,12 @@ public class AddEventFragment extends Fragment {
         this.month = month;
         this.year = year;
     }
+    private void clearTextFields(){
+        titleET.setText("");
+        recipeList.clear();
+        adapter.notifyDataSetChanged();
+        timeTV.setText("");
+    }
 
     private class onTimeListener implements TimePickerDialog.OnTimeSetListener{
 
@@ -104,7 +104,8 @@ public class AddEventFragment extends Fragment {
         public void onTimeSet(TimePicker timePicker,int phour, int pminute) {
             minute = pminute;
             hour = phour;
-            timeET.setText(hour+":"+minute);
+            String timeText =hour+":"+minute;
+            timeTV.setText(timeText);
 
         }
     }

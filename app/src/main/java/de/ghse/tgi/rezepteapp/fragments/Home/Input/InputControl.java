@@ -62,6 +62,5 @@ public class InputControl {
             adapter.notifyDataSetChanged();
         }
         gui.clearAddIngredientTextFields();
-        adapter.clearTextFields();              // clears the TextFields used, to be able to input another Ingredient
     }
 }

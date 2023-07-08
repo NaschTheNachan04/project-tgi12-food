@@ -2,8 +2,6 @@ package de.ghse.tgi.rezepteapp.fragments.Calendar;
 
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -12,18 +10,15 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import de.ghse.tgi.rezepteapp.R;
-import de.ghse.tgi.rezepteapp.fragments.Calendar.CalendarFragment;
-import de.ghse.tgi.rezepteapp.fragments.Home.HomeFragment;
 import de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe.ListRecipeControl;
 import de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe.ListRecipeFragment;
 import de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe.ListRecipeListViewAdapter;
 
 
 public class CalendarSelectRecipe extends ListRecipeFragment {
-private CalendarFragment calendarFragment;
+private final CalendarFragment calendarFragment;
 
 
     public CalendarSelectRecipe(CalendarFragment calendarFragment) {
@@ -68,6 +63,7 @@ private CalendarFragment calendarFragment;
      * Has to be called when dataSet has been changed.
      * Updates the Listview
      */
+    @Override
     protected void dataSetChanged(){
         if (view != null) {
             ViewHolder holder = (ViewHolder) view.getTag();
@@ -76,6 +72,17 @@ private CalendarFragment calendarFragment;
             }
         }
     }
+
+    /**
+     *
+     * @return Return the SearchText the {@link de.ghse.tgi.rezepteapp.Recipe}s should be filtered with.
+     */
+    @Override
+    public String getSearchText(){
+        ViewHolder holder = (ViewHolder) view.getTag();
+        return holder.etSearchRecipe.getText().toString();
+    }
+
     private static class ViewHolder{
         EditText etSearchRecipe;
         ListView list;
