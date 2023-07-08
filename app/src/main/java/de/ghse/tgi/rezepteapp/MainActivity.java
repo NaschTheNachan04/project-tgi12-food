@@ -2,6 +2,7 @@ package de.ghse.tgi.rezepteapp;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         storage = new StorageRecipe(this);
         updateLanguage();
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());

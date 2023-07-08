@@ -113,7 +113,7 @@ public class ListRecipeFragment extends Fragment {
      * Has to be called when dataSet has been changed.
      * Updates the Listview
      */
-    private void dataSetChanged(){
+    protected void dataSetChanged(){
         if (view != null) {
             ViewHolder holder = (ViewHolder) view.getTag();
             if (holder.adapter != null ) {

@@ -45,7 +45,7 @@ public class StorageRecipe extends SQLiteOpenHelper {
 
         database.execSQL("CREATE TABLE IF NOT EXISTS zutat   (ZID INTEGER PRIMARY KEY AUTOINCREMENT,name CHAR,vorratsEinheit text,vorratsmenge CHAR);");
         database.execSQL("CREATE TABLE IF NOT EXISTS recipe  (RID INTEGER PRIMARY KEY AUTOINCREMENT,name CHAR,beschreibung CHAR,Bild BLOB);");
-        database.execSQL("CREATE TABLE IF NOT EXISTS event   (EID INTEGER PRIMARY KEY AUTOINCREMENT,datum DATE,stunden INTEGER,minuten INTEGER);");
+        database.execSQL("CREATE TABLE IF NOT EXISTS event   (EID INTEGER PRIMARY KEY AUTOINCREMENT,datum DATE,stunden INTEGER,minuten INTEGER,titel CHAR);");
         database.execSQL("CREATE TABLE IF NOT EXISTS rZutat  (ZRID INTEGER PRIMARY KEY AUTOINCREMENT,RID INTEGER,ZID INTEGER,menge DOUBLE,einheit text,FOREIGN KEY(RID) REFERENCES recipe(RID),FOREIGN KEY(ZID) REFERENCES zutat(ZID));");
         database.execSQL("CREATE TABLE IF NOT EXISTS rEvent  (ERID INTEGER PRIMARY KEY AUTOINCREMENT,EID INTEGER ,RID INTEGER,FOREIGN KEY(RID) REFERENCES recipe(RID), FOREIGN KEY(EID) REFEReNCES event(EID));");
     }
@@ -76,7 +76,7 @@ public class StorageRecipe extends SQLiteOpenHelper {
         database.close();
 
         database =this.getReadableDatabase();
-        Cursor cursor= database.rawQuery("SELECT r.RID FROM recipe r WHERE r.name ="+name+" AND r.beschreibung="+"'"+beschreibung+"'",null);
+        Cursor cursor= database.rawQuery("SELECT r.RID FROM recipe r WHERE r.name ="+"'"+name+"'"+" AND r.beschreibung="+"'"+beschreibung+"'",null);
         cursor.moveToFirst();
         int rid = cursor.getInt(0);
         cursor.close();
@@ -317,8 +317,9 @@ public class StorageRecipe extends SQLiteOpenHelper {
      * method how much recipe exist on a day
      */
     public int getRecipeOnDayCount(int day, int month, int year) {
+        Date date= new Date(day,month,year);
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT COUNT(re.RID) FROM EVENT e, rEvent re WHERE e.EID=re.EID AND DAY(e.datum)="+day+" AND MONTH(e.datum)="+month+" AND YEAR(e.datum)="+year,null);
+        Cursor cursor = db.rawQuery("SELECT COUNT(re.RID) FROM EVENT e, rEvent re WHERE e.EID=re.EID AND e.datum="+date,null);
         cursor.moveToFirst();
         int count=cursor.getInt(0);
         cursor.close();
@@ -328,8 +329,9 @@ public class StorageRecipe extends SQLiteOpenHelper {
      * method to get the time from Event
      */
     public ArrayList<Integer[]> getEventTime(int day, int month, int year) {
+        Date date= new Date(day,month,year);
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT e.stunden,e.minuten FROM EVENT e,rEvent re WHERE e.EID=re.EID  AND DAY(e.datum)="+day+" AND MONTH(e.datum)="+month+" AND YEAR(e.datum)="+year,null);
+        Cursor cursor = db.rawQuery("SELECT e.stunden,e.minuten FROM EVENT e,rEvent re WHERE e.EID=re.EID  AND e.datum="+date,null);
         ArrayList<Integer[]> list = new ArrayList<>();
         if(cursor.moveToFirst()){
             list.add(new Integer[]{cursor.getInt(0),cursor.getInt(1)});
@@ -345,8 +347,9 @@ public class StorageRecipe extends SQLiteOpenHelper {
      * method to get Recipe in a event
      */
     public ArrayList<Integer> getRecipeId(int day, int month, int year) {
+        Date date= new Date(day,month,year);
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT re.RID FROM EVENT e,rEvent re WHERE e.EID=re.EID  AND DAY(e.datum)="+day+" AND MONTH(e.datum)="+month+" AND YEAR(e.datum)="+year,null);
+        Cursor cursor = db.rawQuery("SELECT re.RID FROM EVENT e,rEvent re WHERE e.EID=re.EID  AND e.datum="+date,null);
         ArrayList<Integer> list= new ArrayList<>();
         if(cursor.moveToFirst()){
             list.add(cursor.getInt(0));
@@ -367,10 +370,25 @@ public class StorageRecipe extends SQLiteOpenHelper {
         int hour=e.getHour();
         int min=e.getMinute();
         Date date= new Date(e.getYear(),e.getMonth(),e.getDay());
-
+        String titel=e.getTitle();
         c.put("datum",date.toString());
         c.put("stunden",hour);
         c.put("minuten",min);
+        c.put("titel",titel);
+        wdb.insert("event",null,c);
+        c.clear();
+        wdb.close();
+        SQLiteDatabase rdb = this.getReadableDatabase();
+        Cursor cursor= rdb.rawQuery("SELECT e.EID FROM EVENT e WHERE e.datum="+date+" AND e.stunden="+hour+" AND e.minuten="+min+" AND e.titel="+titel,null);
+        cursor.moveToFirst();
+        int eid=cursor.getInt(0);
+        cursor.close();
+        ArrayList<Integer> list =e.getRecipe();
+        for(int i=0;i<list.size();i++){
+            c.put("RID",list.get(i));
+            c.put("EID",eid);
+            wdb.insert("revent",null,c);
+        }
         wdb.close();
     }
 

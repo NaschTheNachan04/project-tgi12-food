@@ -34,10 +34,10 @@ public class ListIngredientsViewRecipeAdapter extends BaseAdapter {
     public int getCount() {return count;}
 
     @Override
-    public Object getItem(int i) {return null;}
+    public Object getItem(int i) {return i;}
 
     @Override
-    public long getItemId(int i) {return 0;}
+    public long getItemId(int i) {return i;}
 
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {

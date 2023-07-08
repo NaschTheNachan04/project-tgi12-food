@@ -64,6 +64,18 @@ private CalendarFragment calendarFragment;
         }
         return view;
     }
+    /**
+     * Has to be called when dataSet has been changed.
+     * Updates the Listview
+     */
+    protected void dataSetChanged(){
+        if (view != null) {
+            ViewHolder holder = (ViewHolder) view.getTag();
+            if (holder.adapter != null ) {
+                holder.adapter.notifyDataSetChanged();
+            }
+        }
+    }
     private static class ViewHolder{
         EditText etSearchRecipe;
         ListView list;
