@@ -27,8 +27,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <EditText
-        android:id="@+id/timeET"
+    <TextView
+        android:id="@+id/timeTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/time"
@@ -42,9 +42,9 @@
     <ListView
         android:id="@+id/LV"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/addRecipeB"
-        app:layout_constraintTop_toBottomOf="@+id/timeET" >
+        app:layout_constraintTop_toBottomOf="@+id/timeTV" >
 
     </ListView>
 

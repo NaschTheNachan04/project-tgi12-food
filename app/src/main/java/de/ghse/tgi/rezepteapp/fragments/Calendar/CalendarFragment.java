@@ -80,6 +80,7 @@ public class CalendarFragment extends Fragment {
 
     public void goToDay(int day, int month, int year) {
         show_fragment_day.setDay(day,month,year);
+        addEventFragment.setDay(day, month, year);
     }
 
     public void setRecipe(int RID){

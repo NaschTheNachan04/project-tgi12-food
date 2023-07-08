@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -36,19 +37,21 @@ public class Show_Fragment_Day extends Fragment {
         View view = inflater.inflate(R.layout.fragment_show_day, container, false);
         FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton2);
         floatingActionButton.setOnClickListener(view1 -> main.replaceFragment(CalendarFragment.ADD_EVENT_FRAGMENT));
+        FloatingActionButton fabBack = view.findViewById(R.id.fabBack);
+        fabBack.setOnClickListener(view1 -> main.replaceFragment(CalendarFragment.CALENDAR));
         ListView listView = view.findViewById(R.id.LVShowEvents);
         CalendarShowDayAdapter adapter = new CalendarShowDayAdapter(getContext());
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(i%2 !=0){
-                    main.setRecipe(adapter.getRecipeID(i/2));
-                    main.replaceFragment(CalendarFragment.VIEW_RECIPE);
-                }
+        listView.setOnItemClickListener((adapterView, view12, i, l) -> {
+            if(i%2 !=0){
+                main.setRecipe(adapter.getRecipeID(i/2));
+                main.replaceFragment(CalendarFragment.VIEW_RECIPE);
             }
         });
         adapter.setDay(day,month,year);
+        TextView tvDate =  view.findViewById(R.id.TVShow_day_day);
+        String dayText = day+"."+month+"."+year;
+        tvDate.setText(dayText);
         return view;
     }
 
