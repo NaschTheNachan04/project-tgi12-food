@@ -42,7 +42,7 @@ public class StorageRecipe extends SQLiteOpenHelper {
         // along with their data types.
 
         database.execSQL("CREATE TABLE IF NOT EXISTS zutat   (ZID INTEGER PRIMARY KEY AUTOINCREMENT,name CHAR,vorratsEinheit text,vorratsmenge CHAR);");
-        database.execSQL("CREATE TABLE IF NOT EXISTS recipe  (RID INTEGER PRIMARY KEY AUTOINCREMENT,name CHAR,beschreibung CHAR,Bild BLOB);");
+        database.execSQL("CREATE TABLE IF NOT EXISTS recipe  (RID INTEGER PRIMARY KEY AUTOINCREMENT,name CHAR,beschreibung CHAR,Bild CHAR);");
         database.execSQL("CREATE TABLE IF NOT EXISTS event   (EID INTEGER PRIMARY KEY AUTOINCREMENT,datum TEXT,stunden INTEGER,minuten INTEGER,titel CHAR);");
         database.execSQL("CREATE TABLE IF NOT EXISTS rZutat  (ZRID INTEGER PRIMARY KEY AUTOINCREMENT,RID INTEGER,ZID INTEGER,menge DOUBLE,einheit text,FOREIGN KEY(RID) REFERENCES recipe(RID),FOREIGN KEY(ZID) REFERENCES zutat(ZID));");
         database.execSQL("CREATE TABLE IF NOT EXISTS rEvent  (ERID INTEGER PRIMARY KEY AUTOINCREMENT,EID INTEGER ,RID INTEGER,FOREIGN KEY(RID) REFERENCES recipe(RID), FOREIGN KEY(EID) REFEReNCES event(EID));");
@@ -60,10 +60,7 @@ public class StorageRecipe extends SQLiteOpenHelper {
         ArrayList<Ingredient> ingredient=a.getIngredient();
         String name = a.getName();
         String beschreibung = a.getDescription();
-        byte[] bild = new byte[0];
-        try {
-            bild = getImageFromUri(a.getImage());
-        } catch (IOException ignored){}
+        String bild = a.getImage().toString();
         SQLiteDatabase database=this.getWritableDatabase();
         ContentValues c = new ContentValues();
         c.put("name",name);
@@ -121,13 +118,13 @@ public class StorageRecipe extends SQLiteOpenHelper {
     /**
      * method to get Image of database
      */
-    public Bitmap getRecipeImage(int index)  {
+    public Uri getRecipeImage(int index)  {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursorRecipe = db.rawQuery("SELECT recipe.bild FROM recipe WHERE rID="+index, null);
         cursorRecipe.moveToFirst();
-        byte [] image = cursorRecipe.getBlob(0);
+        Uri image = Uri.parse(cursorRecipe.getString(0));
         cursorRecipe.close();
-        return BitmapFactory.decodeByteArray(image,0,image.length);                        //convert the byteArray to a Bitmap
+        return image;
     }
     /**
      * method to get description of database

@@ -21,7 +21,7 @@ import de.ghse.tgi.rezepteapp.R;
  */
 public class ListRecipeListViewAdapter extends BaseAdapter {
     private ArrayList<Integer> filteredRecipe;
-    private LayoutInflater inflater;
+    private final LayoutInflater inflater;
     private boolean isUnfiltered = true;
 
     /**
@@ -100,7 +100,7 @@ public class ListRecipeListViewAdapter extends BaseAdapter {
      */
     private void setView(int recipeID,ViewHolder holder){
         holder.txt.setText(MainActivity.getStorage().getRecipeName(recipeID));                      //set the Name of RecipeListViewItem as Recipe with ID position.
-        holder.img.setImageBitmap(MainActivity.getStorage().getRecipeImage(recipeID));            //set the Image of RecipeListViewItem as Recipe with ID position.
+        holder.img.setImageURI(MainActivity.getStorage().getRecipeImage(recipeID));            //set the Image of RecipeListViewItem as Recipe with ID position.
     }
 
     /**
