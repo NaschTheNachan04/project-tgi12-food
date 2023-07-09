@@ -1,6 +1,7 @@
 package de.ghse.tgi.rezepteapp.fragments.fragmentclasses.ViewRecipe.ViewRecipe;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -70,8 +71,8 @@ public abstract class ViewRecipeFragment extends Fragment {
      * Displays the Image given.
      * @param image Image of the Recipe
      */
-    public void setImage(Bitmap image){
-        this.image.setImageBitmap(image);}
+    public void setImage(Uri image){
+        this.image.setImageURI(image);}
 
     /**
      * initializes the View above and below the Ingredients
@@ -82,9 +83,7 @@ public abstract class ViewRecipeFragment extends Fragment {
         name = header.findViewById(R.id.tVViewRecipeName);
         image = header.findViewById(R.id.iVViewRecipeImage);
         Button btBack = header.findViewById(R.id.btBackOnViewRecipe);
-        btBack.setOnClickListener(view -> {
-            returnToPreviousFragment();
-        });
+        btBack.setOnClickListener(view -> returnToPreviousFragment());
         listView.addHeaderView(header);
 
         View footer = getLayoutInflater().inflate(R.layout.content_fragment_view_recipe_footer,listView,false);

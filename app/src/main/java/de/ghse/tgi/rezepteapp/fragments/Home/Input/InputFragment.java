@@ -3,8 +3,10 @@ package de.ghse.tgi.rezepteapp.fragments.Home.Input;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -18,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
 import de.ghse.tgi.rezepteapp.MainActivity;
@@ -180,7 +183,9 @@ public class InputFragment extends Fragment {
     private void setImageView(ViewGroup header){
         ivAddImage = header.findViewById(R.id.IVAddImage);
         ivAddImage.setOnClickListener(view ->{
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
             startActivityForResult(intent,REQUEST_CODE);
         });
     }
@@ -204,9 +209,8 @@ public class InputFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK & requestCode == REQUEST_CODE & data != null){
             imageUri = data.getData();
+            requireContext().getContentResolver().takePersistableUriPermission(imageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             ivAddImage.setImageURI(imageUri);
         }
     }
-
-
 }

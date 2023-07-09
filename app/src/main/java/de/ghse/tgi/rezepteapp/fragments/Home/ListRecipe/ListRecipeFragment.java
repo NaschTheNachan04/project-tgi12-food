@@ -27,7 +27,7 @@ import de.ghse.tgi.rezepteapp.fragments.Home.HomeFragment;
 public class ListRecipeFragment extends Fragment {
     protected ListRecipeControl ctrl;
     protected View view;
-    private HomeFragment homeFragment;
+    private final HomeFragment homeFragment;
     protected int clickedItem = 0;
     protected boolean isUnfiltered = true;
     protected ArrayList<Integer> filteredRecipe;
