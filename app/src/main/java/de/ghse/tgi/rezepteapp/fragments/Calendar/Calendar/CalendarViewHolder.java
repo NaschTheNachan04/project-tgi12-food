@@ -1,5 +1,6 @@
 package de.ghse.tgi.rezepteapp.fragments.Calendar.Calendar;
 
+import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,5 +19,11 @@ public class CalendarViewHolder extends RecyclerView.ViewHolder {
         tvDay = itemView.findViewById(R.id.tvDay);
     }
 
+    public void setDay(int day){tvDay.setText(String.valueOf(day));}
+
     public void setDay(String day){tvDay.setText(day);}
+
+    public void setMarkedDay(){
+        tvDay.setBackgroundColor(Color.CYAN);
+    }
 }

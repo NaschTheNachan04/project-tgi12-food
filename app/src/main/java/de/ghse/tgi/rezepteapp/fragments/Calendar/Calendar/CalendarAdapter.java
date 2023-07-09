@@ -9,16 +9,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import de.ghse.tgi.rezepteapp.MainActivity;
 import de.ghse.tgi.rezepteapp.R;
-import de.ghse.tgi.rezepteapp.fragments.Calendar.Calendar.CalendarViewHolder;
-import de.ghse.tgi.rezepteapp.fragments.Calendar.Calendar.MainCalendar;
 
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>{
 
-    private int daysInCurrentMonth;
-    private int emptyDays;
-    private MainCalendar main;
+    private int daysInCurrentMonth, emptyDays, month,year;
+    private final MainCalendar main;
 
     public CalendarAdapter(MainCalendar main) {
         this.main = main;
@@ -32,6 +30,11 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>{
         emptyDays = firstDayOfWeekInCurrentMonth-2;
         if (emptyDays== -1) emptyDays= 6;
     }
+
+    public void setMonth(int month){this.month =month;}
+
+    public void setYear(int year){this.year =year;}
+
 
 
     @NonNull
@@ -51,7 +54,11 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
         if (position<emptyDays) holder.setDay(null);
-        else holder.setDay(String.valueOf(position+1-emptyDays));
+        else {
+            int day = position+1-emptyDays;
+            holder.setDay(day);
+            if (MainActivity.getStorage().getRecipeOnDayCount(day,month,year)!= 0) holder.setMarkedDay();
+        }
     }
 
     @Override

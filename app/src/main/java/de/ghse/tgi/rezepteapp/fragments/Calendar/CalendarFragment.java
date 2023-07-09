@@ -10,13 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import de.ghse.tgi.rezepteapp.MyViewPagerAdapter;
 import de.ghse.tgi.rezepteapp.R;
 import de.ghse.tgi.rezepteapp.fragments.Calendar.Calendar.MainCalendar;
 
 public class CalendarFragment extends Fragment {
-    private final MyViewPagerAdapter pager;
-    private View view;
     private final AddEventFragment addEventFragment = new AddEventFragment(this);
     private final MainCalendar calendar = new MainCalendar(this);
     private final Show_Fragment_Day show_fragment_day = new Show_Fragment_Day(this);
@@ -29,9 +26,8 @@ public class CalendarFragment extends Fragment {
     public static final int VIEW_RECIPE =3;
     public static final int SELECT_RECIPE = 4;
 
-    public CalendarFragment(MyViewPagerAdapter p) {
+    public CalendarFragment() {
         super();
-        pager =p;
     }
 
 
@@ -46,8 +42,7 @@ public class CalendarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_calendar, container, false);
-        return view;
+        return inflater.inflate(R.layout.fragment_calendar, container, false);
     }
 
     public void replaceFragment(int i){

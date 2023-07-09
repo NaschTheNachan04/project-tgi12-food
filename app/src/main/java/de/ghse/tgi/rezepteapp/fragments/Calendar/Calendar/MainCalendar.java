@@ -28,7 +28,6 @@ public class MainCalendar extends Fragment {
     private final CalendarFragment main;
     private int month,year;
     public MainCalendar(CalendarFragment main) {
-
         this.main = main;
     }
 
@@ -69,6 +68,8 @@ public class MainCalendar extends Fragment {
         int daysInCurrentMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         adapter.setFirstDayOfWeekInCurrentMonth(firstDayOfWeekInMonth);
         adapter.setDaysInCurrentMonth(daysInCurrentMonth);
+        adapter.setMonth(month);
+        adapter.setYear(year);
         adapter.notifyDataSetChanged();
 
         String ym = months[month]+" "+ year;

@@ -44,28 +44,28 @@ public class CalendarShowDayAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return recipeId.get(i/2);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return recipeId.get(i/2);
     }
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         if (position % 2 == 0) {
 
-            view = layoutInflater.inflate(R.layout.edit_text_oneline,parent,false);
-            EditText editText = view.findViewById(R.id.singleLineET);
+            view = layoutInflater.inflate(R.layout.textview_oneline,parent,false);
+            TextView textView = view.findViewById(R.id.singleLineTV);
             String t = time.get(position/2)[0]+":"+time.get(position/2)[1];
-            editText.setText(t);
+            textView.setText(t);
         }else {
             view = layoutInflater.inflate(R.layout.activity_content_view_recipe,parent,false);
             ImageView imageView = view.findViewById(R.id.iVRecipeImage);
             imageView.setImageBitmap(MainActivity.getStorage().getRecipeImage(recipeId.get((position-1)/2)));
             TextView name = view.findViewById(R.id.tVRecipeName);
-            name.setText(MainActivity.getStorage().getRecipeName((position-1)/2));
+            name.setText(MainActivity.getStorage().getRecipeName(recipeId.get((position-1)/2)));
         }
     return view;
     }
