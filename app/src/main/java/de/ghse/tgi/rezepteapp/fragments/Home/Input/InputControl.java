@@ -42,6 +42,7 @@ public class InputControl {
             a.setImageUri(gui.getImageUri());                   //set RecipeImage
             storage.addRecipe(a);                                //save the Recipe in storage
             gui.finishTransaction();
+            adapter.clearTextFields();
         }else Toast.makeText(gui.getContext(), string.addName, Toast.LENGTH_LONG).show();        //if not already done, tell the user to fill in a name
     }
 

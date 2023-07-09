@@ -64,7 +64,7 @@ public class Show_Fragment_Day extends Fragment {
 
     public void setDay(int day, int month, int year){
         this.day=day;
-        this.month = month;
+        this.month = month-1;
         this.year=year;
     }
 
