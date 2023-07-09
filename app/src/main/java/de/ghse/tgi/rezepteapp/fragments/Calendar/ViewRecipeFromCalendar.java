@@ -25,5 +25,6 @@ public class ViewRecipeFromCalendar extends ViewRecipeFragment {
     @Override
     protected void getItemID() {
         itemId = main.getCurrentRecipe();
+        ctrl.setRecipe(itemId);
     }
 }

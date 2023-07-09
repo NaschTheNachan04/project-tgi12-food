@@ -28,7 +28,7 @@ public class MyViewPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position){
             case 1:
-                return new CalendarFragment(this);                      //second Fragment is CalendarFragment
+                return new CalendarFragment();                      //second Fragment is CalendarFragment
             case 2:
                 return new SettingsFragment();                      //third Fragment is SettingsFragment
             default:
