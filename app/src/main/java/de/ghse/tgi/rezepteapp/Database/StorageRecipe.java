@@ -328,7 +328,7 @@ public class StorageRecipe extends SQLiteOpenHelper {
     public ArrayList<Integer[]> getEventTime(int day, int month, int year) {
         String date = year+"-"+month+"-"+day;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT e.stunden,e.minuten FROM EVENT e,rEvent re WHERE e.EID=re.EID  AND e.datum = '"+date+"'",null);
+        Cursor cursor = db.rawQuery("SELECT e.stunden,e.minuten FROM EVENT e,rEvent re WHERE e.EID=re.EID  AND e.datum = '"+date+"' ORDER BY e.stunden,e.minuten",null);
         ArrayList<Integer[]> list = new ArrayList<>();
         if(cursor.moveToFirst()){
             list.add(new Integer[]{cursor.getInt(0),cursor.getInt(1)});
@@ -346,7 +346,7 @@ public class StorageRecipe extends SQLiteOpenHelper {
     public ArrayList<Integer> getRecipeId(int day, int month, int year) {
         String date = year+"-"+month+"-"+day;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT re.RID FROM EVENT e,rEvent re WHERE e.EID=re.EID  AND e.datum = '"+date+"'",null);
+        Cursor cursor = db.rawQuery("SELECT re.RID FROM EVENT e,rEvent re WHERE e.EID=re.EID  AND e.datum = '"+date+"' ORDER BY e.stunden,e.minuten",null);
         ArrayList<Integer> list= new ArrayList<>();
         if(cursor.moveToFirst()){
             list.add(cursor.getInt(0));

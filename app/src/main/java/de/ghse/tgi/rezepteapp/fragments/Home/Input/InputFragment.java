@@ -3,13 +3,10 @@ package de.ghse.tgi.rezepteapp.fragments.Home.Input;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +17,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
+import de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe.ListRecipeFragment;
 import de.ghse.tgi.rezepteapp.MainActivity;
 import de.ghse.tgi.rezepteapp.R;
 import de.ghse.tgi.rezepteapp.fragments.Home.HomeFragment;
@@ -74,7 +71,7 @@ public class InputFragment extends Fragment {
     }
 
     /**
-     * called to leave this Fragment and return to {@link de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe.ListRecipeFragment}
+     * called to leave this Fragment and return to {@link ListRecipeFragment}
      */
     public void finishTransaction() {
         clearTextFields();
@@ -89,6 +86,7 @@ public class InputFragment extends Fragment {
         etName = header.findViewById(R.id.etInputName);
         setImageView(header);
         lVIngredients.addHeaderView(header);
+
 
         ViewGroup footer = (ViewGroup) getLayoutInflater().inflate(R.layout.content_fragment_input_bottom,lVIngredients,false);
 
@@ -138,7 +136,9 @@ public class InputFragment extends Fragment {
      *
      * @return The unit the user selected
      */
-    public String getIngredientUnit(){return etUnit.getText().toString();}
+    public String getIngredientUnit(){
+        if (etUnit.getText()==null) return "";
+        return etUnit.getText().toString();}
     /**
      * Use this method to get the amount the user wrote.
      *

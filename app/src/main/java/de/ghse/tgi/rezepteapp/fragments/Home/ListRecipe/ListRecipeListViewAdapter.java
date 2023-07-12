@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import de.ghse.tgi.rezepteapp.MainActivity;
@@ -76,18 +75,17 @@ public class ListRecipeListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-
         ViewHolder holder;
-
+        //Initialisierung der UI-Elemente
         if (view == null) {
             view = inflater.inflate(R.layout.activity_content_view_recipe, null);
             holder = new ViewHolder();
             holder.txt = view.findViewById(R.id.tVRecipeName);
             holder.img = view.findViewById(R.id.iVRecipeImage);
             view.setTag(holder);
-        } else {
-            holder = (ViewHolder) view.getTag();
-        }
+        } else holder = (ViewHolder) view.getTag();
+
+
         if (isUnfiltered)   setView(position+1,holder);
         else                setView(filteredRecipe.get(position),holder);
         return view;
@@ -100,7 +98,11 @@ public class ListRecipeListViewAdapter extends BaseAdapter {
      */
     private void setView(int recipeID,ViewHolder holder){
         holder.txt.setText(MainActivity.getStorage().getRecipeName(recipeID));                      //set the Name of RecipeListViewItem as Recipe with ID position.
-        holder.img.setImageURI(MainActivity.getStorage().getRecipeImage(recipeID));            //set the Image of RecipeListViewItem as Recipe with ID position.
+        try {
+            holder.img.setImageURI(MainActivity.getStorage().getRecipeImage(recipeID));            //set the Image of RecipeListViewItem as Recipe with ID position.
+        }catch (Exception e){
+            holder.img.setImageResource(R.drawable.ic_baseline_hide_image_24);
+        }
     }
 
     /**

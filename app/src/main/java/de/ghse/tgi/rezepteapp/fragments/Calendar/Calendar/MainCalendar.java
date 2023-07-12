@@ -77,7 +77,7 @@ public class MainCalendar extends Fragment {
     }
 
     public void goToEvent(String day) {
-        main.goToDay(Integer.parseInt(day),month,year);
+        main.goToDay(Integer.parseInt(day),month+1,year);
         main.replaceFragment(CalendarFragment.SHOW_FRAGMENT_DAY);
     }
 

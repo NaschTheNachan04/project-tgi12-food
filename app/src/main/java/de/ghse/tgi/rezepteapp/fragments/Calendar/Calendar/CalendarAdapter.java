@@ -57,7 +57,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>{
         else {
             int day = position+1-emptyDays;
             holder.setDay(day);
-            if (MainActivity.getStorage().getRecipeOnDayCount(day,month,year)!= 0) holder.setMarkedDay();
+            if (MainActivity.getStorage().getRecipeOnDayCount(day,month+1,year)!= 0) holder.setMarkedDay();
         }
     }
 
