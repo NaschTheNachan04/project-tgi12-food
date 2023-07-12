@@ -72,7 +72,13 @@ public abstract class ViewRecipeFragment extends Fragment {
      * @param image Image of the Recipe
      */
     public void setImage(Uri image){
-        this.image.setImageURI(image);}
+        try {
+            this.image.setImageURI(image);
+        }catch (Exception e){
+            this.image.setImageResource(R.drawable.ic_baseline_hide_image_24);
+        }
+
+    }
 
     /**
      * initializes the View above and below the Ingredients

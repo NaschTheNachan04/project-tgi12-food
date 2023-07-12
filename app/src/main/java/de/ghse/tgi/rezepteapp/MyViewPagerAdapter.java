@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import de.ghse.tgi.rezepteapp.fragments.Calendar.CalendarFragment;
-import de.ghse.tgi.rezepteapp.fragments.Home.HomeFragment;
+import de.ghse.tgi.rezepteapp.Database.Home.HomeFragment;
 import de.ghse.tgi.rezepteapp.fragments.Settings.SettingsFragment;
 
 /**

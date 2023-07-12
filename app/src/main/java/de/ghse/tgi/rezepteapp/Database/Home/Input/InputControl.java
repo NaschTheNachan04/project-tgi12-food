@@ -1,4 +1,4 @@
-package de.ghse.tgi.rezepteapp.fragments.Home.Input;
+package de.ghse.tgi.rezepteapp.Database.Home.Input;
 
 import android.widget.Toast;
 
@@ -53,14 +53,14 @@ public class InputControl {
         String unit = gui.getIngredientUnit();
         String amount = gui.getIngredientAmount();
         String name = gui.getIngredientName();
-        if (!(unit.isEmpty() || amount.isEmpty() || name.isEmpty())) {
+        if (!(amount.isEmpty() || name.isEmpty())) {
             Ingredient i = new Ingredient();
             i.setUnit(unit);
             i.setAmount(Double.parseDouble(amount));
             i.setName(name);
             adapter.addIngredient(i);
             adapter.notifyDataSetChanged();
+            gui.clearAddIngredientTextFields();
         }
-        gui.clearAddIngredientTextFields();
     }
 }

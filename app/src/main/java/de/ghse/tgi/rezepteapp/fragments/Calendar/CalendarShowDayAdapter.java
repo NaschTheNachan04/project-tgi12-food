@@ -63,7 +63,11 @@ public class CalendarShowDayAdapter extends BaseAdapter {
         }else {
             view = layoutInflater.inflate(R.layout.activity_content_view_recipe,parent,false);
             ImageView imageView = view.findViewById(R.id.iVRecipeImage);
-            imageView.setImageURI(MainActivity.getStorage().getRecipeImage(recipeId.get((position-1)/2)));
+            try {
+                imageView.setImageURI(MainActivity.getStorage().getRecipeImage(recipeId.get((position-1)/2)));
+            }catch (Exception e){
+                imageView.setImageResource(R.drawable.ic_baseline_hide_image_24);
+            }
             TextView name = view.findViewById(R.id.tVRecipeName);
             name.setText(MainActivity.getStorage().getRecipeName(recipeId.get((position-1)/2)));
         }

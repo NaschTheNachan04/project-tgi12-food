@@ -20,7 +20,7 @@ import java.util.Calendar;
 import de.ghse.tgi.rezepteapp.Event;
 import de.ghse.tgi.rezepteapp.MainActivity;
 import de.ghse.tgi.rezepteapp.R;
-import de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe.ListRecipeListViewAdapter;
+import de.ghse.tgi.rezepteapp.Database.Home.ListRecipe.ListRecipeListViewAdapter;
 
 
 public class AddEventFragment extends Fragment {

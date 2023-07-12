@@ -1,4 +1,4 @@
-package de.ghse.tgi.rezepteapp.fragments.Home.Input;
+package de.ghse.tgi.rezepteapp.Database.Home.Input;
 
 import android.content.Context;
 import android.view.LayoutInflater;
