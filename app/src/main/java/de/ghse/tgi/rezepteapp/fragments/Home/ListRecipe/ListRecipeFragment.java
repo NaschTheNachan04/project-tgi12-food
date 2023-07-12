@@ -1,4 +1,4 @@
-package de.ghse.tgi.rezepteapp.Database.Home.ListRecipe;
+package de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe;
 
 import android.os.Bundle;
 
@@ -17,7 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 import de.ghse.tgi.rezepteapp.R;
-import de.ghse.tgi.rezepteapp.Database.Home.HomeFragment;
+import de.ghse.tgi.rezepteapp.fragments.Home.HomeFragment;
 
 /**
  * A {@link Fragment} subclass.

@@ -1,4 +1,4 @@
-package de.ghse.tgi.rezepteapp.Database.Home.Input;
+package de.ghse.tgi.rezepteapp.fragments.Home.Input;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,10 +19,10 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import de.ghse.tgi.rezepteapp.Database.Home.ListRecipe.ListRecipeFragment;
+import de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe.ListRecipeFragment;
 import de.ghse.tgi.rezepteapp.MainActivity;
 import de.ghse.tgi.rezepteapp.R;
-import de.ghse.tgi.rezepteapp.Database.Home.HomeFragment;
+import de.ghse.tgi.rezepteapp.fragments.Home.HomeFragment;
 
 /**
  * A {@link Fragment} subclass.

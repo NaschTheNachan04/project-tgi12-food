@@ -1,4 +1,4 @@
-package de.ghse.tgi.rezepteapp.Database.Home;
+package de.ghse.tgi.rezepteapp.fragments.Home;
 
 import android.os.Bundle;
 
@@ -11,10 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-import de.ghse.tgi.rezepteapp.Database.Home.Input.InputFragment;
-import de.ghse.tgi.rezepteapp.Database.Home.ListRecipe.ListRecipeFragment;
+import de.ghse.tgi.rezepteapp.fragments.Home.Input.InputFragment;
+import de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe.ListRecipeFragment;
 import de.ghse.tgi.rezepteapp.R;
-import de.ghse.tgi.rezepteapp.Database.Home.ViewRecipe.ViewRecipeFromHomeFragment;
+import de.ghse.tgi.rezepteapp.fragments.Home.ViewRecipe.ViewRecipeFromHomeFragment;
 import de.ghse.tgi.rezepteapp.fragments.fragmentclasses.ViewRecipe.ViewRecipe.ViewRecipeFragment;
 
 /**

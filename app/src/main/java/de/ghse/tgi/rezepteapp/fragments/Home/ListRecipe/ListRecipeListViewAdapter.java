@@ -1,4 +1,4 @@
-package de.ghse.tgi.rezepteapp.Database.Home.ListRecipe;
+package de.ghse.tgi.rezepteapp.fragments.Home.ListRecipe;
 
 import android.content.Context;
 import android.view.LayoutInflater;

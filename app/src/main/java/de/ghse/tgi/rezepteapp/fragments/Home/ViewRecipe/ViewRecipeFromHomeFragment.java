@@ -1,8 +1,8 @@
-package de.ghse.tgi.rezepteapp.Database.Home.ViewRecipe;
+package de.ghse.tgi.rezepteapp.fragments.Home.ViewRecipe;
 
 import androidx.fragment.app.Fragment;
 
-import de.ghse.tgi.rezepteapp.Database.Home.HomeFragment;
+import de.ghse.tgi.rezepteapp.fragments.Home.HomeFragment;
 import de.ghse.tgi.rezepteapp.fragments.fragmentclasses.ViewRecipe.ViewRecipe.ViewRecipeFragment;
 
 public class ViewRecipeFromHomeFragment extends ViewRecipeFragment {
